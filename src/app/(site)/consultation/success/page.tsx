@@ -1,75 +1,69 @@
+import Link from "next/link";
 import type { Metadata } from "next";
-import { Container, ButtonLink, SectionHeader } from "@/components/ui";
-import { SITE } from "@/lib/constants";
+import { ButtonLink } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Request Received | BTCSCAM.COM",
   description: "Your confidential consultation request has been received.",
 };
 
+const WHILE_YOU_WAIT = [
+  "Stop all contact with the scammer — do not send more to 'unlock' funds.",
+  "Screenshot everything: chats, transactions, URLs, and profiles.",
+  "Do not pay anyone promising guaranteed recovery — that's a second scam.",
+  "If a card or bank was involved, contact them now to flag the transaction.",
+];
+
 export default function ConsultationSuccessPage() {
   return (
-    <>
-      <Container className="py-16 max-w-2xl">
-        <div className="border-2 border-ink bg-paper p-8 sm:p-10 text-center">
-          <div className="font-display text-6xl text-btc-dark leading-none">✓</div>
-          <h1 className="font-display text-4xl sm:text-5xl text-ink mt-4 leading-[0.95]">
-            Request received.
-          </h1>
-          <p className="mono text-[11px] uppercase tracking-wide text-ink-500 mt-3">
-            Confidential · Free · No account required
-          </p>
-          <p className="text-ink-600 mt-5 max-w-lg mx-auto">
-            Thank you for reaching out. A volunteer will review your request and reply by email —
-            usually within 24 hours. Everything you shared stays private to our support desk.
-          </p>
-
-          <div className="mt-8 text-left border border-line bg-paper-2 p-5">
-            <div className="kicker text-ink-600 mb-3">While you wait</div>
-            <ul className="space-y-2 text-sm text-ink-600">
-              {[
-                "Stop all contact with the scammer — do not send more to 'unlock' funds.",
-                "Screenshot everything: chats, transactions, URLs, and profiles.",
-                "Do not pay anyone promising guaranteed recovery — that's a second scam.",
-                "If a card or bank was involved, contact them now to flag the transaction.",
-              ].map((tip) => (
-                <li key={tip} className="flex gap-2">
-                  <span className="text-btc-dark shrink-0">→</span>
-                  <span>{tip}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="mt-8 flex flex-wrap gap-3 justify-center">
-            <ButtonLink href="/report" variant="primary" size="md">
-              File a scam report
-            </ButtonLink>
-            <ButtonLink href="/database" variant="outline" size="md">
-              Browse the scam database
-            </ButtonLink>
-            <ButtonLink href="/" variant="ghost" size="md">
-              Back to the front page
-            </ButtonLink>
-          </div>
+    <div className="mx-auto w-full max-w-[980px] px-6 pt-9 fade-up">
+      {/* ── v4 confirmation card ── */}
+      <div className="border border-ink bg-white p-9 text-center">
+        <div className="inline-block bg-safe px-3.5 py-1.5 font-sans font-bold text-[16px] uppercase tracking-[.05em] text-white">
+          Request received
         </div>
-
-        <div className="mt-8">
-          <SectionHeader title="Emergency?" />
-          <p className="text-ink-600 text-sm max-w-lg">
-            If you are in immediate danger or being extorted, contact your local law enforcement
-            first. Our volunteers provide guidance and support — not emergency services.
-          </p>
+        <h1
+          className="mt-[18px] font-display text-ink"
+          style={{ fontSize: "clamp(32px,4.5vw,52px)", lineHeight: 1.12, textWrap: "balance" }}
+        >
+          A skeptic is on it.
+        </h1>
+        <p className="mx-auto mt-3.5 max-w-[52ch] text-[16px] leading-[1.6] text-body-2">
+          A reply lands by email — community-desk answers within 72 hours, expert sessions booked
+          inside 24. Everything you shared stays private to the desk.
+        </p>
+        <div className="mt-[22px]">
+          <ButtonLink href="/consultation" variant="ghost" size="md">
+            Ask another question
+          </ButtonLink>
         </div>
-      </Container>
-
-      {/* Mission strip */}
-      <div className="bg-ink text-paper py-6">
-        <Container className="flex flex-col sm:flex-row items-center justify-between gap-2 text-center">
-          <span className="kicker text-btc">{SITE.mission}</span>
-          <span className="mono text-[11px] uppercase tracking-wide text-ink-400">{SITE.disclaimer}</span>
-        </Container>
       </div>
-    </>
+
+      {/* ── While you wait ── */}
+      <div className="mt-9 border-t border-ink pt-4">
+        <h2 className="font-display text-[24px] text-ink">While you wait</h2>
+        <div className="mt-3 flex flex-col gap-2">
+          {WHILE_YOU_WAIT.map((tip) => (
+            <div key={tip} className="flex gap-2.5 text-[16px] leading-[1.5] text-body-2">
+              <span className="mt-[7px] h-1.5 w-1.5 flex-none bg-brand" aria-hidden="true" />
+              <span>{tip}</span>
+            </div>
+          ))}
+        </div>
+        <div className="mt-5 flex flex-wrap gap-x-8 gap-y-2">
+          <Link href="/report" className="kicker text-accent hover:underline underline-offset-4">
+            File a scam report →
+          </Link>
+          <Link href="/database" className="kicker text-accent hover:underline underline-offset-4">
+            Browse the scam database →
+          </Link>
+        </div>
+        <p className="mt-5 text-[16px] text-meta">
+          IN IMMEDIATE DANGER OR BEING EXTORTED? CONTACT LOCAL LAW ENFORCEMENT FIRST — WE PROVIDE
+          GUIDANCE, NOT EMERGENCY SERVICES.
+        </p>
+      </div>
+      <div className="h-4" />
+    </div>
   );
 }

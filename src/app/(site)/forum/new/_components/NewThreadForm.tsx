@@ -14,60 +14,50 @@ export function NewThreadForm({
   const [state, action, pending] = useActionState<ThreadFormState, FormData>(createThread, null);
 
   return (
-    <form action={action} className="space-y-5">
-      <label className="block">
-        <span className="kicker text-ink-600 block mb-1.5">Title</span>
-        <input
-          name="title"
-          type="text"
-          required
-          minLength={5}
-          maxLength={160}
-          placeholder="What did you see? Be specific."
-          className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink"
-        />
-        <span className="mono text-[10px] text-ink-400 mt-1 block">At least 5 characters.</span>
-      </label>
+    <form action={action}>
+      {/* v4 composer: ink-bordered paper fields */}
+      <input
+        name="title"
+        type="text"
+        required
+        minLength={5}
+        maxLength={160}
+        placeholder="Thread title — specific beats loud"
+        className="mt-3 w-full border border-ink bg-paper px-4 py-[13px] font-sans font-bold text-[18px] text-ink placeholder:text-faint placeholder:font-normal focus:outline-none focus:outline-2"
+      />
 
-      <label className="block">
-        <span className="kicker text-ink-600 block mb-1.5">Category</span>
-        <select
-          name="categoryId"
-          required
-          defaultValue={defaultCategoryId ?? ""}
-          className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink"
-        >
-          <option value="" disabled>
-            Choose a category…
+      <select
+        name="categoryId"
+        required
+        defaultValue={defaultCategoryId ?? ""}
+        className="mt-2.5 w-full border border-ink bg-paper px-4 py-[13px] font-sans text-[16px] text-ink focus:outline-none"
+      >
+        <option value="" disabled>
+          Choose a desk…
+        </option>
+        {categories.map((c) => (
+          <option key={c.id} value={c.id}>
+            {c.name}
           </option>
-          {categories.map((c) => (
-            <option key={c.id} value={c.id}>
-              {c.name}
-            </option>
-          ))}
-        </select>
-      </label>
+        ))}
+      </select>
 
-      <label className="block">
-        <span className="kicker text-ink-600 block mb-1.5">Post</span>
-        <textarea
-          name="body"
-          required
-          minLength={10}
-          rows={8}
-          placeholder="Give the details: chains, addresses, links, screenshots described. Verify everything."
-          className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink resize-y"
-        />
-        <span className="mono text-[10px] text-ink-400 mt-1 block">At least 10 characters.</span>
-      </label>
+      <textarea
+        name="body"
+        required
+        minLength={10}
+        rows={6}
+        placeholder="What happened, when, links and evidence. The forum verifies — give it something to verify."
+        className="mt-2.5 w-full border border-ink bg-paper px-4 py-[13px] font-sans text-[16px] leading-[1.55] text-ink placeholder:text-faint resize-y focus:outline-none"
+      />
 
-      {state?.error && <p className="mono text-[12px] text-alert-strong">{state.error}</p>}
+      {state?.error && <p className="mt-2.5 text-[14px] text-danger">{state.error}</p>}
 
-      <div className="flex items-center gap-3">
+      <div className="mt-3 flex items-center gap-4 flex-wrap">
         <Button type="submit" variant="primary" size="lg" disabled={pending}>
-          {pending ? "Posting…" : "Post Thread"}
+          {pending ? "Posting…" : "Post thread"}
         </Button>
-        <span className="mono text-[11px] uppercase tracking-wide text-ink-400">
+        <span className="text-[14px] text-meta uppercase tracking-[.02em]">
           Not financial advice · Verify everything
         </span>
       </div>

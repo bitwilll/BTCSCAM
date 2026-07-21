@@ -5,10 +5,10 @@ import { setOrderStatus, addTracking, type Result } from "@/actions/admin-ops";
 import { ORDER_STATUSES } from "@/lib/constants";
 
 const sel =
-  "mt-1 w-full border border-line-strong bg-paper px-2 py-1.5 text-xs focus:outline-none focus:border-ink disabled:opacity-50";
+  "mt-1 w-full border border-ink bg-paper px-2 py-1.5 text-xs focus:outline-none focus:border-ink disabled:opacity-50";
 const inp =
-  "border border-line-strong bg-paper px-2 py-1.5 text-xs focus:outline-none focus:border-ink disabled:opacity-50";
-const cap = "mono text-[10px] uppercase tracking-wide text-ink-400";
+  "border border-ink bg-paper px-2 py-1.5 text-xs focus:outline-none focus:border-ink disabled:opacity-50";
+const cap = "mono text-[10px] uppercase tracking-wide text-faint";
 const btn = "kicker px-2 py-1.5 border transition-colors disabled:opacity-50";
 
 export function OrderControls({
@@ -89,7 +89,7 @@ export function OrderControls({
             type="button"
             disabled={pending}
             onClick={() => run(() => addTracking(orderId, carrier, number))}
-            className={`${btn} bg-ink text-paper border-ink hover:bg-ink-800`}
+            className={`${btn} bg-ink text-paper border-ink hover:bg-action-hover`}
           >
             Save
           </button>
@@ -97,7 +97,7 @@ export function OrderControls({
       </div>
 
       {msg && (
-        <span className={`mono text-[10px] ${msg.ok ? "text-up" : "text-alert-strong"}`}>
+        <span className={`mono text-[10px] ${msg.ok ? "text-safe" : "text-danger"}`}>
           {msg.text}
         </span>
       )}

@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   description: "Manage sting operations, gatherings, scam art and media items.",
 };
 
-const rowCls = "flex items-start justify-between gap-3 py-3 border-t border-line first:border-0";
+const rowCls = "flex items-start justify-between gap-3 py-3 border-t border-rule first:border-0";
 
 export default async function CommunityAdminPage() {
   await requirePrivilege(PV.COMMUNITY_MANAGE);
@@ -40,7 +40,7 @@ export default async function CommunityAdminPage() {
       {/* Sting operations */}
       <Section title="Sting Operations">
         <div className="grid lg:grid-cols-[1fr_360px] gap-6">
-          <div className="border border-line-strong bg-paper p-5">
+          <div className="border border-ink bg-paper p-5">
             {stings.length === 0 ? (
               <EmptyState title="No operations" hint="Create the first sting operation." />
             ) : (
@@ -50,12 +50,12 @@ export default async function CommunityAdminPage() {
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-ink">{s.title}</span>
-                        <Tag tone={s.status === "active" ? "green" : s.status === "planning" ? "orange" : "outline"}>
+                        <Tag tone={s.status === "active" ? "green" : s.status === "planning" ? "warn" : "outline"}>
                           {s.status}
                         </Tag>
                       </div>
-                      <p className="mono text-[11px] text-ink-500 mt-1 line-clamp-2">{s.summary}</p>
-                      <div className="mono text-[10px] text-ink-400 mt-1">{byline(s.createdAt)}</div>
+                      <p className="mono text-[11px] text-meta mt-1 line-clamp-2">{s.summary}</p>
+                      <div className="mono text-[10px] text-faint mt-1">{byline(s.createdAt)}</div>
                     </div>
                     <CommunityDelete kind="sting" id={s.id} />
                   </li>
@@ -70,7 +70,7 @@ export default async function CommunityAdminPage() {
       {/* Gatherings */}
       <Section title="Gatherings">
         <div className="grid lg:grid-cols-[1fr_360px] gap-6">
-          <div className="border border-line-strong bg-paper p-5">
+          <div className="border border-ink bg-paper p-5">
             {gatherings.length === 0 ? (
               <EmptyState title="No gatherings" hint="Schedule the first meetup." />
             ) : (
@@ -82,8 +82,8 @@ export default async function CommunityAdminPage() {
                         <span className="font-bold text-ink">{g.title}</span>
                         {g.isVirtual && <Tag tone="paper">virtual</Tag>}
                       </div>
-                      <p className="mono text-[11px] text-ink-500 mt-1 line-clamp-2">{g.description}</p>
-                      <div className="mono text-[10px] text-ink-400 mt-1">
+                      <p className="mono text-[11px] text-meta mt-1 line-clamp-2">{g.description}</p>
+                      <div className="mono text-[10px] text-faint mt-1">
                         {g.location} · {dateline(g.startsAt)}
                       </div>
                     </div>
@@ -100,7 +100,7 @@ export default async function CommunityAdminPage() {
       {/* Scam art */}
       <Section title="Scam Art">
         <div className="grid lg:grid-cols-[1fr_360px] gap-6">
-          <div className="border border-line-strong bg-paper p-5">
+          <div className="border border-ink bg-paper p-5">
             {art.length === 0 ? (
               <EmptyState title="No artwork" hint="Add the first piece to the gallery." />
             ) : (
@@ -109,8 +109,8 @@ export default async function CommunityAdminPage() {
                   <li key={a.id} className={rowCls}>
                     <div className="min-w-0">
                       <span className="font-bold text-ink">{a.title}</span>
-                      <div className="mono text-[11px] text-ink-500 mt-1">by {a.artist}</div>
-                      <div className="mono text-[10px] text-ink-400 mt-1">{a.imageLabel}</div>
+                      <div className="mono text-[11px] text-meta mt-1">by {a.artist}</div>
+                      <div className="mono text-[10px] text-faint mt-1">{a.imageLabel}</div>
                     </div>
                     <CommunityDelete kind="art" id={a.id} />
                   </li>
@@ -125,7 +125,7 @@ export default async function CommunityAdminPage() {
       {/* Media */}
       <Section title="Media Library">
         <div className="grid lg:grid-cols-[1fr_360px] gap-6">
-          <div className="border border-line-strong bg-paper p-5">
+          <div className="border border-ink bg-paper p-5">
             {media.length === 0 ? (
               <EmptyState title="No media items" hint="Publish the first episode or video." />
             ) : (
@@ -135,10 +135,10 @@ export default async function CommunityAdminPage() {
                     <div className="min-w-0">
                       <div className="flex items-center gap-2">
                         <span className="font-bold text-ink">{m.title}</span>
-                        <Tag tone={m.kind === "video" ? "orange" : "paper"}>{m.kind}</Tag>
+                        <Tag tone={m.kind === "video" ? "black" : "paper"}>{m.kind}</Tag>
                       </div>
-                      <p className="mono text-[11px] text-ink-500 mt-1 line-clamp-2">{m.description}</p>
-                      <div className="mono text-[10px] text-ink-400 mt-1">
+                      <p className="mono text-[11px] text-meta mt-1 line-clamp-2">{m.description}</p>
+                      <div className="mono text-[10px] text-faint mt-1">
                         {m.duration ? `${m.duration} · ` : ""}
                         {byline(m.publishedAt)}
                       </div>

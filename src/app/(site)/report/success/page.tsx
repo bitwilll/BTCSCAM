@@ -1,82 +1,96 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Container, Kicker, ButtonLink } from "@/components/ui";
+import { ButtonLink } from "@/components/ui";
 import { SITE } from "@/lib/constants";
+
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Report Received · BTCSCAM.COM",
   description: "Your scam report has been received and queued for triage.",
 };
 
-const NEXT_STEPS: { step: string; title: string; body: string }[] = [
-  {
-    step: "01",
-    title: "It enters the queue",
-    body: "Your report lands with our triage analysts, tagged “pending”. Nothing is public yet.",
-  },
-  {
-    step: "02",
-    title: "We verify on-chain",
-    body: "Analysts check the addresses and evidence you provided and match them against known operations.",
-  },
-  {
-    step: "03",
-    title: "It protects others",
-    body: "Confirmed reports are added to the public database and can trigger alerts for the whole community.",
-  },
+const NEXT_STEPS: string[] = [
+  "A moderator triages your case — usually within hours.",
+  "Two independent verifiers check indicators and wallets.",
+  "Confirmed entries go live in the database and the ticker.",
 ];
 
-export default function ReportSuccessPage() {
-  return (
-    <Container className="py-16 lg:py-20 max-w-3xl">
-      <div className="border-2 border-ink bg-paper p-8 sm:p-10">
-        <Kicker color="green">Report Received</Kicker>
-        <h1 className="font-display text-5xl sm:text-6xl text-ink leading-[0.9] mt-3">
-          Thank you for filing.
-        </h1>
-        <p className="mt-4 text-lg text-ink-600">
-          Your report is in the queue. Every submission makes the community harder to scam — and it
-          could be the warning that stops the next victim.
-        </p>
+export default async function ReportSuccessPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ id?: string | string[] }>;
+}) {
+  const sp = await searchParams;
+  const rawId = typeof sp.id === "string" ? sp.id.trim() : "";
+  const caseId = rawId ? rawId.toUpperCase().slice(0, 24) : null;
 
-        <div className="mt-8 section-rule pb-2 mb-6">
-          <h2 className="kicker text-sm !tracking-[0.16em]">What Happens Next</h2>
+  return (
+    <div className="mx-auto w-full max-w-[900px] px-6 pt-9 pb-16 fade-up">
+      {/* ── Green-bordered confirmation card (v4) ── */}
+      <div className="bg-white border border-safe shadow-card p-9 text-center">
+        <div className="inline-flex items-center gap-2 bg-safe text-white px-3.5 py-1.5">
+          <svg
+            width="14"
+            height="14"
+            viewBox="0 0 14 14"
+            fill="none"
+            aria-hidden="true"
+            className="shrink-0"
+          >
+            <path
+              d="M2 7.5L5.5 11L12 3.5"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="square"
+            />
+          </svg>
+          <span className="kicker">Case filed</span>
         </div>
 
-        <ol className="space-y-6">
-          {NEXT_STEPS.map((s) => (
-            <li key={s.step} className="flex gap-4">
-              <span className="font-display text-3xl text-ink-400 w-10 shrink-0 leading-none">
-                {s.step}
-              </span>
-              <div className="min-w-0">
-                <div className="font-bold text-ink">{s.title}</div>
-                <p className="text-sm text-ink-600 mt-1 leading-snug">{s.body}</p>
-              </div>
+        <h1
+          className="font-display text-ink mt-[18px]"
+          style={{ fontSize: "clamp(32px,4.5vw,52px)", lineHeight: 1.12, textWrap: "balance" }}
+        >
+          Thank you, watchman.
+        </h1>
+
+        <div className="mt-4 inline-block bg-dark text-brand mono font-semibold text-[18px] px-[22px] py-3">
+          {caseId ? `CASE ${caseId}` : "CASE FILED · IN TRIAGE QUEUE"}
+        </div>
+
+        <ul className="mt-[26px] mx-auto max-w-[520px] text-left flex flex-col gap-3">
+          {NEXT_STEPS.map((step, i) => (
+            <li key={i} className="flex gap-3 text-[16px] leading-[1.5] text-ink">
+              <span
+                className="mt-[7px] inline-block w-2 h-2 bg-brand shrink-0"
+                aria-hidden="true"
+              />
+              <span>{step}</span>
             </li>
           ))}
-        </ol>
+        </ul>
 
-        <div className="mt-10 pt-6 border-t border-line flex flex-col sm:flex-row gap-3">
-          <ButtonLink href="/database" variant="primary" size="lg">
-            Browse the Scam Database
+        <div className="mt-7 flex flex-wrap justify-center gap-2.5">
+          <ButtonLink href="/database" variant="primary">
+            Open the database
           </ButtonLink>
-          <ButtonLink href="/forum" variant="outline" size="lg">
-            Warn the Community in the Forum
+          <ButtonLink href="/forum" variant="ghost">
+            Warn the forum
           </ButtonLink>
         </div>
 
-        <p className="mono text-[11px] uppercase tracking-wide text-ink-500 mt-8">
-          Spotted another one?{" "}
-          <Link href="/report" className="text-btc-dark hover:text-ink underline">
-            File another report →
+        <p className="mt-6">
+          <Link
+            href="/report"
+            className="kicker text-accent hover:underline underline-offset-4"
+          >
+            Report another →
           </Link>
         </p>
       </div>
 
-      <p className="mono text-[11px] uppercase tracking-wide text-ink-400 mt-6 text-center">
-        {SITE.disclaimer}
-      </p>
-    </Container>
+      <p className="eyebrow text-center mt-6">{SITE.disclaimer}</p>
+    </div>
   );
 }

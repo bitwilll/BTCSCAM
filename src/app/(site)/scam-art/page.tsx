@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
-import { Container, PageHeader, SectionHeader, MediaPlaceholder, ButtonLink, EmptyState } from "@/components/ui";
-import { SITE } from "@/lib/constants";
+import { ButtonLink, EmptyState } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -15,79 +14,92 @@ export default async function ScamArtPage() {
   const pieces = await prisma.scamArt.findMany({ orderBy: { createdAt: "desc" } });
 
   return (
-    <Container className="py-10">
-      <PageHeader
-        kicker="Community · Gallery"
-        title="Scam Art"
-        lede="Scammers are slick by design — that is half of what makes them work. Scam Art is the community's answer: satire, warning posters and protest pieces that strip the shine off the playbook and make the red flags impossible to un-see."
-      >
+    <div className="max-w-[1360px] mx-auto px-6 pt-9 pb-16 fade-up">
+      {/* ── Gallery header (v4) ── */}
+      <div className="flex flex-wrap justify-between items-end gap-4">
+        <div className="min-w-0">
+          <div className="kicker text-meta">Community gallery · Art + NFT showcase</div>
+          <h1
+            className="font-display mt-1.5"
+            style={{ fontSize: "clamp(40px,5.5vw,72px)", lineHeight: 1 }}
+          >
+            Scam Art
+          </h1>
+          <p className="mt-3 text-[18px] leading-[1.65] text-body-2 max-w-[64ch]">
+            What losing everything to a promise looks like, made by the people it happened to.
+            Physical work and NFTs, side by side.
+          </p>
+        </div>
         <ButtonLink
           href="mailto:art@btcscam.com?subject=Scam%20Art%20submission"
           variant="primary"
-          size="md"
+          size="lg"
         >
-          Submit a piece
+          Submit your work
         </ButtonLink>
-      </PageHeader>
+      </div>
 
-      <SectionHeader title="The Collection" />
-
+      {/* ── The wall (v4 grid) ── */}
       {pieces.length === 0 ? (
-        <EmptyState
-          title="The gallery is being hung"
-          hint="No pieces published yet. Send us your posters, memes and paintings — the sharpest work goes on the wall."
-          action={
-            <ButtonLink href="mailto:art@btcscam.com?subject=Scam%20Art%20submission">
-              Submit your art
-            </ButtonLink>
-          }
-        />
+        <div className="mt-[26px]">
+          <EmptyState
+            title="The gallery is being hung"
+            hint="No pieces published yet. Send us your posters, memes and paintings — the sharpest work goes on the wall."
+            action={
+              <ButtonLink href="mailto:art@btcscam.com?subject=Scam%20Art%20submission">
+                Submit your art
+              </ButtonLink>
+            }
+          />
+        </div>
       ) : (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10">
+        <div
+          className="grid mt-[26px]"
+          style={{ gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 22 }}
+        >
           {pieces.map((art) => (
-            <figure key={art.id} className="flex flex-col">
-              <MediaPlaceholder src={art.imageUrl} label={art.imageLabel} ratio="4/5" />
-              <figcaption className="mt-3">
-                <h3 className="font-display text-2xl text-ink leading-none">{art.title}</h3>
-                <div className="mono text-[11px] uppercase tracking-wide text-ink-500 mt-1.5">
-                  By {art.artist}
-                </div>
+            <figure
+              key={art.id}
+              className="border border-ink bg-white transition-transform duration-150 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[6px_6px_0_var(--ink)]"
+            >
+              <div
+                className="border-b border-ink bg-surface-alt bg-cover bg-center"
+                style={{
+                  aspectRatio: "4/5",
+                  ...(art.imageUrl ? { backgroundImage: `url(${art.imageUrl})` } : {}),
+                }}
+                role="img"
+                aria-label={`${art.title} by ${art.artist}`}
+              />
+              <figcaption className="px-4 py-3.5">
+                <h3 className="font-display text-[21px]">{art.title}</h3>
                 {art.description && (
-                  <p className="mt-2 text-sm text-ink-600 leading-snug">{art.description}</p>
+                  <p
+                    className="mt-1.5 text-[16px] leading-[1.55] text-body-2"
+                    style={{ textWrap: "pretty" }}
+                  >
+                    {art.description}
+                  </p>
                 )}
+                <div className="mt-2.5 pt-2.5 border-t border-rule flex justify-between gap-2.5 flex-wrap">
+                  <span className="eyebrow text-body-2 font-semibold">{art.artist}</span>
+                  <span className="eyebrow">{art.imageLabel}</span>
+                </div>
               </figcaption>
             </figure>
           ))}
         </div>
       )}
 
-      {/* Submit CTA */}
-      <div className="mt-14 border-2 border-ink bg-paper-2 p-8">
-        <div className="grid md:grid-cols-[1fr_auto] gap-6 items-center">
-          <div>
-            <span className="kicker text-btc-dark">Open call</span>
-            <h2 className="font-display text-4xl text-ink leading-none mt-3">
-              Make them the joke, not the aspiration.
-            </h2>
-            <p className="text-ink-600 mt-3 max-w-2xl">
-              Painter, meme-lord, or poster designer — if it warns people off a scam and makes them
-              smile, we want it. Selected pieces are featured here, printed for gatherings, and sold
-              in the store to fund investigations.
-            </p>
-          </div>
-          <ButtonLink
-            href="mailto:art@btcscam.com?subject=Scam%20Art%20submission"
-            variant="dark"
-            size="lg"
-          >
-            Submit your work
-          </ButtonLink>
-        </div>
+      {/* ── Open call band (v4) ── */}
+      <div className="mt-[30px] border border-ink bg-dark px-6 py-5 flex flex-wrap items-center justify-between gap-y-3 gap-x-7">
+        <span className="font-sans font-bold text-[16px] tracking-[.05em] text-brand">
+          OPEN CALL — ISSUE 04 COVER
+        </span>
+        <span className="text-[16px] text-ticker">
+          ARTISTS KEEP 70% OF SALES · 30% FUNDS THE WATCH
+        </span>
       </div>
-
-      <p className="mono text-[11px] uppercase tracking-wide text-ink-400 mt-6 text-center">
-        {SITE.disclaimer}
-      </p>
-    </Container>
+    </div>
   );
 }

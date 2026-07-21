@@ -1,9 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
-import { Container, PageHeader, SectionHeader, Tag, ButtonLink, EmptyState } from "@/components/ui";
-import { dateline } from "@/lib/format";
-import { SITE } from "@/lib/constants";
+import { Tag, EmptyState } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
@@ -23,19 +21,50 @@ type GatheringRow = {
   startsAt: Date;
 };
 
-function EventCard({ g, faded = false }: { g: GatheringRow; faded?: boolean }) {
+/** "Jul 22" — short month + day for the v4 date block (Fraunces, sentence case). */
+function dateBlock(d: Date): string {
+  const date = new Date(d);
+  return `${date.toLocaleString("en-US", { month: "short" })} ${date.getDate()}`;
+}
+
+function GatheringLine({ g, past = false }: { g: GatheringRow; past?: boolean }) {
   return (
-    <article
-      className={`border border-line bg-paper-2 p-6 flex flex-col ${faded ? "opacity-70" : ""}`}
+    <div
+      className={`flex flex-wrap items-center gap-y-4 gap-x-6 py-5 px-2 border-b border-rule ${
+        past ? "opacity-60" : ""
+      }`}
     >
-      <div className="flex items-center gap-2 mb-3">
-        {g.isVirtual ? <Tag tone="orange">Virtual</Tag> : <Tag tone="black">In person</Tag>}
-        <span className="mono text-[11px] uppercase tracking-wide text-ink-500">{g.location}</span>
+      {/* Date block */}
+      <div className="flex-none w-[88px] text-center border border-ink bg-white px-1.5 py-2.5">
+        <div className="font-display text-[21px] leading-none">{dateBlock(g.startsAt)}</div>
       </div>
-      <div className="eyebrow">{dateline(g.startsAt)}</div>
-      <h3 className="font-display text-3xl text-ink leading-none mt-1">{g.title}</h3>
-      <p className="mt-3 text-ink-600 flex-1">{g.description}</p>
-    </article>
+      {/* Title + meta */}
+      <div className="min-w-0" style={{ flex: "1 1 300px" }}>
+        <div className="flex flex-wrap items-center gap-2">
+          <Tag tone="black">{g.isVirtual ? "Online" : "In person"}</Tag>
+          <span className="eyebrow">{g.location}</span>
+        </div>
+        <div className="font-sans font-bold text-[18px] leading-[1.3] tracking-[-0.01em] mt-1.5">
+          {g.title}
+        </div>
+      </div>
+      {/* RSVP — v4-sanctioned brand-fill control */}
+      {past ? (
+        <Link
+          href="/scamcast"
+          className="flex-none kicker text-accent hover:underline underline-offset-4"
+        >
+          Recording in the feed →
+        </Link>
+      ) : (
+        <Link
+          href="/register"
+          className="flex-none px-[18px] py-[11px] font-sans font-bold text-[16px] tracking-[.05em] uppercase bg-brand text-ink border border-ink hover:bg-ink hover:text-brand"
+        >
+          RSVP free
+        </Link>
+      )}
+    </div>
   );
 }
 
@@ -51,86 +80,67 @@ export default async function GatheringsPage() {
   ]);
 
   return (
-    <Container className="py-10">
-      <PageHeader
-        kicker="Community · Events"
-        title="Gatherings"
-        lede="Watch meetups, on-chain tracing workshops and victim-support circles. The people who expose scams for a living — and the people learning how — getting together in person and online."
+    <div className="max-w-[1100px] mx-auto px-6 pt-9 pb-16 fade-up">
+      <div className="kicker text-meta">BTC Scam gatherings · Online + in person</div>
+      <h1
+        className="font-display mt-2"
+        style={{ fontSize: "clamp(32px,4.5vw,52px)", lineHeight: 1.1 }}
       >
-        <div className="flex flex-wrap items-center gap-3">
-          <ButtonLink href="#host" variant="primary" size="md">
-            Host a gathering
-          </ButtonLink>
-          <ButtonLink href="/consultation" variant="outline" size="md">
-            Ask about an event
-          </ButtonLink>
-        </div>
-      </PageHeader>
+        Gatherings
+      </h1>
+      <p className="mt-3 text-[18px] leading-[1.65] text-body-2 max-w-[62ch]">
+        Every workshop, meetup and exercise we host. All free, all recorded — sessions land in the
+        ScamCast feed a week later.
+      </p>
 
-      {/* Upcoming */}
-      <section className="mb-12">
-        <SectionHeader title="Upcoming" />
+      {/* ── Upcoming rows (v4) ── */}
+      <div className="mt-6" style={{ borderTop: "3px solid var(--ink)" }}>
         {upcoming.length === 0 ? (
-          <EmptyState
-            title="No gatherings on the calendar"
-            hint="Nothing scheduled right now. Want to change that? Host one — we'll help you promote it to the community."
-            action={<ButtonLink href="#host">Host a gathering</ButtonLink>}
-          />
+          <div className="pt-6">
+            <EmptyState
+              title="No gatherings on the calendar"
+              hint="Nothing scheduled right now. Want to change that? Pitch one in the forum — we'll help you promote it to the community."
+              action={
+                <Link href="/forum" className="kicker text-accent hover:underline underline-offset-4">
+                  Pitch it in the forum →
+                </Link>
+              }
+            />
+          </div>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {upcoming.map((g) => (
-              <EventCard key={g.id} g={g} />
-            ))}
-          </div>
+          upcoming.map((g) => <GatheringLine key={g.id} g={g} />)
         )}
-      </section>
-
-      {/* Past */}
-      {past.length > 0 && (
-        <section className="mb-12">
-          <SectionHeader title="Recently" />
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {past.map((g) => (
-              <EventCard key={g.id} g={g} faded />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Host a gathering CTA */}
-      <div id="host" className="scroll-mt-24 bg-dark text-paper p-8">
-        <div className="grid md:grid-cols-[1fr_auto] gap-6 items-center">
-          <div>
-            <span className="kicker text-btc">Host a gathering</span>
-            <h2 className="font-display text-4xl text-paper leading-none mt-3">
-              Got a room, a bar, or a video call and ten people who are tired of getting drained?
-            </h2>
-            <p className="text-paper/70 mt-3 max-w-2xl">
-              Meetups are grassroots. Tell us the where and the when — we&apos;ll list it here, send
-              you a starter kit, and put it in front of the watchmen in your region.
-            </p>
-          </div>
-          <div className="flex flex-col gap-3 shrink-0">
-            <ButtonLink
-              href="mailto:community@btcscam.com?subject=Host%20a%20gathering"
-              variant="primary"
-              size="lg"
-            >
-              Email the community team
-            </ButtonLink>
-            <Link
-              href="/consultation"
-              className="kicker text-paper/70 hover:text-btc text-center"
-            >
-              Or book a call →
-            </Link>
-          </div>
-        </div>
       </div>
 
-      <p className="mono text-[11px] uppercase tracking-wide text-ink-400 mt-6 text-center">
-        {SITE.disclaimer}
+      {/* ── Recently (recordings) ── */}
+      {past.length > 0 && (
+        <>
+          <div className="mt-9 flex items-center gap-[18px]">
+            <span className="kicker">Recently</span>
+            <div className="flex-1 border-t border-ink" />
+          </div>
+          <div>
+            {past.map((g) => (
+              <GatheringLine key={g.id} g={g} past />
+            ))}
+          </div>
+        </>
+      )}
+
+      <p className="mt-5 text-[16px] leading-[1.6] text-meta">
+        WANT A GATHERING IN YOUR CITY?{" "}
+        <Link href="/forum" className="text-accent hover:underline underline-offset-4">
+          PITCH IT IN THE FORUM
+        </Link>{" "}
+        — WE COVER VENUES FOR VERIFIED HOSTS. OR{" "}
+        <a
+          href="mailto:community@btcscam.com?subject=Host%20a%20gathering"
+          className="text-accent hover:underline underline-offset-4"
+        >
+          EMAIL THE COMMUNITY TEAM
+        </a>
+        .
       </p>
-    </Container>
+    </div>
   );
 }

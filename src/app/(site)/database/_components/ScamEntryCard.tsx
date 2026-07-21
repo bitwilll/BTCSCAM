@@ -1,7 +1,8 @@
 import Link from "next/link";
-import { Tag, SeverityTag } from "@/components/ui";
+import { SeverityTag } from "@/components/ui";
 import { VerifyButton } from "@/components/content/VerifyButton";
-import { compactUsd, num, toStrArray } from "@/lib/format";
+import { compactUsd, num, timeAgo, toStrArray } from "@/lib/format";
+import { VerificationChip, isStale, StaleNote } from "./verification";
 
 export type ScamEntryRow = {
   id: string;
@@ -15,8 +16,10 @@ export type ScamEntryRow = {
   verifiedCount: number;
   reportCount: number;
   amountAtRiskUsd: bigint | null;
+  updatedAt: Date;
 };
 
+// v4 db row: sev chip · name/alias · verification + last seen · loss/reports · caret
 export function ScamEntryCard({
   entry,
   initialVerified,
@@ -25,48 +28,60 @@ export function ScamEntryCard({
   initialVerified: boolean;
 }) {
   const chains = toStrArray(entry.chains);
+  const lastSeen = timeAgo(entry.updatedAt);
+  const stale = isStale(entry.status, lastSeen);
+
   return (
-    <article className="border border-line bg-paper-2 p-5 flex flex-col">
-      <div className="flex items-start justify-between gap-4">
-        <div className="min-w-0">
-          <div className="flex flex-wrap items-center gap-2 mb-2.5">
-            <Tag tone="black">{entry.type.replace(/-/g, " ")}</Tag>
-            <SeverityTag severity={entry.severity} />
-            <span className="kicker text-ink-500">{entry.status}</span>
-          </div>
-          <h3 className="font-display text-2xl sm:text-3xl leading-[0.95] text-ink">
-            <Link href={`/database/${entry.slug}`} className="hover:text-btc-dark">
-              {entry.name}
-            </Link>
-          </h3>
-          {chains.length > 0 && (
-            <div className="mono text-[11px] text-ink-500 uppercase tracking-wide mt-2">
-              {chains.join(" · ")}
-            </div>
-          )}
-        </div>
-        {entry.amountAtRiskUsd != null && (
-          <div className="text-right shrink-0">
-            <div className="eyebrow">At Risk</div>
-            <div className="font-display text-2xl text-alert-strong leading-none mt-0.5">
-              {compactUsd(Number(entry.amountAtRiskUsd))}
-            </div>
-          </div>
-        )}
-      </div>
-
-      <p className="text-sm text-ink-600 leading-snug mt-3 flex-1">{entry.summary}</p>
-
-      <div className="flex items-center justify-between gap-3 mt-4 pt-3 border-t border-line">
-        <span className="mono text-[11px] text-ink-500 uppercase tracking-wide">
-          {num(entry.reportCount)} reports
+    <div className="border-b border-rule bg-white">
+      <div
+        data-dbrow="1"
+        className="flex flex-wrap items-center gap-y-2.5 gap-x-[18px] px-[18px] py-4 transition-colors hover:bg-surface-dim"
+      >
+        <span className="flex-none min-w-[92px] text-center">
+          <SeverityTag severity={entry.severity} />
         </span>
-        <VerifyButton
-          scamId={entry.id}
-          initialCount={entry.verifiedCount}
-          initialVerified={initialVerified}
-        />
+
+        <div className="min-w-0" style={{ flex: "2 1 240px" }}>
+          <Link
+            href={`/database/${entry.slug}`}
+            className="font-display text-[21px] text-ink hover:underline underline-offset-4 decoration-1"
+          >
+            {entry.name}
+          </Link>
+          <div className="text-[16px] text-meta mt-0.5 truncate capitalize">
+            {entry.type.replace(/-/g, " ")}
+            {chains.length > 0 && <span className="normal-case"> · {chains.join(" · ")}</span>}
+          </div>
+        </div>
+
+        <div className="flex flex-col items-start gap-[5px]" style={{ flex: "1.2 1 160px" }}>
+          <VerificationChip status={entry.status} />
+          <span className="text-[14px] text-meta">Last seen {lastSeen}</span>
+        </div>
+
+        <div className="min-w-0 text-right mono font-semibold text-[16px] text-ink" style={{ flex: "1 1 110px" }}>
+          {entry.amountAtRiskUsd != null ? compactUsd(Number(entry.amountAtRiskUsd)) : "—"}
+          <div className="mt-0.5 font-sans font-normal text-[14px] text-meta">
+            {num(entry.reportCount)} reports
+          </div>
+        </div>
+
+        <div className="flex-none flex items-center gap-3">
+          <VerifyButton
+            scamId={entry.id}
+            initialCount={entry.verifiedCount}
+            initialVerified={initialVerified}
+          />
+          <Link
+            href={`/database/${entry.slug}`}
+            className="kicker text-accent hover:underline underline-offset-4"
+          >
+            Details →
+          </Link>
+        </div>
       </div>
-    </article>
+
+      {stale && <StaleNote lastSeen={lastSeen} className="mx-[18px] mb-4" />}
+    </div>
   );
 }

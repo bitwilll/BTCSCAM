@@ -50,38 +50,38 @@ export default async function ManageUserPage({ params }: { params: Promise<{ id:
   return (
     <div>
       {/* Breadcrumb */}
-      <Link href="/admin/users" className="kicker text-ink-500 hover:text-ink">
+      <Link href="/admin/users" className="kicker text-meta hover:text-ink">
         ← Users &amp; Roles
       </Link>
 
       {/* Profile header */}
-      <div className="border-b-2 border-ink pb-6 mt-3 mb-8">
+      <div className="border-b border-ink pb-6 mt-3 mb-8">
         <div className="flex items-start gap-4">
           <Avatar name={target.displayName} size={56} />
           <div className="min-w-0">
             <h1 className="font-display text-4xl sm:text-5xl text-ink leading-[0.9]">{target.displayName}</h1>
-            <div className="mono text-[12px] text-ink-500 mt-2">@{target.username} · {target.email}</div>
-            {target.title && <div className="mono text-[11px] uppercase tracking-wide text-btc-dark mt-1">{target.title}</div>}
+            <div className="mono text-[12px] text-meta mt-2">@{target.username} · {target.email}</div>
+            {target.title && <div className="mono text-[11px] uppercase tracking-wide text-accent mt-1">{target.title}</div>}
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-2 mt-4">
-          <Kicker color={target.role === "admin" ? "red" : "orange"}>{ROLE_LABELS[target.role as Role] ?? target.role}</Kicker>
-          <span className="text-ink-400">·</span>
+          <Kicker color={target.role === "admin" ? "red" : "accent"}>{ROLE_LABELS[target.role as Role] ?? target.role}</Kicker>
+          <span className="text-faint">·</span>
           {target.isBanned ? <Tag tone="red">Banned</Tag> : !target.isActive ? <Tag tone="outline">Inactive</Tag> : <Tag tone="green">Active</Tag>}
           {isSelf && <Tag tone="paper">You</Tag>}
         </div>
       </div>
 
       {/* Meta grid */}
-      <div className="grid sm:grid-cols-3 gap-px bg-line border border-line mb-10">
+      <div className="grid sm:grid-cols-3 gap-px bg-rule border border-rule mb-10">
         {[
           { label: "Reputation", value: num(target.reputation) },
           { label: "Effective Privileges", value: `${effective.length} / ${ALL_PRIVILEGES.length}` },
           { label: "Member Since", value: byline(target.createdAt) },
         ].map((m) => (
-          <div key={m.label} className="bg-paper-2 p-4">
+          <div key={m.label} className="bg-surface-dim p-4">
             <div className="eyebrow mb-1">{m.label}</div>
-            <div className="font-display text-2xl text-ink">{m.value}</div>
+            <div className="mono font-black text-[24px] text-ink">{m.value}</div>
           </div>
         ))}
       </div>
@@ -89,7 +89,7 @@ export default async function ManageUserPage({ params }: { params: Promise<{ id:
       {target.bio && (
         <div className="mb-10">
           <SectionHeader title="Bio" />
-          <p className="text-ink-700 max-w-2xl">{target.bio}</p>
+          <p className="text-body-2 max-w-2xl">{target.bio}</p>
         </div>
       )}
 
@@ -114,7 +114,7 @@ export default async function ManageUserPage({ params }: { params: Promise<{ id:
       {/* Effective privileges + overrides */}
       <div className="mb-10">
         <SectionHeader title="Privileges" />
-        <p className="mono text-[11px] text-ink-500 mb-4 max-w-2xl">
+        <p className="mono text-[11px] text-meta mb-4 max-w-2xl">
           Effective set = role defaults ∪ explicit grants − explicit revocations. Overrides here apply on top of
           the {ROLE_LABELS[target.role as Role] ?? target.role} role.
         </p>
@@ -132,7 +132,7 @@ export default async function ManageUserPage({ params }: { params: Promise<{ id:
         <SectionHeader title="Moderation" />
         <div className="max-w-xl">
           {isSelf ? (
-            <p className="mono text-[11px] text-alert-strong">You cannot moderate your own account.</p>
+            <p className="mono text-[11px] text-danger">You cannot moderate your own account.</p>
           ) : (
             <UserModActions
               targetId={target.id}

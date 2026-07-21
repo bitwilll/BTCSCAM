@@ -3,7 +3,17 @@
 import { useState } from "react";
 import { CommentForm } from "./CommentForm";
 
-export function CommentReply({ threadId, parentId }: { threadId: string; parentId: string }) {
+export function CommentReply({
+  threadId,
+  parentId,
+  posterName,
+  posterTs,
+}: {
+  threadId: string;
+  parentId: string;
+  posterName?: string;
+  posterTs?: number;
+}) {
   const [open, setOpen] = useState(false);
 
   if (!open) {
@@ -11,7 +21,7 @@ export function CommentReply({ threadId, parentId }: { threadId: string; parentI
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="kicker text-ink-500 hover:text-btc-dark"
+        className="inline-flex items-center px-3 py-1.5 kicker text-body-2 border border-transparent hover:bg-surface-alt hover:text-ink cursor-pointer"
       >
         Reply
       </button>
@@ -19,12 +29,14 @@ export function CommentReply({ threadId, parentId }: { threadId: string; parentI
   }
 
   return (
-    <div className="mt-2">
+    <div className="mt-2.5">
       <CommentForm
         threadId={threadId}
         parentId={parentId}
         compact
         autoFocus
+        posterName={posterName}
+        posterTs={posterTs}
         onSubmitted={() => setOpen(false)}
       />
     </div>

@@ -4,6 +4,7 @@ import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { updateCartItem, removeCartItem } from "@/actions/store";
 
+// v4 drawer stepper: 30px square ghost − / +, 700 16px qty, red REMOVE text button.
 export function CartControls({ itemId, quantity }: { itemId: string; quantity: number }) {
   const router = useRouter();
   const [qty, setQty] = useState(quantity);
@@ -37,39 +38,35 @@ export function CartControls({ itemId, quantity }: { itemId: string; quantity: n
     });
 
   return (
-    <div className="flex flex-col items-start gap-2 sm:items-end">
-      <div className="flex items-center border border-line-strong">
-        <button
-          type="button"
-          aria-label="Decrease quantity"
-          disabled={pending}
-          onClick={() => commit(qty - 1)}
-          className="kicker px-2.5 py-1.5 text-ink hover:bg-ink hover:text-paper transition-colors disabled:opacity-50"
-        >
-          −
-        </button>
-        <span className="w-10 border-x border-line-strong py-1.5 text-center font-mono text-sm text-ink">
-          {qty}
-        </span>
-        <button
-          type="button"
-          aria-label="Increase quantity"
-          disabled={pending}
-          onClick={() => commit(qty + 1)}
-          className="kicker px-2.5 py-1.5 text-ink hover:bg-ink hover:text-paper transition-colors disabled:opacity-50"
-        >
-          +
-        </button>
-      </div>
+    <div className="mt-2 flex flex-wrap items-center gap-2.5">
+      <button
+        type="button"
+        aria-label="Decrease quantity"
+        disabled={pending}
+        onClick={() => commit(qty - 1)}
+        className="h-[30px] w-[30px] cursor-pointer border border-ink bg-transparent font-bold text-[14px] text-ink hover:bg-surface-alt disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        −
+      </button>
+      <span className="min-w-[22px] text-center font-bold text-[16px] text-ink">{qty}</span>
+      <button
+        type="button"
+        aria-label="Increase quantity"
+        disabled={pending}
+        onClick={() => commit(qty + 1)}
+        className="h-[30px] w-[30px] cursor-pointer border border-ink bg-transparent font-bold text-[14px] text-ink hover:bg-surface-alt disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        +
+      </button>
       <button
         type="button"
         disabled={pending}
         onClick={remove}
-        className="kicker text-ink-500 hover:text-alert-strong transition-colors disabled:opacity-50"
+        className="ml-1.5 cursor-pointer font-bold text-[14px] uppercase tracking-[.02em] text-danger hover:text-[#A02320] disabled:cursor-not-allowed disabled:opacity-50"
       >
         Remove
       </button>
-      {err && <p className="mono text-[11px] text-alert-strong">{err}</p>}
+      {err && <span className="text-[14px] font-bold text-danger">{err}</span>}
     </div>
   );
 }

@@ -25,7 +25,7 @@ export function DonationControls({
     });
 
   if (confirmed) {
-    return <span className="mono text-[11px] text-up uppercase tracking-wide">✓ Confirmed</span>;
+    return <span className="mono text-[11px] text-safe uppercase tracking-wide">✓ Confirmed</span>;
   }
 
   return (
@@ -34,11 +34,11 @@ export function DonationControls({
         type="button"
         disabled={pending}
         onClick={run}
-        className={`${btn} bg-up text-black border-up hover:bg-ink hover:text-paper`}
+        className={`${btn} bg-safe text-white border-safe hover:bg-safe-deep`}
       >
         {pending ? "Confirming…" : "Mark confirmed"}
       </button>
-      {msg && !msg.ok && <span className="mono text-[10px] text-alert-strong">{msg.text}</span>}
+      {msg && !msg.ok && <span className="mono text-[10px] text-danger">{msg.text}</span>}
     </div>
   );
 }

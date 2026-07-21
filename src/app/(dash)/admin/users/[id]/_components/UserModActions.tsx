@@ -45,10 +45,10 @@ export function UserModActions({
     <div>
       <div className="flex flex-col gap-4">
         {/* Ban */}
-        <div className="flex items-center justify-between gap-4 border border-line bg-paper-2 p-4">
+        <div className="flex items-center justify-between gap-4 border border-rule bg-surface-dim p-4">
           <div>
             <div className="kicker text-ink">Account status</div>
-            <p className="mono text-[11px] text-ink-500 mt-1">
+            <p className="mono text-[11px] text-meta mt-1">
               {banned ? "Suspended — cannot sign in." : "In good standing."}
             </p>
           </div>
@@ -57,7 +57,7 @@ export function UserModActions({
             disabled={!canBan || pending}
             onClick={toggleBan}
             className={`kicker px-4 py-2.5 disabled:opacity-40 disabled:cursor-not-allowed ${
-              banned ? "bg-ink text-paper hover:bg-btc hover:text-black" : "bg-alert-strong text-white hover:bg-ink"
+              banned ? "bg-ink text-paper hover:bg-action-hover" : "bg-danger text-white hover:bg-ink"
             }`}
           >
             {pending ? "…" : banned ? "Reinstate" : "Ban User"}
@@ -65,10 +65,10 @@ export function UserModActions({
         </div>
 
         {/* Activation */}
-        <div className="flex items-center justify-between gap-4 border border-line bg-paper-2 p-4">
+        <div className="flex items-center justify-between gap-4 border border-rule bg-surface-dim p-4">
           <div>
             <div className="kicker text-ink">Activation</div>
-            <p className="mono text-[11px] text-ink-500 mt-1">
+            <p className="mono text-[11px] text-meta mt-1">
               {active ? "Active — session allowed." : "Deactivated — sessions invalid."}
             </p>
           </div>
@@ -77,7 +77,7 @@ export function UserModActions({
             disabled={!canManage || pending}
             onClick={toggleActive}
             className={`kicker px-4 py-2.5 disabled:opacity-40 disabled:cursor-not-allowed ${
-              active ? "bg-ink text-paper hover:bg-alert-strong" : "bg-btc text-black hover:bg-btc-dark hover:text-white"
+              active ? "bg-ink text-paper hover:bg-danger" : "bg-ink text-paper hover:bg-action-hover"
             }`}
           >
             {pending ? "…" : active ? "Deactivate" : "Activate"}
@@ -86,12 +86,12 @@ export function UserModActions({
       </div>
 
       {!canBan && !canManage && (
-        <p className="mono text-[11px] text-alert-strong mt-3">
+        <p className="mono text-[11px] text-danger mt-3">
           You cannot moderate this account.
         </p>
       )}
       {msg && (
-        <p className={`mono text-[11px] mt-3 ${msg.ok ? "text-up" : "text-alert-strong"}`}>{msg.text}</p>
+        <p className={`mono text-[11px] mt-3 ${msg.ok ? "text-safe" : "text-danger"}`}>{msg.text}</p>
       )}
     </div>
   );

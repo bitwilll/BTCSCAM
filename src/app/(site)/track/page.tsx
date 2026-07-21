@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
-import { Container, PageHeader, Tag } from "@/components/ui";
+import { PageHeader, Tag, SectionHeader } from "@/components/ui";
 import { usd, byline, dateline } from "@/lib/format";
 import { TrackForm } from "./_components/TrackForm";
 
@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 
 type TimelineEntry = { status: string; at: string; note: string };
 
-const STATUS_TONE: Record<string, "black" | "orange" | "red" | "green" | "outline"> = {
-  pending_payment: "orange",
+const STATUS_TONE: Record<string, "black" | "warn" | "red" | "green" | "outline"> = {
+  pending_payment: "warn",
   paid: "green",
   processing: "black",
   shipped: "black",
@@ -53,10 +53,10 @@ export default async function TrackPage({
     : [];
 
   return (
-    <Container className="py-10 max-w-3xl">
+    <div className="mx-auto max-w-[900px] px-6 py-10 fade-up">
       <PageHeader
-        kicker="Order Tracking"
-        title="Track An Order"
+        kicker="Order tracking"
+        title="Track an order"
         lede="No account needed — enter the order number from your confirmation and the email you used at checkout."
       />
 
@@ -67,79 +67,81 @@ export default async function TrackPage({
 
         <div>
           {!lookedUp ? (
-            <div className="border border-dashed border-line-strong bg-paper-2 p-8 text-center">
-              <p className="mono text-sm text-ink-500">
+            <div className="border border-rule bg-surface-dim p-8 text-center">
+              <p className="text-[16px] text-meta">
                 Enter your order number and email to see live status.
               </p>
             </div>
           ) : !order ? (
-            <div className="border border-dashed border-alert-strong bg-paper-2 p-8">
-              <p className="font-display text-2xl text-ink-700">No match found</p>
-              <p className="mono text-sm text-ink-500 mt-2">
+            <div className="border border-danger p-6">
+              <p className="font-display text-[24px] text-ink">No match found</p>
+              <p className="mt-2 text-[16px] leading-[1.55] text-body-2">
                 We couldn&apos;t find an order with number{" "}
-                <span className="text-ink">{orderNumber}</span> and that email. Double-check both and
-                try again.
+                <span className="mono font-bold text-ink">{orderNumber}</span> and that email.
+                Double-check both and try again.
               </p>
             </div>
           ) : (
             <div>
-              <div className="flex flex-wrap items-center gap-3 border-b border-line pb-4 mb-5">
-                <span className="font-display text-3xl text-ink">{order.orderNumber}</span>
+              <div className="mb-5 flex flex-wrap items-center gap-3 border-b border-ink pb-4">
+                <span className="mono font-bold text-[24px] text-ink">{order.orderNumber}</span>
                 <Tag tone={STATUS_TONE[order.status] ?? "outline"}>
                   {order.status.replace(/_/g, " ")}
                 </Tag>
               </div>
-              <p className="mono text-[11px] uppercase tracking-wide text-ink-500 mb-2">
-                Placed {byline(order.createdAt)} · {usd(order.totalUsd)}
+              <p className="mb-2 text-[14px] uppercase tracking-[.02em] text-meta">
+                Placed {byline(order.createdAt)} ·{" "}
+                <span className="font-bold text-ink">{usd(order.totalUsd)}</span>
               </p>
-              <p className="text-sm text-ink-600 mb-6">{STATUS_HINT[order.status] ?? ""}</p>
+              <p className="mb-6 text-[16px] leading-[1.5] text-body-2">
+                {STATUS_HINT[order.status] ?? ""}
+              </p>
 
               {order.status === "shipped" && order.trackingNumber && (
-                <div className="border border-ink bg-paper-2 p-4 mb-6">
-                  <div className="eyebrow mb-1">Tracking Number</div>
-                  <div className="font-display text-xl text-ink">{order.trackingNumber}</div>
+                <div className="mb-6 border border-ink p-4">
+                  <div className="eyebrow mb-1">Tracking number</div>
+                  <div className="mono font-bold text-[21px] text-ink">{order.trackingNumber}</div>
                   {order.trackingCarrier && (
-                    <div className="mono text-[11px] uppercase tracking-wide text-ink-500 mt-1">
+                    <div className="mt-1 text-[14px] uppercase tracking-[.02em] text-meta">
                       {order.trackingCarrier}
                     </div>
                   )}
                 </div>
               )}
 
-              <h2 className="kicker text-sm !tracking-[0.16em] border-b border-line pb-2 mb-4">
-                Status Timeline
-              </h2>
+              <SectionHeader title="Status timeline" />
               {timeline.length === 0 ? (
-                <p className="mono text-sm text-ink-500">No status updates yet.</p>
+                <p className="text-[16px] text-meta">No status updates yet.</p>
               ) : (
-                <ol className="border-l-2 border-line-strong pl-5 space-y-5">
+                <div className="grid gap-2">
                   {timeline.map((e, i) => (
-                    <li key={i} className="relative">
-                      <span
-                        className={`absolute -left-[27px] top-1 h-3 w-3 border-2 ${
-                          i === 0 ? "bg-btc border-btc-dark" : "bg-paper border-line-strong"
-                        }`}
-                        aria-hidden
-                      />
-                      <div className="flex flex-wrap items-center gap-2">
-                        <Tag tone={STATUS_TONE[e.status] ?? "outline"}>
-                          {e.status.replace(/_/g, " ")}
-                        </Tag>
-                        {e.at && (
-                          <span className="mono text-[11px] uppercase tracking-wide text-ink-500">
-                            {dateline(e.at)}
-                          </span>
-                        )}
-                      </div>
-                      {e.note && <p className="text-sm text-ink-600 mt-1.5 break-words">{e.note}</p>}
-                    </li>
+                    <div
+                      key={i}
+                      className={`flex flex-wrap items-baseline gap-x-3 gap-y-1.5 border p-3.5 ${
+                        i === 0 ? "border-ink bg-surface-dim" : "border-rule"
+                      }`}
+                    >
+                      <Tag tone={STATUS_TONE[e.status] ?? "outline"}>
+                        {e.status.replace(/_/g, " ")}
+                      </Tag>
+                      {e.at && (
+                        <span className="text-[14px] uppercase tracking-[.02em] text-meta">
+                          {dateline(e.at)}
+                        </span>
+                      )}
+                      {e.note && (
+                        <span className="w-full break-words text-[16px] leading-[1.5] text-body-2 sm:w-auto sm:flex-1">
+                          {e.note}
+                        </span>
+                      )}
+                    </div>
                   ))}
-                </ol>
+                </div>
               )}
             </div>
           )}
         </div>
       </div>
-    </Container>
+    </div>
   );
 }

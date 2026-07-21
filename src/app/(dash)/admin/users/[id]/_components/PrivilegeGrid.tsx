@@ -70,24 +70,24 @@ export function PrivilegeGrid({
 
   const badge = {
     role: { label: "Role default", cls: "bg-ink text-paper" },
-    granted: { label: "Granted", cls: "bg-btc text-black" },
-    revoked: { label: "Revoked", cls: "bg-alert-strong text-white" },
-    off: { label: "Off", cls: "bg-paper text-ink-500 border border-line" },
+    granted: { label: "Granted", cls: "bg-safe text-white" },
+    revoked: { label: "Revoked", cls: "bg-danger text-white" },
+    off: { label: "Off", cls: "bg-paper text-meta border border-rule" },
   } as const;
 
   return (
     <div>
       {!canGrant && (
-        <p className="mono text-[11px] text-alert-strong mb-3">
+        <p className="mono text-[11px] text-danger mb-3">
           You do not have permission to change this user&apos;s privileges. Displaying effective set only.
         </p>
       )}
-      {err && <p className="mono text-[11px] text-alert-strong mb-3">{err}</p>}
+      {err && <p className="mono text-[11px] text-danger mb-3">{err}</p>}
 
-      <div className="overflow-x-auto border border-line">
+      <div className="overflow-x-auto border border-rule">
         <table className="w-full min-w-[640px] text-left border-collapse">
           <thead>
-            <tr className="bg-paper-2 border-b border-line-strong">
+            <tr className="bg-surface-dim border-b border-ink">
               <th className="eyebrow px-4 py-3">Privilege</th>
               <th className="eyebrow px-4 py-3">Source</th>
               <th className="eyebrow px-4 py-3 text-right">Actions</th>
@@ -99,12 +99,12 @@ export function PrivilegeGrid({
               const b = badge[source];
               const rowBusy = pending && busy === p;
               return (
-                <tr key={p} className="border-b border-line last:border-0 hover:bg-paper-2">
+                <tr key={p} className="border-b border-rule last:border-0 hover:bg-surface-dim">
                   <td className="px-4 py-3">
-                    <div className={`font-semibold ${effective ? "text-ink" : "text-ink-500 line-through"}`}>
+                    <div className={`font-semibold ${effective ? "text-ink" : "text-meta line-through"}`}>
                       {PRIVILEGE_LABELS[p] ?? p}
                     </div>
-                    <div className="mono text-[11px] text-ink-500">{p}</div>
+                    <div className="mono text-[11px] text-meta">{p}</div>
                   </td>
                   <td className="px-4 py-3">
                     <span className={`kicker inline-flex items-center px-2 py-[3px] leading-none ${b.cls}`}>
@@ -118,7 +118,7 @@ export function PrivilegeGrid({
                           type="button"
                           disabled={rowBusy || source === "granted"}
                           onClick={() => run(p, "grant")}
-                          className="kicker px-2 py-1 border border-line text-ink-600 hover:border-btc-dark hover:text-btc-dark disabled:opacity-40 disabled:cursor-not-allowed"
+                          className="kicker px-2 py-1 border border-rule text-body-2 hover:border-accent hover:text-accent disabled:opacity-40 disabled:cursor-not-allowed"
                           title="Explicitly grant"
                         >
                           Grant
@@ -127,7 +127,7 @@ export function PrivilegeGrid({
                           type="button"
                           disabled={rowBusy || source === "revoked" || (source === "off")}
                           onClick={() => run(p, "revoke")}
-                          className="kicker px-2 py-1 border border-line text-ink-600 hover:border-alert-strong hover:text-alert-strong disabled:opacity-40 disabled:cursor-not-allowed"
+                          className="kicker px-2 py-1 border border-rule text-body-2 hover:border-danger hover:text-danger disabled:opacity-40 disabled:cursor-not-allowed"
                           title="Revoke (overrides role default)"
                         >
                           Revoke
@@ -136,14 +136,14 @@ export function PrivilegeGrid({
                           type="button"
                           disabled={rowBusy || (!extra.includes(p) && !revoked.includes(p))}
                           onClick={() => run(p, "reset")}
-                          className="kicker px-2 py-1 border border-line text-ink-600 hover:border-ink hover:text-ink disabled:opacity-40 disabled:cursor-not-allowed"
+                          className="kicker px-2 py-1 border border-rule text-body-2 hover:border-ink hover:text-ink disabled:opacity-40 disabled:cursor-not-allowed"
                           title="Clear override, revert to role default"
                         >
                           Reset
                         </button>
                       </div>
                     ) : (
-                      <div className="text-right mono text-[11px] text-ink-500">
+                      <div className="text-right mono text-[11px] text-meta">
                         {effective ? "granted" : "—"}
                       </div>
                     )}
@@ -157,9 +157,9 @@ export function PrivilegeGrid({
 
       <div className="flex flex-wrap gap-4 mt-3">
         <Legend cls="bg-ink text-paper" label="Role default" />
-        <Legend cls="bg-btc text-black" label="Explicitly granted" />
-        <Legend cls="bg-alert-strong text-white" label="Revoked" />
-        <Legend cls="bg-paper text-ink-500 border border-line" label="Not granted" />
+        <Legend cls="bg-safe text-white" label="Explicitly granted" />
+        <Legend cls="bg-danger text-white" label="Revoked" />
+        <Legend cls="bg-paper text-meta border border-rule" label="Not granted" />
       </div>
     </div>
   );
@@ -169,7 +169,7 @@ function Legend({ cls, label }: { cls: string; label: string }) {
   return (
     <span className="inline-flex items-center gap-2">
       <span className={`inline-block w-3 h-3 ${cls}`} />
-      <span className="mono text-[11px] text-ink-500 uppercase tracking-wide">{label}</span>
+      <span className="mono text-[11px] text-meta uppercase tracking-wide">{label}</span>
     </span>
   );
 }

@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   description: "Reconcile crypto donations and confirm on-chain receipts.",
 };
 
-const th = "text-left kicker text-ink-500 px-3 py-2 whitespace-nowrap";
-const td = "px-3 py-3 align-top border-t border-line";
+const th = "text-left kicker text-meta px-3 py-2 whitespace-nowrap";
+const td = "px-3 py-3 align-top border-t border-rule";
 
 export default async function DonationsAdminPage() {
   await requirePrivilege(PV.DONATION_MANAGE);
@@ -33,19 +33,19 @@ export default async function DonationsAdminPage() {
         lede="Every donation settles in crypto. Confirm a pledge once the transaction clears on-chain."
       />
 
-      <div className="flex flex-wrap gap-6 mb-6 -mt-2 mono text-[11px] uppercase tracking-wide text-ink-500">
+      <div className="flex flex-wrap gap-6 mb-6 -mt-2 mono text-[11px] uppercase tracking-wide text-meta">
         <span><strong className="text-ink">{num(donations.length)}</strong> donations</span>
-        <span><strong className="text-up">{num(confirmed.length)}</strong> confirmed</span>
-        <span><strong className="text-btc-dark">{pledged}</strong> pending</span>
+        <span><strong className="text-safe">{num(confirmed.length)}</strong> confirmed</span>
+        <span><strong className="text-accent">{pledged}</strong> pending</span>
         <span>Confirmed value <strong className="text-ink">{usd(confirmedTotal)}</strong></span>
       </div>
 
       {donations.length === 0 ? (
         <EmptyState title="No donations yet" hint="Pledges from the Donate page will appear here." />
       ) : (
-        <div className="border border-line-strong bg-paper overflow-x-auto">
+        <div className="border border-ink bg-paper overflow-x-auto">
           <table className="w-full text-sm border-collapse">
-            <thead className="bg-paper-2">
+            <thead className="bg-surface-dim">
               <tr>
                 <th className={th}>Donor</th>
                 <th className={th}>Method</th>
@@ -58,30 +58,30 @@ export default async function DonationsAdminPage() {
             </thead>
             <tbody>
               {donations.map((d) => (
-                <tr key={d.id} className="hover:bg-paper-2/60">
+                <tr key={d.id} className="hover:bg-surface-dim">
                   <td className={td}>
                     <div className="font-bold text-ink">
                       {d.isAnonymous ? "Anonymous" : d.donorName || "Anonymous"}
                     </div>
                     {!d.isAnonymous && d.email && (
-                      <div className="mono text-[10px] text-ink-500 break-all">{d.email}</div>
+                      <div className="mono text-[10px] text-meta break-all">{d.email}</div>
                     )}
-                    <div className="mono text-[10px] text-ink-400 mt-1">{byline(d.createdAt)}</div>
+                    <div className="mono text-[10px] text-faint mt-1">{byline(d.createdAt)}</div>
                   </td>
                   <td className={`${td} whitespace-nowrap`}>
                     <Tag tone="paper">{d.cryptoMethod}</Tag>
                   </td>
-                  <td className={`${td} font-display text-lg text-ink whitespace-nowrap`}>
+                  <td className={`${td} mono font-bold text-[16px] text-ink whitespace-nowrap`}>
                     {d.amountUsd != null ? usd(d.amountUsd) : "—"}
                   </td>
-                  <td className={`${td} mono text-[11px] text-ink-600 whitespace-nowrap`}>
-                    {d.txHash ? shortAddr(d.txHash) : <span className="text-ink-400">—</span>}
+                  <td className={`${td} mono text-[11px] text-body-2 whitespace-nowrap`}>
+                    {d.txHash ? shortAddr(d.txHash) : <span className="text-faint">—</span>}
                   </td>
-                  <td className={`${td} text-xs text-ink-600 max-w-[240px]`}>
+                  <td className={`${td} text-xs text-body-2 max-w-[240px]`}>
                     {d.message ? (
                       <span className="line-clamp-3">“{d.message}”</span>
                     ) : (
-                      <span className="text-ink-400">—</span>
+                      <span className="text-faint">—</span>
                     )}
                   </td>
                   <td className={td}>

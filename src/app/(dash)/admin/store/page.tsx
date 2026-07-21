@@ -13,8 +13,8 @@ export const metadata: Metadata = {
   description: "Manage merch — toggle availability and keep stock levels current.",
 };
 
-const th = "text-left kicker text-ink-500 px-3 py-2 whitespace-nowrap";
-const td = "px-3 py-3 align-top border-t border-line";
+const th = "text-left kicker text-meta px-3 py-2 whitespace-nowrap";
+const td = "px-3 py-3 align-top border-t border-rule";
 
 export default async function StoreAdminPage() {
   await requirePrivilege(PV.STORE_MANAGE);
@@ -34,18 +34,18 @@ export default async function StoreAdminPage() {
         lede="Toggle what's live in the shop and keep inventory honest. All sales settle in crypto only."
       />
 
-      <div className="flex flex-wrap gap-6 mb-6 -mt-2 mono text-[11px] uppercase tracking-wide text-ink-500">
+      <div className="flex flex-wrap gap-6 mb-6 -mt-2 mono text-[11px] uppercase tracking-wide text-meta">
         <span><strong className="text-ink">{num(products.length)}</strong> products</span>
-        <span><strong className="text-up">{num(activeCount)}</strong> active</span>
-        <span><strong className="text-alert-strong">{num(lowStock)}</strong> low stock</span>
+        <span><strong className="text-safe">{num(activeCount)}</strong> active</span>
+        <span><strong className="text-danger">{num(lowStock)}</strong> low stock</span>
       </div>
 
       {products.length === 0 ? (
         <EmptyState title="No products" hint="Seed the store to populate the catalogue." />
       ) : (
-        <div className="border border-line-strong bg-paper overflow-x-auto">
+        <div className="border border-ink bg-paper overflow-x-auto">
           <table className="w-full text-sm border-collapse">
-            <thead className="bg-paper-2">
+            <thead className="bg-surface-dim">
               <tr>
                 <th className={th}>Product</th>
                 <th className={th}>Category</th>
@@ -59,30 +59,30 @@ export default async function StoreAdminPage() {
               {products.map((p) => {
                 const labels = toStrArray(p.imageLabels);
                 return (
-                  <tr key={p.id} className="hover:bg-paper-2/60">
+                  <tr key={p.id} className="hover:bg-surface-dim">
                     <td className={td}>
                       <div className="font-bold text-ink leading-tight max-w-[280px]">{p.name}</div>
                       {p.badge && (
                         <span className="inline-block mt-1">
-                          <Tag tone="orange">{p.badge}</Tag>
+                          <Tag tone="black">{p.badge}</Tag>
                         </span>
                       )}
-                      <div className="mono text-[11px] text-ink-500 mt-1 line-clamp-2 max-w-[280px]">
+                      <div className="mono text-[11px] text-meta mt-1 line-clamp-2 max-w-[280px]">
                         {p.description}
                       </div>
                       {labels[0] && (
-                        <div className="mono text-[10px] text-ink-400 mt-1">{labels[0]}</div>
+                        <div className="mono text-[10px] text-faint mt-1">{labels[0]}</div>
                       )}
                     </td>
-                    <td className={`${td} mono text-[11px] uppercase text-ink-600 whitespace-nowrap`}>
+                    <td className={`${td} mono text-[11px] uppercase text-body-2 whitespace-nowrap`}>
                       {p.category}
                     </td>
-                    <td className={`${td} font-display text-lg text-ink whitespace-nowrap`}>
+                    <td className={`${td} mono font-bold text-[16px] text-ink whitespace-nowrap`}>
                       {usd(p.priceUsd)}
                     </td>
                     <td
-                      className={`${td} font-display text-lg whitespace-nowrap ${
-                        p.stock <= 5 ? "text-alert-strong" : "text-ink"
+                      className={`${td} mono font-bold text-[16px] whitespace-nowrap ${
+                        p.stock <= 5 ? "text-danger" : "text-ink"
                       }`}
                     >
                       {num(p.stock)}

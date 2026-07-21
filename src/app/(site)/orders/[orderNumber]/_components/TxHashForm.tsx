@@ -18,9 +18,9 @@ export function TxHashForm({
   const [pending, start] = useTransition();
 
   return (
-    <div className="border border-line-strong bg-paper-2 p-4">
+    <div className="border border-rule bg-surface-dim p-4">
       <div className="eyebrow mb-1">Already sent payment?</div>
-      <p className="text-sm text-ink-600 leading-snug mb-3">
+      <p className="mb-3 text-[16px] leading-[1.5] text-body-2">
         Paste the transaction hash so a volunteer can confirm it on-chain and release your order.
       </p>
       <form
@@ -37,7 +37,7 @@ export function TxHashForm({
             }
           });
         }}
-        className="flex flex-col gap-2 sm:flex-row"
+        className="flex flex-col gap-2.5 sm:flex-row"
       >
         <label className="sr-only" htmlFor="txHash">
           Transaction hash
@@ -51,18 +51,22 @@ export function TxHashForm({
             setDone(false);
           }}
           placeholder="0x… or transaction id"
-          className="min-w-0 flex-1 border border-line-strong bg-paper px-3 py-2.5 font-mono text-sm focus:outline-none focus:border-ink"
+          className="mono min-w-0 flex-1 border border-ink bg-paper px-3.5 py-2.5 text-[14px] text-ink focus:outline-none"
         />
         <button
           type="submit"
           disabled={pending || txHash.trim().length < 6}
-          className="kicker inline-flex items-center justify-center gap-2 bg-ink px-4 py-2.5 text-xs text-paper transition-colors hover:bg-ink-800 disabled:cursor-not-allowed disabled:opacity-50"
+          className="kicker inline-flex cursor-pointer items-center justify-center border border-ink bg-ink px-[18px] py-2.5 text-paper hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-50"
         >
           {pending ? "Submitting…" : "Submit hash"}
         </button>
       </form>
-      {done && !err && <p className="kicker text-up mt-2">✓ Recorded — awaiting confirmation</p>}
-      {err && <p className="mono text-[12px] text-alert-strong mt-2">{err}</p>}
+      {done && !err && (
+        <div className="mt-3 inline-flex items-center gap-2 border border-safe px-3.5 py-2 kicker text-safe">
+          ✓ Recorded — awaiting confirmation
+        </div>
+      )}
+      {err && <p className="mt-2 text-[14px] font-bold text-danger">{err}</p>}
     </div>
   );
 }

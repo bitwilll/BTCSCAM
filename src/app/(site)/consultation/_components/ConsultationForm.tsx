@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { requestConsultation, type ServiceState } from "@/actions/services";
 import { Button } from "@/components/ui";
 import { CONSULT_TOPICS } from "@/lib/constants";
@@ -21,113 +21,151 @@ const URGENCIES: { value: string; label: string }[] = [
   { value: "critical", label: "Critical — funds moving right now" },
 ];
 
+const PLANS = [
+  {
+    id: "FREE",
+    name: "Community desk",
+    price: "$0",
+    desc: "Answer by email within 72h · handled by verified watchmen · thread published so others learn too",
+  },
+  {
+    id: "PAID",
+    name: "Expert session",
+    price: "$149",
+    desc: "60-min live video with a scam analyst · written teardown in 24h · fully private · proceeds fund the free desk",
+  },
+] as const;
+
+const inputCls =
+  "mt-2 w-full border border-ink bg-white px-4 py-[13px] font-sans text-[16px] outline-ink";
+
 export function ConsultationForm() {
   const [state, action, pending] = useActionState<ServiceState, FormData>(requestConsultation, null);
+  const [plan, setPlan] = useState<"FREE" | "PAID">("PAID");
 
   return (
-    <form action={action} className="space-y-4">
-      <div className="grid sm:grid-cols-2 gap-4">
-        <label className="block">
-          <span className="kicker text-ink-600 block mb-1.5">Name</span>
-          <input
-            name="name"
-            required
-            autoComplete="name"
-            placeholder="How should we address you?"
-            className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink"
-          />
-        </label>
-        <label className="block">
-          <span className="kicker text-ink-600 block mb-1.5">Email</span>
-          <input
-            name="email"
-            type="email"
-            required
-            autoComplete="email"
-            placeholder="you@email.com"
-            className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink"
-          />
-        </label>
+    <form action={action}>
+      {/* ── Plan cards (v4): border ink + masthead when active ── */}
+      <div className="mt-6 flex flex-wrap gap-3.5">
+        {PLANS.map((p) => {
+          const active = plan === p.id;
+          return (
+            <button
+              key={p.id}
+              type="button"
+              onClick={() => setPlan(p.id)}
+              aria-pressed={active}
+              className={`min-w-0 flex-1 basis-[300px] cursor-pointer p-[22px] text-left border ${
+                active ? "border-ink bg-masthead" : "border-rule bg-white"
+              }`}
+            >
+              <div className="flex items-baseline justify-between gap-2.5">
+                <span className="font-sans font-bold text-[21px] uppercase">{p.name}</span>
+                <span className="font-sans font-black text-[24px]">{p.price}</span>
+              </div>
+              <div className="mt-2 text-[16px] leading-[1.6] text-body-2">{p.desc}</div>
+            </button>
+          );
+        })}
       </div>
 
-      <div className="grid sm:grid-cols-2 gap-4">
-        <label className="block">
-          <span className="kicker text-ink-600 block mb-1.5">Track</span>
-          <select
-            name="topic"
-            defaultValue="victim-support"
-            className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink"
-          >
-            {CONSULT_TOPICS.map((t) => (
-              <option key={t} value={t}>
-                {TOPIC_LABELS[t] ?? t}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="block">
-          <span className="kicker text-ink-600 block mb-1.5">Urgency</span>
-          <select
-            name="urgency"
-            defaultValue="normal"
-            className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink"
-          >
-            {URGENCIES.map((u) => (
-              <option key={u.value} value={u.value}>
-                {u.label}
-              </option>
-            ))}
-          </select>
-        </label>
-      </div>
+      {/* ── Intake fields (v4-styled, wiring preserved) ── */}
+      <div className="mt-[22px] flex flex-col gap-4">
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="block">
+            <span className="kicker text-meta">Your name *</span>
+            <input
+              name="name"
+              required
+              autoComplete="name"
+              placeholder="Name or handle"
+              className={inputCls}
+            />
+          </label>
+          <label className="block">
+            <span className="kicker text-meta">Email *</span>
+            <input
+              name="email"
+              type="email"
+              required
+              autoComplete="email"
+              placeholder="you@example.com"
+              className={inputCls}
+            />
+          </label>
+        </div>
 
-      <label className="block">
-        <span className="kicker text-ink-600 block mb-1.5">What&apos;s going on?</span>
-        <textarea
-          name="message"
-          rows={6}
-          required
-          minLength={10}
-          maxLength={4000}
-          placeholder="Tell us what happened, what platform was involved, and what you need help with. Do not include seed phrases, private keys, or passwords."
-          className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink resize-y"
-        />
-      </label>
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="block">
+            <span className="kicker text-meta">Track</span>
+            <select name="topic" defaultValue="victim-support" className={inputCls}>
+              {CONSULT_TOPICS.map((t) => (
+                <option key={t} value={t}>
+                  {TOPIC_LABELS[t] ?? t}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="block">
+            <span className="kicker text-meta">Urgency</span>
+            <select name="urgency" defaultValue="normal" className={inputCls}>
+              {URGENCIES.map((u) => (
+                <option key={u.value} value={u.value}>
+                  {u.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
 
-      <div className="grid sm:grid-cols-2 gap-4">
         <label className="block">
-          <span className="kicker text-ink-600 block mb-1.5">Wallet / platform involved (optional)</span>
-          <input
-            name="walletInvolved"
-            placeholder="Exchange name, URL, or address"
-            className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink"
+          <span className="kicker text-meta">The project, the promise, and what worries you</span>
+          <textarea
+            name="message"
+            rows={4}
+            required
+            minLength={10}
+            maxLength={4000}
+            placeholder="Links, the pitch you were given, yields promised, who approached you…"
+            className={`${inputCls} leading-[1.55] resize-y`}
           />
         </label>
-        <label className="block">
-          <span className="kicker text-ink-600 block mb-1.5">Amount at stake in USD (optional)</span>
-          <input
-            name="amountUsd"
-            type="number"
-            inputMode="decimal"
-            min="0"
-            step="any"
-            placeholder="12000"
-            className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink"
-          />
-        </label>
+
+        <div className="grid gap-4 sm:grid-cols-2">
+          <label className="block">
+            <span className="kicker text-meta">Wallet / platform involved (optional)</span>
+            <input
+              name="walletInvolved"
+              placeholder="Exchange name, URL, or address"
+              className={inputCls}
+            />
+          </label>
+          <label className="block">
+            <span className="kicker text-meta">Amount at stake in USD (optional)</span>
+            <input
+              name="amountUsd"
+              type="number"
+              inputMode="decimal"
+              min="0"
+              step="any"
+              placeholder="12000"
+              className={inputCls}
+            />
+          </label>
+        </div>
       </div>
 
       {state && !state.ok && state.error && (
-        <p className="mono text-[12px] text-alert">{state.error}</p>
+        <p className="mt-4 text-[14px] font-bold text-danger">{state.error}</p>
       )}
 
-      <Button type="submit" variant="primary" size="lg" full disabled={pending}>
-        {pending ? "Sending securely…" : "Request confidential help"}
-      </Button>
-      <p className="mono text-[10px] text-ink-400 leading-relaxed">
-        Free &amp; confidential. We will <strong className="text-ink-600">never</strong> ask for your
-        seed phrase, private keys, passwords, or remote access to your device. A volunteer replies by
-        email — usually within 24 hours.
+      <div className="mt-[22px]">
+        <Button type="submit" variant="primary" size="lg" disabled={pending}>
+          {pending ? "Sending securely…" : "Request consultation →"}
+        </Button>
+      </div>
+      <p className="mt-3.5 text-[16px] text-meta">
+        WE NEVER ASK FOR SEEDS, KEYS OR REMOTE ACCESS. ANYONE WHO DOES IS THE SCAM.
       </p>
     </form>
   );

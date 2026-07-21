@@ -52,10 +52,10 @@ export default async function AdminUsersPage({
 
   return (
     <div>
-      <div className="border-b-2 border-ink pb-5 mb-6">
-        <Kicker color="orange">Access Control</Kicker>
+      <div className="border-b border-ink pb-5 mb-6">
+        <Kicker color="accent">Access Control</Kicker>
         <h1 className="font-display text-4xl sm:text-5xl text-ink leading-[0.9] mt-2">Users &amp; Roles</h1>
-        <p className="mono text-[11px] uppercase tracking-wide text-ink-500 mt-3">
+        <p className="mono text-[11px] uppercase tracking-wide text-meta mt-3">
           {num(total)} registered accounts · showing {num(users.length)}
         </p>
       </div>
@@ -68,13 +68,13 @@ export default async function AdminUsersPage({
           defaultValue={q}
           placeholder="Search email, username or name…"
           aria-label="Search users"
-          className="flex-1 px-3 py-2.5 text-sm border border-line bg-paper text-ink focus:outline-none focus:border-ink"
+          className="flex-1 px-3 py-2.5 text-sm border border-rule bg-paper text-ink focus:outline-none focus:border-ink"
         />
         <select
           name="role"
           defaultValue={roleFilter}
           aria-label="Filter by role"
-          className="px-3 py-2.5 text-sm border border-line bg-paper text-ink focus:outline-none focus:border-ink"
+          className="px-3 py-2.5 text-sm border border-rule bg-paper text-ink focus:outline-none focus:border-ink"
         >
           <option value="">All roles</option>
           {ROLES.map((r) => (
@@ -83,11 +83,11 @@ export default async function AdminUsersPage({
             </option>
           ))}
         </select>
-        <button type="submit" className="kicker bg-ink text-paper px-5 py-2.5 hover:bg-btc hover:text-black">
+        <button type="submit" className="kicker bg-ink text-paper px-5 py-2.5 hover:bg-action-hover">
           Filter
         </button>
         {(q || roleFilter) && (
-          <Link href="/admin/users" className="kicker inline-flex items-center px-4 text-ink-500 hover:text-ink">
+          <Link href="/admin/users" className="kicker inline-flex items-center px-4 text-meta hover:text-ink">
             Clear
           </Link>
         )}
@@ -97,7 +97,7 @@ export default async function AdminUsersPage({
       <div className="flex flex-wrap gap-2 mb-6">
         <Link
           href={qs({ role: undefined })}
-          className={`kicker px-3 py-1.5 border ${!roleFilter ? "bg-ink text-paper border-ink" : "border-line text-ink-600 hover:border-ink"}`}
+          className={`kicker px-3 py-1.5 border ${!roleFilter ? "bg-ink text-paper border-ink" : "border-rule text-body-2 hover:border-ink"}`}
         >
           All
         </Link>
@@ -105,7 +105,7 @@ export default async function AdminUsersPage({
           <Link
             key={r}
             href={qs({ role: r })}
-            className={`kicker px-3 py-1.5 border ${roleFilter === r ? "bg-ink text-paper border-ink" : "border-line text-ink-600 hover:border-ink"}`}
+            className={`kicker px-3 py-1.5 border ${roleFilter === r ? "bg-ink text-paper border-ink" : "border-rule text-body-2 hover:border-ink"}`}
           >
             {ROLE_LABELS[r]}
           </Link>
@@ -114,15 +114,15 @@ export default async function AdminUsersPage({
 
       {/* Table */}
       {users.length === 0 ? (
-        <div className="border border-dashed border-line-strong bg-paper-2 p-10 text-center">
-          <p className="font-display text-2xl text-ink-700">No users match</p>
-          <p className="mono text-sm text-ink-500 mt-2">Try a different search or clear the filters.</p>
+        <div className="border border-dashed border-faint bg-surface-dim p-10 text-center">
+          <p className="font-display text-2xl text-body-2">No users match</p>
+          <p className="mono text-sm text-meta mt-2">Try a different search or clear the filters.</p>
         </div>
       ) : (
-        <div className="overflow-x-auto border border-line">
+        <div className="overflow-x-auto border border-rule">
           <table className="w-full min-w-[720px] text-left border-collapse">
             <thead>
-              <tr className="bg-paper-2 border-b border-line-strong">
+              <tr className="bg-surface-dim border-b border-ink">
                 <th className="eyebrow px-4 py-3">User</th>
                 <th className="eyebrow px-4 py-3">Email</th>
                 <th className="eyebrow px-4 py-3">Role</th>
@@ -133,19 +133,19 @@ export default async function AdminUsersPage({
             </thead>
             <tbody>
               {users.map((u) => (
-                <tr key={u.id} className="border-b border-line last:border-0 hover:bg-paper-2">
+                <tr key={u.id} className="border-b border-rule last:border-0 hover:bg-surface-dim">
                   <td className="px-4 py-3">
                     <div className="flex items-center gap-3">
                       <Avatar name={u.displayName} size={32} />
                       <div className="min-w-0">
                         <div className="font-semibold text-ink truncate">{u.displayName}</div>
-                        <div className="mono text-[11px] text-ink-500">@{u.username}</div>
+                        <div className="mono text-[11px] text-meta">@{u.username}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="px-4 py-3 mono text-[12px] text-ink-600 break-all">{u.email}</td>
+                  <td className="px-4 py-3 mono text-[12px] text-body-2 break-all">{u.email}</td>
                   <td className="px-4 py-3">
-                    <Kicker color={u.role === "admin" ? "red" : u.role === "member" ? "muted" : "orange"}>
+                    <Kicker color={u.role === "admin" ? "red" : u.role === "member" ? "muted" : "accent"}>
                       {ROLE_LABELS[u.role as Role] ?? u.role}
                     </Kicker>
                   </td>
@@ -158,9 +158,9 @@ export default async function AdminUsersPage({
                       <Tag tone="green">Active</Tag>
                     )}
                   </td>
-                  <td className="px-4 py-3 text-right mono text-[12px] text-ink-600">{num(u.reputation)}</td>
+                  <td className="px-4 py-3 text-right mono text-[12px] text-body-2">{num(u.reputation)}</td>
                   <td className="px-4 py-3 text-right">
-                    <Link href={`/admin/users/${u.id}`} className="kicker text-btc-dark hover:text-ink">
+                    <Link href={`/admin/users/${u.id}`} className="kicker text-accent hover:text-ink">
                       Manage →
                     </Link>
                   </td>

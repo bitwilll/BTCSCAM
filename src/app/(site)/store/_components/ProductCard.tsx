@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MediaPlaceholder, Tag } from "@/components/ui";
+import { Tag } from "@/components/ui";
 import { usd, toStrArray } from "@/lib/format";
 import { QuickAdd } from "./QuickAdd";
 
@@ -15,30 +15,45 @@ type ProductLike = {
   badge: string | null;
 };
 
+// v4 store card: white + shadow-card, image top (4/3, hatch fallback),
+// category kicker, 700 18px Geist name (products are caps-named), ink ADD button.
 export function ProductCard({ product }: { product: ProductLike }) {
   const images = toStrArray(product.imageLabels);
-  const cover = images[0] || `[ ${product.category} ]`;
+  const alt = (images[0] || product.name).replace(/[[\]]/g, "").trim();
 
   return (
-    <article className="group flex flex-col border border-line bg-paper p-4">
-      <Link href={`/store/${product.slug}`} className="block">
-        <MediaPlaceholder src={product.imageUrl} label={cover} ratio="4/3" />
+    <article className="group flex min-w-0 flex-col bg-white shadow-card transition-[transform,box-shadow] duration-150 hover:-translate-x-1 hover:-translate-y-1 hover:shadow-[6px_6px_0_#101010]">
+      <Link href={`/store/${product.slug}`} className="block border-b border-ink">
+        {product.imageUrl ? (
+          <div
+            className="bg-surface-alt bg-cover bg-center"
+            style={{ aspectRatio: "4/3", backgroundImage: `url(${product.imageUrl})` }}
+            role="img"
+            aria-label={alt}
+          />
+        ) : (
+          <div className="hatch" style={{ aspectRatio: "4/3" }} role="img" aria-label={alt} />
+        )}
       </Link>
-      <div className="mt-3 flex items-center gap-2">
-        {product.badge && <Tag tone="orange">{product.badge}</Tag>}
-        <span className="kicker text-ink-500 capitalize">{product.category}</span>
+      <div className="flex flex-1 flex-col gap-2 px-[18px] pt-4 pb-[18px]">
+        <div className="flex items-center gap-2.5">
+          <span className="kicker text-meta">{product.category}</span>
+          {product.badge && <Tag tone="black">{product.badge}</Tag>}
+        </div>
+        <div className="flex items-baseline justify-between gap-2.5">
+          <Link
+            href={`/store/${product.slug}`}
+            className="min-w-0 font-bold text-[18px] leading-[1.3] text-ink hover:underline underline-offset-4"
+          >
+            {product.name}
+          </Link>
+          <span className="flex-none font-bold text-[18px] text-ink">{usd(product.priceUsd)}</span>
+        </div>
+        <p className="line-clamp-2 text-[16px] leading-[1.5] text-body-2">{product.description}</p>
+        <div className="mt-auto pt-2">
+          <QuickAdd productId={product.id} />
+        </div>
       </div>
-      <h3 className="mt-2 font-extrabold leading-tight text-ink group-hover:text-btc-dark">
-        <Link href={`/store/${product.slug}`}>{product.name}</Link>
-      </h3>
-      <p className="mt-1.5 line-clamp-2 text-sm text-ink-600 leading-snug">{product.description}</p>
-      <div className="mt-3 flex items-center justify-between">
-        <span className="font-display text-2xl text-ink">{usd(product.priceUsd)}</span>
-        <Link href={`/store/${product.slug}`} className="kicker text-btc-dark hover:text-ink">
-          Details →
-        </Link>
-      </div>
-      <QuickAdd productId={product.id} />
     </article>
   );
 }

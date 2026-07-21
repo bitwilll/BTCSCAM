@@ -12,9 +12,9 @@ export default async function NewArticlePage() {
   const user = await requirePrivilege(PRIVILEGES.ARTICLE_CREATE, "/admin/articles/new");
   return (
     <div>
-      <div className="flex items-center justify-between mb-6 border-b-2 border-ink pb-4">
+      <div className="flex items-center justify-between mb-6 border-b border-ink pb-4">
         <h1 className="font-display text-4xl">New Article</h1>
-        <Link href="/admin/articles" className="kicker text-ink-500 hover:text-ink">← Back to articles</Link>
+        <Link href="/admin/articles" className="kicker text-meta hover:text-ink">← Back to articles</Link>
       </div>
       <ArticleEditor action={createArticle} canPublish={can(user, PRIVILEGES.ARTICLE_PUBLISH)} submitLabel="Create article" />
     </div>

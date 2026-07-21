@@ -23,8 +23,8 @@ export type ArticleInitial = {
 };
 
 const inputCls =
-  "w-full border border-line-strong bg-paper px-3 py-2.5 text-sm focus:outline-none focus:border-ink";
-const labelCls = "kicker text-ink-600 block mb-1.5";
+  "w-full border border-ink bg-paper px-3 py-2.5 text-sm focus:outline-none focus:border-ink";
+const labelCls = "kicker text-body-2 block mb-1.5";
 
 export function ArticleEditor({
   action,
@@ -53,14 +53,14 @@ export function ArticleEditor({
           <textarea name="dek" defaultValue={initial.dek ?? ""} rows={2} className={inputCls} placeholder="One or two sentences summarizing the story" />
         </div>
         <div>
-          <label className={labelCls}>Body <span className="text-ink-400 normal-case tracking-normal">— markdown: ## heading, **bold**, - list, &gt; quote</span></label>
+          <label className={labelCls}>Body <span className="text-faint normal-case tracking-normal">— markdown: ## heading, **bold**, - list, &gt; quote</span></label>
           <textarea name="body" defaultValue={initial.body} required rows={20} className={`${inputCls} font-mono !text-[13px] leading-relaxed`} placeholder={"Write the article. Use\n\n## Section headings\n\nand paragraphs separated by blank lines."} />
         </div>
       </div>
 
       {/* Sidebar */}
       <aside className="space-y-5 lg:sticky lg:top-4">
-        <div className="border border-line bg-paper-2 p-4 space-y-4">
+        <div className="border border-rule bg-surface-dim p-4 space-y-4">
           <div>
             <label className={labelCls}>Status</label>
             <select name="status" defaultValue={initial.status ?? "draft"} className={inputCls}>
@@ -69,7 +69,7 @@ export function ArticleEditor({
               {canPublish && <option value="published">Published (live)</option>}
               <option value="archived">Archived</option>
             </select>
-            {!canPublish && <p className="mono text-[10px] text-ink-400 mt-1">Only editors can publish. Yours goes to review.</p>}
+            {!canPublish && <p className="mono text-[10px] text-faint mt-1">Only editors can publish. Yours goes to review.</p>}
           </div>
           <div>
             <label className={labelCls}>Category</label>
@@ -96,42 +96,42 @@ export function ArticleEditor({
             <input name="readMinutes" type="number" min={1} max={120} defaultValue={initial.readMinutes ?? 5} className={inputCls} />
           </div>
           <div>
-            <label className={labelCls}>Tags <span className="text-ink-400 normal-case tracking-normal">(comma separated)</span></label>
+            <label className={labelCls}>Tags <span className="text-faint normal-case tracking-normal">(comma separated)</span></label>
             <input name="tags" defaultValue={(initial.tags ?? []).join(", ")} className={inputCls} placeholder="ponzi, ethereum" />
           </div>
-          <label className="flex items-center gap-2 kicker text-ink-700">
+          <label className="flex items-center gap-2 kicker text-body-2">
             <input type="checkbox" name="isFeatured" defaultChecked={initial.isFeatured} /> Featured (lead story)
           </label>
-          <label className="flex items-center gap-2 kicker text-ink-700">
+          <label className="flex items-center gap-2 kicker text-body-2">
             <input type="checkbox" name="isDeveloping" defaultChecked={initial.isDeveloping} /> Developing strip
           </label>
         </div>
 
-        <div className="border border-line bg-paper-2 p-4 space-y-3">
+        <div className="border border-rule bg-surface-dim p-4 space-y-3">
           <div>
             <label className={labelCls}>Cover image URL</label>
             <input name="coverImageUrl" value={cover} onChange={(e) => setCover(e.target.value)} className={inputCls} placeholder="https://…/photo.jpg" />
           </div>
           {cover ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={cover} alt="cover preview" className="w-full aspect-[16/9] object-cover border border-line" />
+            <img src={cover} alt="cover preview" className="w-full aspect-[16/9] object-cover border border-rule" />
           ) : (
-            <div className="hatch w-full aspect-[16/9] flex items-center justify-center"><span className="kicker text-ink-500">no image — placeholder shown</span></div>
+            <div className="hatch w-full aspect-[16/9] flex items-center justify-center"><span className="kicker text-meta">no image — placeholder shown</span></div>
           )}
           <div>
-            <label className={labelCls}>Placeholder label <span className="text-ink-400 normal-case tracking-normal">(if no image)</span></label>
+            <label className={labelCls}>Placeholder label <span className="text-faint normal-case tracking-normal">(if no image)</span></label>
             <input name="coverLabel" defaultValue={initial.coverLabel ?? ""} className={inputCls} placeholder="[ photo: seized dashboard ]" />
           </div>
         </div>
 
-        <div className="border border-line bg-paper-2 p-4 space-y-3">
-          <div className="kicker text-ink-500">Attribution (optional)</div>
+        <div className="border border-rule bg-surface-dim p-4 space-y-3">
+          <div className="kicker text-meta">Attribution (optional)</div>
           <input name="sourceName" defaultValue={initial.sourceName ?? ""} className={inputCls} placeholder="Source name" />
           <input name="sourceUrl" defaultValue={initial.sourceUrl ?? ""} className={inputCls} placeholder="https://source/original" />
         </div>
 
-        {state?.error && <p className="mono text-[12px] text-alert">{state.error}</p>}
-        <button type="submit" disabled={pending} className="kicker w-full bg-btc text-black py-3.5 hover:bg-btc-dark hover:text-white disabled:opacity-50">
+        {state?.error && <p className="mono text-[12px] text-danger">{state.error}</p>}
+        <button type="submit" disabled={pending} className="kicker w-full bg-ink text-paper py-3.5 hover:bg-action-hover disabled:opacity-50">
           {pending ? "Saving…" : submitLabel}
         </button>
       </aside>

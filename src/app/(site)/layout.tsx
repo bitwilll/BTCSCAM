@@ -1,5 +1,5 @@
 import { Ticker } from "@/components/site/Ticker";
-import { Dateline, Masthead } from "@/components/site/Masthead";
+import { Masthead } from "@/components/site/Masthead";
 import { PrimaryNav } from "@/components/site/PrimaryNav";
 import { Footer } from "@/components/site/Footer";
 import { ChatWidget } from "@/components/site/ChatWidget";
@@ -22,7 +22,6 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
   return (
     <>
       <Ticker />
-      <Dateline />
       <Masthead />
       <PrimaryNav
         user={user ? { displayName: user.displayName, isStaff } : null}

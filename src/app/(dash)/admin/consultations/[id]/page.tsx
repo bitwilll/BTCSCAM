@@ -15,16 +15,16 @@ export const metadata: Metadata = {
   description: "Consultation case detail and message thread.",
 };
 
-const STATUS_TONE: Record<string, "paper" | "orange" | "black" | "green"> = {
+const STATUS_TONE: Record<string, "paper" | "warn" | "black" | "green"> = {
   new: "paper",
-  scheduled: "orange",
+  scheduled: "warn",
   in_progress: "black",
   closed: "green",
 };
 
-const URGENCY_TONE: Record<string, "red" | "orange" | "paper" | "outline"> = {
+const URGENCY_TONE: Record<string, "red" | "warn" | "paper" | "outline"> = {
   critical: "red",
-  high: "orange",
+  high: "warn",
   normal: "paper",
   low: "outline",
 };
@@ -52,21 +52,21 @@ export default async function ConsultationDetailPage({
 
   return (
     <div className="max-w-4xl">
-      <Link href="/admin/consultations" className="kicker text-ink-500 hover:text-ink">
+      <Link href="/admin/consultations" className="kicker text-meta hover:text-ink">
         ← Back to consultations
       </Link>
 
-      <header className="border-b-2 border-ink pb-6 mb-8 mt-3">
+      <header className="border-b border-ink pb-6 mb-8 mt-3">
         <div className="flex flex-wrap items-center gap-2 mb-3">
           <Tag tone={STATUS_TONE[request.status] ?? "paper"}>{request.status.replace(/_/g, " ")}</Tag>
           <Tag tone={URGENCY_TONE[request.urgency] ?? "paper"}>{request.urgency} urgency</Tag>
-          <span className="mono text-[11px] uppercase tracking-wide text-ink-500">
+          <span className="mono text-[11px] uppercase tracking-wide text-meta">
             {request.topic.replace(/-/g, " ")}
           </span>
         </div>
         <h1 className="font-display text-4xl sm:text-5xl text-ink leading-[0.95]">{request.name}</h1>
-        <div className="mt-3 mono text-[11px] uppercase tracking-wide text-ink-500 flex flex-wrap gap-x-4 gap-y-1">
-          <span className="text-ink-700 break-all">{request.email}</span>
+        <div className="mt-3 mono text-[11px] uppercase tracking-wide text-meta flex flex-wrap gap-x-4 gap-y-1">
+          <span className="text-body-2 break-all">{request.email}</span>
           <span>Filed {byline(request.createdAt)}</span>
           <span>Updated {timeAgo(request.updatedAt)}</span>
           <span>
@@ -91,7 +91,7 @@ export default async function ConsultationDetailPage({
       </div>
 
       {request.walletInvolved && (
-        <div className="border border-line bg-paper-2 p-4 mb-8">
+        <div className="border border-rule bg-surface-dim p-4 mb-8">
           <div className="eyebrow mb-1">Wallet involved</div>
           <div className="mono text-sm text-ink break-all">{request.walletInvolved}</div>
         </div>
@@ -100,7 +100,7 @@ export default async function ConsultationDetailPage({
       {/* Original message */}
       <section className="mb-8">
         <h2 className="kicker text-sm !tracking-[0.16em] section-rule pb-2 mb-4">Original Request</h2>
-        <div className="border-l-2 border-ink pl-4 text-ink-700 whitespace-pre-line leading-relaxed">
+        <div className="border-l-2 border-ink pl-4 text-body-2 whitespace-pre-line leading-relaxed">
           {request.message}
         </div>
       </section>
@@ -109,14 +109,14 @@ export default async function ConsultationDetailPage({
       <section className="mb-8">
         <h2 className="kicker text-sm !tracking-[0.16em] section-rule pb-2 mb-4">Message Thread</h2>
         {request.messages.length === 0 ? (
-          <p className="mono text-sm text-ink-500">No replies yet — start the conversation below.</p>
+          <p className="mono text-sm text-meta">No replies yet — start the conversation below.</p>
         ) : (
           <ul className="space-y-4">
             {request.messages.map((m) => (
               <li
                 key={m.id}
                 className={`p-4 border ${
-                  m.fromStaff ? "border-line-strong bg-paper-2" : "border-line bg-paper"
+                  m.fromStaff ? "border-ink bg-surface-dim" : "border-rule bg-paper"
                 }`}
               >
                 <div className="flex items-center gap-3 mb-2">
@@ -124,14 +124,14 @@ export default async function ConsultationDetailPage({
                   <div>
                     <div className="kicker text-ink">
                       {m.fromStaff ? m.author?.displayName ?? "Staff" : request.name}
-                      {m.fromStaff && <span className="text-btc-dark"> · Staff</span>}
+                      {m.fromStaff && <span className="text-accent"> · Staff</span>}
                     </div>
-                    <div className="mono text-[10px] text-ink-400">
+                    <div className="mono text-[10px] text-faint">
                       {byline(m.createdAt)} · {timeAgo(m.createdAt)}
                     </div>
                   </div>
                 </div>
-                <div className="text-sm text-ink-700 whitespace-pre-line leading-relaxed">{m.body}</div>
+                <div className="text-sm text-body-2 whitespace-pre-line leading-relaxed">{m.body}</div>
               </li>
             ))}
           </ul>
@@ -139,7 +139,7 @@ export default async function ConsultationDetailPage({
       </section>
 
       {/* Reply */}
-      <section className="border-t border-line pt-6">
+      <section className="border-t border-rule pt-6">
         <ConsultReply requestId={request.id} />
       </section>
     </div>

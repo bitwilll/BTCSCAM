@@ -21,14 +21,14 @@ export default async function EditArticlePage({ params }: { params: Promise<{ id
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6 border-b-2 border-ink pb-4">
+      <div className="flex items-center justify-between mb-6 border-b border-ink pb-4">
         <div>
           <h1 className="font-display text-4xl">Edit Article</h1>
-          <p className="mono text-[11px] text-ink-500 uppercase tracking-wide mt-1">{a.status} · /article/{a.slug}</p>
+          <p className="mono text-[11px] text-meta uppercase tracking-wide mt-1">{a.status} · /article/{a.slug}</p>
         </div>
         <div className="flex gap-3">
-          <Link href={`/article/${a.slug}`} className="kicker text-ink-500 hover:text-ink">View ↗</Link>
-          <Link href="/admin/articles" className="kicker text-ink-500 hover:text-ink">← Back</Link>
+          <Link href={`/article/${a.slug}`} className="kicker text-meta hover:text-ink">View ↗</Link>
+          <Link href="/admin/articles" className="kicker text-meta hover:text-ink">← Back</Link>
         </div>
       </div>
       <ArticleEditor

@@ -40,7 +40,7 @@ export function CommunityDelete({ kind, id }: { kind: CommunityKind; id: string 
           type="button"
           disabled={pending}
           onClick={remove}
-          className="kicker px-2 py-1 border bg-alert-strong text-white border-alert-strong disabled:opacity-50"
+          className="kicker px-2 py-1 border bg-danger text-white border-danger disabled:opacity-50"
         >
           Confirm
         </button>
@@ -48,7 +48,7 @@ export function CommunityDelete({ kind, id }: { kind: CommunityKind; id: string 
           type="button"
           disabled={pending}
           onClick={() => setConfirming(false)}
-          className="kicker px-2 py-1 border bg-paper text-ink-600 border-line-strong hover:border-ink"
+          className="kicker px-2 py-1 border bg-paper text-body-2 border-ink hover:border-ink"
         >
           Cancel
         </button>
@@ -62,11 +62,11 @@ export function CommunityDelete({ kind, id }: { kind: CommunityKind; id: string 
         type="button"
         disabled={pending}
         onClick={() => setConfirming(true)}
-        className="kicker px-2 py-1 border bg-paper text-alert-strong border-line-strong hover:border-alert-strong disabled:opacity-50"
+        className="kicker px-2 py-1 border bg-paper text-danger border-ink hover:border-danger disabled:opacity-50"
       >
         Delete
       </button>
-      {err && <span className="mono text-[10px] text-alert-strong">{err}</span>}
+      {err && <span className="mono text-[10px] text-danger">{err}</span>}
     </span>
   );
 }

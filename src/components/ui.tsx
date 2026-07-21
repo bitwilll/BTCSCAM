@@ -1,95 +1,117 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 
-// ─── Kicker (mono uppercase label) ───
+// ─── Kicker: 700 14px Geist all-caps .05em (v4) ───
 export function Kicker({
   children,
   color = "ink",
   className = "",
 }: {
   children: ReactNode;
-  color?: "ink" | "orange" | "red" | "muted" | "green";
+  color?: "ink" | "orange" | "accent" | "red" | "muted" | "green" | "brand";
   className?: string;
 }) {
   const c = {
     ink: "text-ink",
-    orange: "text-btc-dark",
-    red: "text-alert-strong",
-    muted: "text-ink-500",
-    green: "text-up",
+    // "orange" historically meant the accent; v4 splits brand (logo-only) from accent links
+    orange: "text-accent",
+    accent: "text-accent",
+    brand: "text-brand",
+    red: "text-danger",
+    muted: "text-meta",
+    green: "text-safe",
   }[color];
   return <span className={`kicker ${c} ${className}`}>{children}</span>;
 }
 
-// ─── Tag / badge (solid fill rectangle) ───
+// ─── Chip / tag: 3px 9px · 700 14px (v4 recipe) ───
 export function Tag({
   children,
   tone = "black",
   className = "",
 }: {
   children: ReactNode;
-  tone?: "black" | "orange" | "red" | "green" | "outline" | "paper";
+  tone?:
+    | "black"
+    | "red"
+    | "red-soft"
+    | "green"
+    | "warn"
+    | "neutral"
+    | "outline"
+    | "paper"
+    | "orange";
   className?: string;
 }) {
   const tones: Record<string, string> = {
     black: "bg-ink text-paper",
-    orange: "bg-btc text-black",
-    red: "bg-alert-strong text-white",
-    green: "bg-up text-black",
-    paper: "bg-paper text-ink border border-line-strong",
+    red: "bg-danger text-white",
+    "red-soft": "bg-danger-soft text-danger-soft-fg",
+    green: "bg-safe text-white",
+    warn: "bg-warn text-warn-fg",
+    neutral: "bg-surface-alt text-meta",
+    paper: "bg-paper text-ink border border-rule",
     outline: "bg-transparent text-ink border border-ink",
+    // legacy alias — v4 forbids orange chips; map to ink
+    orange: "bg-ink text-paper",
   };
   return (
     <span
-      className={`kicker inline-flex items-center px-2 py-[3px] leading-none ${tones[tone]} ${className}`}
+      className={`inline-flex items-center px-[9px] py-[3px] font-sans font-bold text-[14px] leading-tight tracking-[.05em] uppercase ${tones[tone]} ${className}`}
     >
       {children}
     </span>
   );
 }
 
-const SEVERITY_TONE: Record<string, "orange" | "red" | "black"> = {
-  elevated: "orange",
-  high: "orange",
+// v4 severity chips: CRITICAL solid red/white · HIGH soft red · MEDIUM sand · LOW dim
+const SEVERITY_TONE: Record<string, "red" | "red-soft" | "neutral" | "black"> = {
   critical: "red",
-  none: "black",
+  high: "red-soft",
+  medium: "neutral",
+  elevated: "neutral",
+  low: "neutral",
 };
 
 export function SeverityTag({ severity }: { severity: string }) {
-  if (severity === "none") return null;
-  return <Tag tone={SEVERITY_TONE[severity] ?? "orange"}>{severity}</Tag>;
+  if (!severity || severity === "none") return null;
+  return <Tag tone={SEVERITY_TONE[severity.toLowerCase()] ?? "neutral"}>{severity}</Tag>;
 }
 
-// ─── Button (link or button, sharp broadsheet style) ───
+// ─── Buttons (v4 recipes) ───
+// primary  = ink solid, hover #3A3833
+// ghost    = transparent, 1px ink border, hover fill ink
+// quiet    = borderless, hover surface-alt
+// danger   = red outline text
 type BtnCommon = {
   children: ReactNode;
-  variant?: "primary" | "dark" | "outline" | "ghost";
+  variant?: "primary" | "ghost" | "quiet" | "danger" | "dark" | "outline";
   size?: "sm" | "md" | "lg";
   className?: string;
   full?: boolean;
 };
 
-function btnClasses({ variant = "dark", size = "md", full }: BtnCommon) {
+function btnClasses({ variant = "primary", size = "md", full }: BtnCommon) {
   const variants: Record<string, string> = {
-    primary: "bg-btc text-black hover:bg-btc-dark hover:text-white",
-    dark: "bg-ink text-paper hover:bg-ink-800",
+    primary: "bg-ink text-paper border border-ink hover:bg-action-hover",
+    ghost: "bg-transparent text-ink border border-ink hover:bg-ink hover:text-paper",
+    quiet: "bg-transparent text-body-2 border border-transparent hover:bg-surface-alt hover:text-ink",
+    danger: "bg-transparent text-danger border border-danger hover:bg-danger hover:text-white",
+    // legacy aliases
+    dark: "bg-ink text-paper border border-ink hover:bg-action-hover",
     outline: "bg-transparent text-ink border border-ink hover:bg-ink hover:text-paper",
-    ghost: "bg-transparent text-ink hover:bg-panel",
   };
   const sizes: Record<string, string> = {
-    sm: "px-3 py-1.5 text-[11px]",
-    md: "px-4 py-2.5 text-xs",
-    lg: "px-6 py-3.5 text-sm",
+    sm: "px-3.5 py-2 text-[14px]",
+    md: "px-4 py-2.5 text-[14px]",
+    lg: "px-5.5 py-3.5 text-[14px]",
   };
-  return `kicker inline-flex items-center justify-center gap-2 transition-colors ${
+  return `inline-flex items-center justify-center gap-2 font-sans font-bold uppercase tracking-[.05em] cursor-pointer ${
     variants[variant]
   } ${sizes[size]} ${full ? "w-full" : ""}`;
 }
 
-export function ButtonLink({
-  href,
-  ...props
-}: BtnCommon & { href: string }) {
+export function ButtonLink({ href, ...props }: BtnCommon & { href: string }) {
   return (
     <Link href={href} className={`${btnClasses(props)} ${props.className ?? ""}`}>
       {props.children}
@@ -124,7 +146,7 @@ export function Button({
   );
 }
 
-// ─── Section header (label + heavy rule + optional action) ───
+// ─── Section header: LABEL ——————— (v4 pattern) ───
 export function SectionHeader({
   title,
   action,
@@ -135,10 +157,11 @@ export function SectionHeader({
   className?: string;
 }) {
   return (
-    <div className={`flex items-end justify-between gap-4 section-rule pb-2 mb-5 ${className}`}>
-      <h2 className="kicker text-sm !tracking-[0.16em]">{title}</h2>
+    <div className={`flex items-center gap-[18px] mb-5 ${className}`}>
+      <h2 className="kicker text-ink shrink-0">{title}</h2>
+      <div className="flex-1 border-t border-ink" />
       {action && (
-        <Link href={action.href} className="kicker text-btc-dark hover:text-ink shrink-0">
+        <Link href={action.href} className="kicker text-meta hover:text-ink shrink-0">
           {action.label} →
         </Link>
       )}
@@ -146,7 +169,7 @@ export function SectionHeader({
   );
 }
 
-// ─── Media placeholder (hatched box) — renders a real image when `src` is set ───
+// ─── Media block: flat surface-alt, or a real image when src is set (v4) ───
 export function MediaPlaceholder({
   label,
   src,
@@ -164,55 +187,63 @@ export function MediaPlaceholder({
 }) {
   if (src) {
     return (
-      <div className={`overflow-hidden bg-panel ${className}`} style={{ aspectRatio: ratio }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={src}
-          alt={alt ?? label.replace(/[[\]]/g, "").trim()}
-          loading="lazy"
-          className="w-full h-full object-cover"
-        />
-      </div>
+      <div
+        className={`overflow-hidden bg-surface-alt bg-cover bg-center ${className}`}
+        style={{ aspectRatio: ratio, backgroundImage: `url(${src})` }}
+        role="img"
+        aria-label={alt ?? label.replace(/[[\]]/g, "").trim()}
+      />
     );
   }
   return (
     <div
-      className={`${dark ? "hatch-dark" : "hatch"} flex items-center justify-center overflow-hidden ${className}`}
+      className={`${dark ? "hatch-dark" : "bg-surface-alt"} flex items-center justify-center overflow-hidden ${className}`}
       style={{ aspectRatio: ratio }}
+      role="img"
+      aria-label={label.replace(/[[\]]/g, "").trim()}
     >
-      <span
-        className={`kicker px-3 text-center ${dark ? "text-ink-400" : "text-ink-500"}`}
-      >
-        {label}
-      </span>
+      <span className={`eyebrow px-3 text-center ${dark ? "text-faint" : ""}`}>{label}</span>
     </div>
   );
 }
 
-// ─── Stat block ───
+// ─── Stat block (dark, mono numerals — v4 "FROM THE DATABASE") ───
 export function StatBlock({
   label,
   value,
   sub,
   tone = "ink",
+  dark = false,
 }: {
   label: string;
   value: ReactNode;
   sub?: string;
-  tone?: "ink" | "red" | "orange";
+  tone?: "ink" | "red" | "orange" | "accent";
+  dark?: boolean;
 }) {
-  const vc = { ink: "text-ink", red: "text-alert-strong", orange: "text-btc-dark" }[tone];
+  if (dark) {
+    return (
+      <div className="bg-dark p-5">
+        <div className="kicker text-ticker">{label}</div>
+        <div className="mt-2 mono font-black text-[32px] text-down">{value}</div>
+        {sub && <div className="mt-0.5 text-[14px] text-ticker">{sub}</div>}
+      </div>
+    );
+  }
+  const vc = { ink: "text-ink", red: "text-danger", orange: "text-accent", accent: "text-accent" }[
+    tone
+  ];
   return (
-    <div className="border border-line bg-paper-2 p-4">
+    <div className="border border-rule bg-surface-dim p-4">
       <div className="eyebrow mb-1">{label}</div>
-      <div className={`font-display text-4xl ${vc}`}>{value}</div>
-      {sub && <div className="mono text-[11px] text-ink-500 mt-1">{sub}</div>}
+      <div className={`mono font-black text-[32px] ${vc}`}>{value}</div>
+      {sub && <div className="text-[14px] text-meta mt-1">{sub}</div>}
     </div>
   );
 }
 
-// ─── Avatar (initial chip) ───
-export function Avatar({ name, size = 36 }: { name: string; size?: number }) {
+// ─── Avatar: paper square, 1px ink border, 700 Geist initials (v4) ───
+export function Avatar({ name, size = 44 }: { name: string; size?: number }) {
   const initials = name
     .split(/\s+/)
     .map((p) => p[0])
@@ -221,8 +252,8 @@ export function Avatar({ name, size = 36 }: { name: string; size?: number }) {
     .toUpperCase();
   return (
     <span
-      className="inline-flex items-center justify-center bg-ink text-paper font-display shrink-0"
-      style={{ width: size, height: size, fontSize: size * 0.42 }}
+      className="inline-flex items-center justify-center bg-paper text-ink border border-ink font-sans font-bold shrink-0"
+      style={{ width: size, height: size, fontSize: Math.max(12, size * 0.36) }}
     >
       {initials}
     </span>
@@ -240,15 +271,15 @@ export function EmptyState({
   action?: ReactNode;
 }) {
   return (
-    <div className="border border-dashed border-line-strong bg-paper-2 p-10 text-center">
-      <p className="font-display text-2xl text-ink-700">{title}</p>
-      {hint && <p className="mono text-sm text-ink-500 mt-2 max-w-md mx-auto">{hint}</p>}
+    <div className="border border-rule bg-surface-dim p-10 text-center">
+      <p className="font-display text-[24px] text-ink">{title}</p>
+      {hint && <p className="text-[16px] text-meta mt-2 max-w-md mx-auto">{hint}</p>}
       {action && <div className="mt-5 flex justify-center">{action}</div>}
     </div>
   );
 }
 
-// ─── Content shell ───
+// ─── Content shell (v4 uses 1140 for editorial, 1360 for wide screens) ───
 export function Container({
   children,
   className = "",
@@ -259,13 +290,15 @@ export function Container({
   wide?: boolean;
 }) {
   return (
-    <div className={`mx-auto w-full ${wide ? "max-w-[1400px]" : "max-w-[1240px]"} px-4 sm:px-6 ${className}`}>
+    <div
+      className={`mx-auto w-full ${wide ? "max-w-[1360px]" : "max-w-[1140px]"} px-6 ${className}`}
+    >
       {children}
     </div>
   );
 }
 
-// ─── Page header (interior pages) ───
+// ─── Page header (interior pages): Fraunces clamp title ───
 export function PageHeader({
   kicker,
   title,
@@ -278,10 +311,23 @@ export function PageHeader({
   children?: ReactNode;
 }) {
   return (
-    <header className="border-b-2 border-ink pb-6 mb-8">
-      {kicker && <div className="mb-2"><Kicker color="orange">{kicker}</Kicker></div>}
-      <h1 className="font-display text-5xl sm:text-6xl text-ink leading-[0.9]">{title}</h1>
-      {lede && <p className="mt-4 max-w-2xl text-lg text-ink-600">{lede}</p>}
+    <header className="border-b border-ink pb-6 mb-8 fade-up">
+      {kicker && (
+        <div className="mb-2">
+          <Kicker color="muted">{kicker}</Kicker>
+        </div>
+      )}
+      <h1
+        className="font-display text-ink"
+        style={{ fontSize: "clamp(32px,4.5vw,52px)", lineHeight: 1.12, textWrap: "balance" }}
+      >
+        {title}
+      </h1>
+      {lede && (
+        <p className="mt-4 max-w-2xl text-[18px] leading-[1.6] text-body-2" style={{ textWrap: "pretty" }}>
+          {lede}
+        </p>
+      )}
       {children && <div className="mt-5">{children}</div>}
     </header>
   );

@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { prisma } from "@/lib/db";
-import { getSession } from "@/lib/auth";
 import { Container, PageHeader, EmptyState } from "@/components/ui";
-import { ArticleCard, categoryMeta } from "@/components/content/cards";
+import { ArticleRow, categoryMeta } from "@/components/content/cards";
 import { SITE } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
@@ -28,38 +27,31 @@ type SearchParams = Promise<{ category?: string }>;
 
 export default async function NewsPage({ searchParams }: { searchParams: SearchParams }) {
   const sp = await searchParams;
-  const user = await getSession();
 
   const active =
     sp.category && NEWS_FILTERS.includes(sp.category as (typeof NEWS_FILTERS)[number])
       ? sp.category
       : undefined;
 
-  const [articles, savedRows] = await Promise.all([
-    prisma.article.findMany({
-      where: {
-        status: "published",
-        ...(active ? { category: active } : {}),
-      },
-      orderBy: { publishedAt: "desc" },
-      take: 30,
-      include: { author: true },
-    }),
-    user
-      ? prisma.savedArticle.findMany({ where: { userId: user.id }, select: { articleId: true } })
-      : Promise.resolve([]),
-  ]);
+  const articles = await prisma.article.findMany({
+    where: {
+      status: "published",
+      ...(active ? { category: active } : {}),
+    },
+    orderBy: { publishedAt: "desc" },
+    take: 30,
+    include: { author: true },
+  });
 
-  const savedSet = new Set(savedRows.map((r) => r.articleId));
-
+  // v4 filter chip: 8px 14px · Geist 700 16px · active = ink fill, paper text.
   const chip = (label: string, href: string, isActive: boolean) => (
     <Link
       key={href}
       href={href}
-      className={`kicker px-3 py-2 border transition-colors ${
+      className={`px-3.5 py-2 font-sans font-bold text-[16px] uppercase border hover:no-underline ${
         isActive
           ? "bg-ink text-paper border-ink"
-          : "bg-paper text-ink-600 border-line-strong hover:border-ink hover:text-ink"
+          : "bg-white text-body-2 border-rule hover:border-ink hover:text-ink"
       }`}
     >
       {label}
@@ -67,7 +59,7 @@ export default async function NewsPage({ searchParams }: { searchParams: SearchP
   );
 
   return (
-    <Container className="py-8 lg:py-12">
+    <Container className="py-8 lg:py-12 fade-up">
       <PageHeader
         kicker="The Wire"
         title="News"
@@ -75,33 +67,38 @@ export default async function NewsPage({ searchParams }: { searchParams: SearchP
       />
 
       {/* Category filter chips */}
-      <div className="flex flex-wrap gap-2 mb-8">
+      <div className="flex flex-wrap gap-2">
         {chip("All", "/news", !active)}
         {NEWS_FILTERS.map((cat) =>
           chip(categoryMeta(cat).label, `/news?category=${cat}`, active === cat),
         )}
       </div>
 
-      {articles.length > 0 ? (
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-10">
-          {articles.map((a) => (
-            <ArticleCard key={a.id} article={a} saved={savedSet.has(a.id)} />
-          ))}
+      {/* THE LATEST river (v4) */}
+      <div className="mt-9">
+        <div className="flex items-center gap-[18px]">
+          <span className="kicker text-ink">The Latest</span>
+          <div className="flex-1 border-t border-ink" />
         </div>
-      ) : (
-        <EmptyState
-          title="Nothing on the wire here yet"
-          hint={
-            active
-              ? `No published stories filed under ${categoryMeta(active).label}. Try another section.`
-              : "Check back shortly — the desk files new reports daily."
-          }
-        />
-      )}
+        {articles.length > 0 ? (
+          articles.map((a, i) => (
+            <ArticleRow key={a.id} article={a} caseNo={`No. ${String(1207 - i)}`} />
+          ))
+        ) : (
+          <div className="mt-6">
+            <EmptyState
+              title="Nothing on the wire here yet"
+              hint={
+                active
+                  ? `No published stories filed under ${categoryMeta(active).label}. Try another section.`
+                  : "Check back shortly — the desk files new reports daily."
+              }
+            />
+          </div>
+        )}
+      </div>
 
-      <p className="mono text-[11px] uppercase tracking-wide text-ink-400 mt-12 border-t border-line pt-4">
-        {SITE.disclaimer}
-      </p>
+      <p className="eyebrow mt-12 border-t border-rule pt-4">{SITE.disclaimer}</p>
     </Container>
   );
 }

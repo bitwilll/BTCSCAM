@@ -2,36 +2,40 @@
 
 import { useActionState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
 import { loginAction, type AuthState } from "@/actions/auth";
-import { Container, Button } from "@/components/ui";
+import { Container, Button, ButtonLink } from "@/components/ui";
 
 function LoginForm() {
   const [state, action, pending] = useActionState<AuthState, FormData>(loginAction, null);
   const next = useSearchParams().get("next") ?? "";
 
   return (
-    <Container className="py-16 max-w-md">
-      <div className="border-2 border-ink bg-paper p-8">
-        <h1 className="font-display text-4xl text-ink">Log In</h1>
-        <p className="mono text-[11px] uppercase tracking-wide text-ink-500 mt-2">
+    <Container className="py-16 max-w-md fade-up">
+      <div className="border border-ink bg-paper p-8">
+        <div className="kicker text-meta">Member access</div>
+        <h1 className="mt-2 font-display text-[32px] leading-[1.15] text-ink">Log in</h1>
+        <p className="mt-2 text-[14px] text-meta uppercase tracking-[.05em]">
           Community-verified scam intelligence
         </p>
         <form action={action} className="mt-6 space-y-4">
           <input type="hidden" name="next" value={next} />
           <Field label="Email or username" name="identifier" type="text" autoComplete="username" />
           <Field label="Password" name="password" type="password" autoComplete="current-password" />
-          {state?.error && <p className="mono text-[12px] text-alert">{state.error}</p>}
+          {state?.error && (
+            <p role="alert" className="text-[14px] font-bold text-danger">
+              {state.error}
+            </p>
+          )}
           <Button type="submit" variant="primary" size="lg" full disabled={pending}>
-            {pending ? "Signing in…" : "Log In"}
+            {pending ? "Signing in…" : "Log in"}
           </Button>
         </form>
-        <p className="mono text-[12px] text-ink-500 mt-5">
-          No account?{" "}
-          <Link href="/register" className="text-btc-dark underline">
-            Register
-          </Link>
-        </p>
+        <div className="mt-6 border-t border-rule pt-5">
+          <p className="text-[14px] text-meta uppercase tracking-[.05em]">No account yet?</p>
+          <ButtonLink href="/register" variant="ghost" size="md" full className="mt-2.5">
+            Join the watch
+          </ButtonLink>
+        </div>
       </div>
     </Container>
   );
@@ -52,15 +56,15 @@ export function Field({
 }) {
   return (
     <label className="block">
-      <span className="kicker text-ink-600 block mb-1.5">{label}</span>
+      <span className="kicker block mb-2">{label}</span>
       <input
         name={name}
         type={type}
         autoComplete={autoComplete}
         required
-        className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink"
+        className="w-full border border-ink bg-paper px-3.5 py-3 text-[16px] font-sans focus:outline-none focus:bg-white"
       />
-      {hint && <span className="mono text-[10px] text-ink-400 mt-1 block">{hint}</span>}
+      {hint && <span className="mt-1.5 block text-[14px] text-meta">{hint}</span>}
     </label>
   );
 }

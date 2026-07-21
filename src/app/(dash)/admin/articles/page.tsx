@@ -16,15 +16,15 @@ export const metadata: Metadata = {
   description: "Manage the editorial pipeline — draft, review, publish, feature and archive articles.",
 };
 
-const STATUS_TONE: Record<string, "paper" | "orange" | "green" | "outline"> = {
+const STATUS_TONE: Record<string, "paper" | "warn" | "green" | "outline"> = {
   draft: "paper",
-  review: "orange",
+  review: "warn",
   published: "green",
   archived: "outline",
 };
 
-const th = "text-left kicker text-ink-500 px-3 py-2 whitespace-nowrap";
-const td = "px-3 py-3 align-top border-t border-line";
+const th = "text-left kicker text-meta px-3 py-2 whitespace-nowrap";
+const td = "px-3 py-3 align-top border-t border-rule";
 
 export default async function ArticlesAdminPage() {
   const user = await requirePrivilege(PV.ARTICLE_CREATE);
@@ -49,10 +49,10 @@ export default async function ArticlesAdminPage() {
       />
 
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6 -mt-2">
-        <div className="flex flex-wrap gap-6 mono text-[11px] uppercase tracking-wide text-ink-500">
+        <div className="flex flex-wrap gap-6 mono text-[11px] uppercase tracking-wide text-meta">
           <span><strong className="text-ink">{num(articles.length)}</strong> total</span>
-          <span><strong className="text-up">{num(published)}</strong> published</span>
-          <span><strong className="text-btc-dark">{num(drafts)}</strong> in progress</span>
+          <span><strong className="text-safe">{num(published)}</strong> published</span>
+          <span><strong className="text-accent">{num(drafts)}</strong> in progress</span>
         </div>
         <ButtonLink href="/admin/articles/new" variant="primary" size="md">+ New Article</ButtonLink>
       </div>
@@ -60,9 +60,9 @@ export default async function ArticlesAdminPage() {
       {articles.length === 0 ? (
         <EmptyState title="No articles yet" hint="Seed the database or create a story from the Editor Desk." />
       ) : (
-        <div className="border border-line-strong bg-paper overflow-x-auto">
+        <div className="border border-ink bg-paper overflow-x-auto">
           <table className="w-full text-sm border-collapse">
-            <thead className="bg-paper-2">
+            <thead className="bg-surface-dim">
               <tr>
                 <th className={th}>Headline</th>
                 <th className={th}>Category</th>
@@ -76,35 +76,35 @@ export default async function ArticlesAdminPage() {
               {articles.map((a) => {
                 const meta = categoryMeta(a.category);
                 return (
-                  <tr key={a.id} className="hover:bg-paper-2/60">
+                  <tr key={a.id} className="hover:bg-surface-dim">
                     <td className={td}>
                       <Link
                         href={`/article/${a.slug}`}
-                        className="font-bold text-ink leading-tight hover:text-btc-dark block max-w-[320px]"
+                        className="font-bold text-ink leading-tight hover:text-accent block max-w-[320px]"
                       >
                         {a.title}
                       </Link>
-                      <div className="mono text-[10px] text-ink-400 mt-1">
+                      <div className="mono text-[10px] text-faint mt-1">
                         {a.publishedAt ? byline(a.publishedAt) : "unpublished"} · {a.readMinutes} min
                       </div>
                     </td>
                     <td className={`${td} whitespace-nowrap`}>
-                      <span className="mono text-[11px] uppercase text-ink-600">{meta.label}</span>
+                      <span className="mono text-[11px] uppercase text-body-2">{meta.label}</span>
                       {a.isFeatured && (
-                        <span className="block mono text-[10px] text-btc-dark mt-1">★ Featured</span>
+                        <span className="block mono text-[10px] text-accent mt-1">★ Featured</span>
                       )}
                     </td>
-                    <td className={`${td} mono text-[11px] text-ink-600 whitespace-nowrap`}>
+                    <td className={`${td} mono text-[11px] text-body-2 whitespace-nowrap`}>
                       {a.author?.displayName ?? "—"}
                     </td>
-                    <td className={`${td} font-display text-lg text-ink whitespace-nowrap`}>
+                    <td className={`${td} mono font-bold text-[16px] text-ink whitespace-nowrap`}>
                       {num(a.viewCount)}
                     </td>
                     <td className={td}>
                       <Tag tone={STATUS_TONE[a.status] ?? "paper"}>{a.status}</Tag>
                     </td>
                     <td className={td}>
-                      <Link href={`/admin/articles/${a.id}/edit`} className="kicker text-btc-dark hover:text-ink inline-block mb-2">
+                      <Link href={`/admin/articles/${a.id}/edit`} className="kicker text-accent hover:text-ink inline-block mb-2">
                         ✎ Edit
                       </Link>
                       <ArticleControls

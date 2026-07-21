@@ -1,23 +1,26 @@
 import type { Metadata } from "next";
-import { Anton, Archivo, IBM_Plex_Mono } from "next/font/google";
+import { Fraunces, Geist, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const anton = Anton({
-  weight: "400",
-  variable: "--font-anton",
+// v4 faces: Fraunces 600 (headlines/titles ONLY) · Geist (all UI/body) ·
+// IBM Plex Mono (addresses/txids/prices ONLY)
+const fraunces = Fraunces({
+  weight: "variable",
+  axes: ["opsz"],
+  variable: "--font-fraunces",
   subsets: ["latin"],
   display: "swap",
 });
 
-const archivo = Archivo({
-  weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--font-archivo",
+const geist = Geist({
+  weight: ["400", "500", "700", "900"],
+  variable: "--font-geist",
   subsets: ["latin"],
   display: "swap",
 });
 
 const plexMono = IBM_Plex_Mono({
-  weight: ["400", "500", "600", "700"],
+  weight: ["500", "600", "700"],
   variable: "--font-plex-mono",
   subsets: ["latin"],
   display: "swap",
@@ -46,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${anton.variable} ${archivo.variable} ${plexMono.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${geist.variable} ${plexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-paper text-ink">{children}</body>
     </html>

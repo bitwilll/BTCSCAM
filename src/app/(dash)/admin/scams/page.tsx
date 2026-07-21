@@ -14,16 +14,16 @@ export const metadata: Metadata = {
   description: "Curate the tracked scam database — status, severity and community verification.",
 };
 
-const STATUS_TONE: Record<string, "red" | "orange" | "green" | "paper" | "outline"> = {
+const STATUS_TONE: Record<string, "red" | "warn" | "green" | "paper" | "outline"> = {
   active: "red",
-  monitoring: "orange",
+  monitoring: "warn",
   confirmed: "green",
   frozen: "paper",
   dormant: "outline",
 };
 
-const th = "text-left kicker text-ink-500 px-3 py-2 whitespace-nowrap";
-const td = "px-3 py-3 align-top border-t border-line";
+const th = "text-left kicker text-meta px-3 py-2 whitespace-nowrap";
+const td = "px-3 py-3 align-top border-t border-rule";
 
 export default async function ScamsAdminPage() {
   await requirePrivilege(PV.SCAM_EDIT);
@@ -41,19 +41,19 @@ export default async function ScamsAdminPage() {
         lede="Set the operational status and threat severity of every tracked scam. Changes are reflected on the public database instantly."
       />
 
-      <div className="flex flex-wrap gap-6 mb-6 -mt-2 mono text-[11px] uppercase tracking-wide text-ink-500">
+      <div className="flex flex-wrap gap-6 mb-6 -mt-2 mono text-[11px] uppercase tracking-wide text-meta">
         <span><strong className="text-ink">{num(scams.length)}</strong> entries</span>
         <span>
-          <strong className="text-alert-strong">{num(scams.filter((s) => s.status === "active").length)}</strong> active
+          <strong className="text-danger">{num(scams.filter((s) => s.status === "active").length)}</strong> active
         </span>
       </div>
 
       {scams.length === 0 ? (
         <EmptyState title="No scam entries" hint="Seed the database to populate the tracker." />
       ) : (
-        <div className="border border-line-strong bg-paper overflow-x-auto">
+        <div className="border border-ink bg-paper overflow-x-auto">
           <table className="w-full text-sm border-collapse">
-            <thead className="bg-paper-2">
+            <thead className="bg-surface-dim">
               <tr>
                 <th className={th}>Entry</th>
                 <th className={th}>Type</th>
@@ -68,28 +68,28 @@ export default async function ScamsAdminPage() {
               {scams.map((s) => {
                 const chains = toStrArray(s.chains);
                 return (
-                  <tr key={s.id} className="hover:bg-paper-2/60">
+                  <tr key={s.id} className="hover:bg-surface-dim">
                     <td className={td}>
                       <Link
                         href={`/database/${s.slug}`}
-                        className="font-bold text-ink leading-tight hover:text-btc-dark block max-w-[260px]"
+                        className="font-bold text-ink leading-tight hover:text-accent block max-w-[260px]"
                       >
                         {s.name}
                       </Link>
-                      <div className="mono text-[11px] text-ink-500 mt-1 line-clamp-2 max-w-[260px]">
+                      <div className="mono text-[11px] text-meta mt-1 line-clamp-2 max-w-[260px]">
                         {s.summary}
                       </div>
                     </td>
-                    <td className={`${td} mono text-[11px] uppercase text-ink-600 whitespace-nowrap`}>
+                    <td className={`${td} mono text-[11px] uppercase text-body-2 whitespace-nowrap`}>
                       {s.type.replace(/-/g, " ")}
                     </td>
-                    <td className={`${td} mono text-[11px] text-ink-600 whitespace-nowrap`}>
+                    <td className={`${td} mono text-[11px] text-body-2 whitespace-nowrap`}>
                       {chains.length ? chains.join(", ") : "—"}
                     </td>
-                    <td className={`${td} font-display text-lg text-alert-strong whitespace-nowrap`}>
+                    <td className={`${td} mono font-bold text-[16px] text-danger whitespace-nowrap`}>
                       {s.amountAtRiskUsd != null ? compactUsd(Number(s.amountAtRiskUsd)) : "—"}
                     </td>
-                    <td className={`${td} font-display text-lg text-btc-dark whitespace-nowrap`}>
+                    <td className={`${td} mono font-bold text-[16px] text-accent whitespace-nowrap`}>
                       {num(s.verifiedCount)}
                     </td>
                     <td className={`${td} whitespace-nowrap`}>

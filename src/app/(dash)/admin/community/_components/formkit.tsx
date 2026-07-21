@@ -4,9 +4,9 @@ import { useActionState, useEffect, useRef, type ReactNode } from "react";
 import type { Result } from "@/actions/admin-ops";
 
 export const inputCls =
-  "w-full border border-line-strong bg-paper-2 px-3 py-2 text-sm focus:outline-none focus:border-ink disabled:opacity-50";
+  "w-full border border-ink bg-surface-dim px-3 py-2 text-sm focus:outline-none focus:border-ink disabled:opacity-50";
 const labelCls = "block";
-const capCls = "kicker text-ink-600 block mb-1";
+const capCls = "kicker text-body-2 block mb-1";
 
 export function Field({
   label,
@@ -36,7 +36,7 @@ export function Field({
         disabled={disabled}
         className={inputCls}
       />
-      {hint && <span className="mono text-[10px] text-ink-400 mt-1 block">{hint}</span>}
+      {hint && <span className="mono text-[10px] text-faint mt-1 block">{hint}</span>}
     </label>
   );
 }
@@ -109,8 +109,8 @@ export function Checkbox({
 }) {
   return (
     <label className="flex items-center gap-2 cursor-pointer">
-      <input type="checkbox" name={name} disabled={disabled} className="accent-btc" />
-      <span className="kicker text-ink-600">{label}</span>
+      <input type="checkbox" name={name} disabled={disabled} className="accent-ink" />
+      <span className="kicker text-body-2">{label}</span>
     </label>
   );
 }
@@ -138,7 +138,7 @@ export function CreateCard({
   }, [state]);
 
   return (
-    <div className="border border-line-strong bg-paper p-5">
+    <div className="border border-ink bg-paper p-5">
       <h3 className="kicker text-sm !tracking-[0.16em] section-rule pb-2 mb-4">{title}</h3>
       <form ref={formRef} action={dispatch} className="space-y-3">
         <fieldset disabled={pending} className="space-y-3">
@@ -148,13 +148,13 @@ export function CreateCard({
           <button
             type="submit"
             disabled={pending}
-            className="kicker inline-flex items-center justify-center gap-2 bg-ink text-paper hover:bg-ink-800 px-4 py-2.5 text-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="kicker inline-flex items-center justify-center gap-2 bg-ink text-paper hover:bg-action-hover px-4 py-2.5 text-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {pending ? "Saving…" : submitLabel}
           </button>
           {state && (
             <span
-              className={`mono text-[11px] ${state.ok ? "text-up" : "text-alert-strong"}`}
+              className={`mono text-[11px] ${state.ok ? "text-safe" : "text-danger"}`}
             >
               {state.ok ? "Created." : state.error ?? "Error"}
             </span>

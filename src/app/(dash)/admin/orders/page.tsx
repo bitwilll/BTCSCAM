@@ -14,17 +14,17 @@ export const metadata: Metadata = {
   description: "Fulfil crypto store orders — advance status and attach tracking.",
 };
 
-const STATUS_TONE: Record<string, "paper" | "orange" | "green" | "black" | "red" | "outline"> = {
+const STATUS_TONE: Record<string, "paper" | "warn" | "green" | "black" | "red" | "outline"> = {
   pending_payment: "paper",
-  paid: "orange",
-  processing: "orange",
+  paid: "warn",
+  processing: "warn",
   shipped: "black",
   delivered: "green",
   cancelled: "red",
 };
 
-const th = "text-left kicker text-ink-500 px-3 py-2 whitespace-nowrap";
-const td = "px-3 py-3 align-top border-t border-line";
+const th = "text-left kicker text-meta px-3 py-2 whitespace-nowrap";
+const td = "px-3 py-3 align-top border-t border-rule";
 
 export default async function OrdersAdminPage({
   searchParams,
@@ -74,9 +74,9 @@ export default async function OrdersAdminPage({
           hint={active ? `Nothing with status "${active.replace(/_/g, " ")}".` : "New store orders will land here."}
         />
       ) : (
-        <div className="border border-line-strong bg-paper overflow-x-auto">
+        <div className="border border-ink bg-paper overflow-x-auto">
           <table className="w-full text-sm border-collapse">
-            <thead className="bg-paper-2">
+            <thead className="bg-surface-dim">
               <tr>
                 <th className={th}>Order</th>
                 <th className={th}>Customer</th>
@@ -91,30 +91,30 @@ export default async function OrdersAdminPage({
               {orders.map((o) => {
                 const itemCount = o.items.reduce((n, it) => n + it.quantity, 0);
                 return (
-                  <tr key={o.id} className="hover:bg-paper-2/60">
+                  <tr key={o.id} className="hover:bg-surface-dim">
                     <td className={td}>
                       <div className="mono font-bold text-ink">{o.orderNumber}</div>
-                      <div className="mono text-[10px] text-ink-400 mt-1">{byline(o.createdAt)}</div>
+                      <div className="mono text-[10px] text-faint mt-1">{byline(o.createdAt)}</div>
                       {o.trackingNumber && (
-                        <div className="mono text-[10px] text-btc-dark mt-1">
+                        <div className="mono text-[10px] text-accent mt-1">
                           {o.trackingCarrier} · {o.trackingNumber}
                         </div>
                       )}
                     </td>
-                    <td className={`${td} mono text-[11px] text-ink-600 break-all max-w-[180px]`}>
+                    <td className={`${td} mono text-[11px] text-body-2 break-all max-w-[180px]`}>
                       {o.email}
                     </td>
-                    <td className={`${td} font-display text-lg text-ink whitespace-nowrap`}>
+                    <td className={`${td} mono font-bold text-[16px] text-ink whitespace-nowrap`}>
                       {num(itemCount)}
                     </td>
-                    <td className={`${td} font-display text-lg text-ink whitespace-nowrap`}>
+                    <td className={`${td} mono font-bold text-[16px] text-ink whitespace-nowrap`}>
                       {usd(o.totalUsd)}
                     </td>
                     <td className={`${td} whitespace-nowrap`}>
                       {o.cryptoMethod ? (
                         <Tag tone="paper">{o.cryptoMethod}</Tag>
                       ) : (
-                        <span className="mono text-[11px] text-ink-400">—</span>
+                        <span className="mono text-[11px] text-faint">—</span>
                       )}
                     </td>
                     <td className={td}>
@@ -154,7 +154,7 @@ function FilterTab({
       className={`kicker px-3 py-1.5 border capitalize ${
         activeState
           ? "bg-ink text-paper border-ink"
-          : "bg-paper text-ink-600 border-line-strong hover:border-ink"
+          : "bg-paper text-body-2 border-ink hover:border-ink"
       }`}
     >
       {label}

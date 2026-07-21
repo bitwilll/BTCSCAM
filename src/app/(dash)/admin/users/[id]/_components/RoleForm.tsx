@@ -32,7 +32,7 @@ export function RoleForm({
             value={role}
             disabled={disabled || pending}
             onChange={(e) => setRole(e.target.value as Role)}
-            className="w-full px-3 py-2.5 text-sm border border-line bg-paper text-ink focus:outline-none focus:border-ink disabled:opacity-50"
+            className="w-full px-3 py-2.5 text-sm border border-rule bg-paper text-ink focus:outline-none focus:border-ink disabled:opacity-50"
           >
             {assignableRoles.map((r) => (
               <option key={r} value={r}>
@@ -55,21 +55,21 @@ export function RoleForm({
               setMsg({ ok: r.ok, text: r.ok ? r.message ?? "Saved." : r.error ?? "Error." });
             })
           }
-          className="kicker bg-ink text-paper px-5 py-2.5 hover:bg-btc hover:text-black disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
+          className="kicker bg-ink text-paper px-5 py-2.5 hover:bg-action-hover disabled:opacity-50 disabled:cursor-not-allowed shrink-0"
         >
           {pending ? "Saving…" : "Save Role"}
         </button>
       </div>
 
-      <p className="mono text-[11px] text-ink-500 mt-2">
+      <p className="mono text-[11px] text-meta mt-2">
         Grants the {ROLE_PRIVILEGES[role]?.length ?? 0} baseline privileges for this role.
       </p>
 
       {disabled && disabledReason && (
-        <p className="mono text-[11px] text-alert-strong mt-2">{disabledReason}</p>
+        <p className="mono text-[11px] text-danger mt-2">{disabledReason}</p>
       )}
       {msg && (
-        <p className={`mono text-[11px] mt-2 ${msg.ok ? "text-up" : "text-alert-strong"}`}>{msg.text}</p>
+        <p className={`mono text-[11px] mt-2 ${msg.ok ? "text-safe" : "text-danger"}`}>{msg.text}</p>
       )}
     </div>
   );

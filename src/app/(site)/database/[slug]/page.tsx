@@ -3,10 +3,11 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
 import { getSession } from "@/lib/auth";
-import { Container, Kicker, Tag, SeverityTag, StatBlock, ButtonLink } from "@/components/ui";
-import { VerifyButton } from "@/components/content/VerifyButton";
+import { Container, Tag, SeverityTag, StatBlock, ButtonLink } from "@/components/ui";
 import { CopyButton } from "@/components/crypto/CopyButton";
 import { compactUsd, num, byline, timeAgo, toStrArray } from "@/lib/format";
+import { VerificationChip, isStale, StaleNote } from "../_components/verification";
+import { VerdictButtons } from "../_components/VerdictButtons";
 
 export const dynamic = "force-dynamic";
 
@@ -59,121 +60,164 @@ export default async function ScamDetailPage({ params }: { params: Params }) {
   const chains = toStrArray(entry.chains);
   const addresses = toStrArray(entry.addresses);
   const atRisk = entry.amountAtRiskUsd != null ? Number(entry.amountAtRiskUsd) : null;
+  const lastSeen = timeAgo(entry.updatedAt);
+  const stale = isStale(entry.status, lastSeen);
+  const staffVerified = entry.status === "confirmed" || entry.status === "frozen";
 
   return (
-    <Container className="py-8 lg:py-10">
+    <Container className="pt-8 pb-14 fade-up">
       {/* Breadcrumb */}
-      <div className="mono text-[11px] text-ink-500 uppercase tracking-wide mb-5">
-        <Link href="/database" className="hover:text-btc-dark">
+      <div className="kicker text-meta mb-5">
+        <Link href="/database" className="hover:text-ink hover:underline underline-offset-4">
           Scam Database
         </Link>{" "}
-        <span className="text-ink-400">/</span> {entry.name}
+        <span className="text-faint">/</span> {entry.name}
       </div>
 
-      {/* Masthead */}
-      <header className="border-b-2 border-ink pb-6 mb-8">
+      {/* ── Dossier masthead (v4) ── */}
+      <header className="border-b border-ink pb-6 mb-6">
         <div className="flex flex-wrap items-center gap-2 mb-3">
           <Tag tone="black">{entry.type.replace(/-/g, " ")}</Tag>
           <SeverityTag severity={entry.severity} />
-          <span className="kicker text-ink-500">{entry.status}</span>
+          <VerificationChip status={entry.status} />
           {chains.map((c) => (
             <Tag key={c} tone="paper">
               {c}
             </Tag>
           ))}
         </div>
-        <h1 className="font-display text-5xl sm:text-6xl text-ink leading-[0.9]">{entry.name}</h1>
-        <p className="mt-4 max-w-2xl text-lg text-ink-600">{entry.summary}</p>
-        <div className="mt-4 mono text-[11px] text-ink-500 uppercase tracking-wide flex flex-wrap gap-x-4 gap-y-1">
+        <h1
+          className="font-display text-ink"
+          style={{ fontSize: "clamp(32px,4.5vw,52px)", lineHeight: 1.12, textWrap: "balance" }}
+        >
+          {entry.name}
+        </h1>
+        <p
+          className="mt-4 max-w-2xl text-[18px] leading-[1.6] text-body-2"
+          style={{ textWrap: "pretty" }}
+        >
+          {entry.summary}
+        </p>
+        <div className="mt-4 text-[14px] text-meta uppercase tracking-[.05em] flex flex-wrap gap-x-4 gap-y-1">
           <span>First seen {byline(entry.firstSeen)}</span>
-          <span>{timeAgo(entry.firstSeen)} on the board</span>
+          <span>Last seen {lastSeen}</span>
           <span>{num(entry.verifiedCount)} verified</span>
         </div>
       </header>
 
+      {/* ── Stale-intel warn strip (v4) ── */}
+      {stale && <StaleNote lastSeen={lastSeen} className="mb-6" />}
+
       <div className="grid lg:grid-cols-[1fr_320px] gap-10">
-        {/* Main column */}
+        {/* ── Main column ── */}
         <div>
+          <div className="kicker text-meta">Summary</div>
           {entry.details ? (
-            <div className="prose-bs">{renderDetails(entry.details)}</div>
+            <div className="prose-bs mt-2">{renderDetails(entry.details)}</div>
           ) : (
-            <p className="text-ink-600">
+            <p className="mt-2 text-[16px] leading-[1.6] text-body-2 max-w-[70ch]">
               No extended write-up yet. Add evidence through{" "}
-              <Link href={`/report?scam=${entry.slug}`} className="text-btc-dark underline">
+              <Link
+                href={`/report?scam=${entry.slug}`}
+                className="text-accent font-bold hover:underline underline-offset-4"
+              >
                 Report a Scam
               </Link>
               .
             </p>
           )}
 
-          {/* Observed addresses */}
+          {/* Linked wallets (v4: dark mono blocks) */}
           <section className="mt-10">
-            <h2 className="kicker text-sm !tracking-[0.16em] section-rule pb-2 mb-4">
-              Observed On-Chain Addresses
-            </h2>
+            <div className="kicker text-meta">Linked wallets</div>
             {addresses.length > 0 ? (
-              <ul className="flex flex-col gap-2">
+              <ul className="flex flex-col gap-1.5 mt-2">
                 {addresses.map((addr) => (
-                  <li
-                    key={addr}
-                    className="flex items-center justify-between gap-3 border border-line bg-paper-2 px-3 py-2.5"
-                  >
-                    <code className="mono text-xs sm:text-sm text-ink break-all">{addr}</code>
+                  <li key={addr} className="flex items-center gap-2">
+                    <code className="flex-1 min-w-0 mono font-semibold text-[15px] sm:text-[16px] bg-dark text-brand px-3 py-2 break-all">
+                      {addr}
+                    </code>
                     <CopyButton value={addr} label="Copy" />
                   </li>
                 ))}
               </ul>
             ) : (
-              <p className="mono text-sm text-ink-500">No addresses recorded yet.</p>
+              <p className="mt-2 text-[14px] text-meta">No addresses recorded yet.</p>
             )}
-            <p className="mono text-[11px] text-ink-400 uppercase tracking-wide mt-3">
+            <p className="eyebrow mt-3">
               Verify every address independently before acting · Not financial advice
             </p>
           </section>
         </div>
 
-        {/* Sidebar */}
-        <aside className="lg:border-l lg:border-line lg:pl-8 flex flex-col gap-6">
+        {/* ── Sidebar ── */}
+        <aside className="flex flex-col gap-6">
           {atRisk != null && (
             <StatBlock
-              label="Estimated At Risk"
+              dark
+              label="Amount at risk"
               value={compactUsd(atRisk)}
               sub="reported exposure tied to this operation"
-              tone="red"
             />
           )}
 
-          <div className="border border-line bg-paper-2 p-4">
-            <div className="eyebrow mb-2">Community Verification</div>
-            <p className="mono text-[11px] text-ink-500 uppercase tracking-wide mb-3">
+          <div>
+            <div className="kicker text-meta">Community verdict</div>
+            <p className="mt-2 mb-2.5 text-[14px] text-meta">
               {num(entry.verifiedCount)} watchmen have corroborated this entry.
             </p>
-            <VerifyButton
+            <VerdictButtons
               scamId={entry.id}
+              slug={entry.slug}
               initialCount={entry.verifiedCount}
               initialVerified={Boolean(ownVerification)}
             />
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="border border-line bg-paper-2 p-4">
-              <div className="eyebrow mb-1">Reports Filed</div>
-              <div className="font-display text-3xl text-ink">{num(entry.reportCount)}</div>
-            </div>
-            <div className="border border-line bg-paper-2 p-4">
-              <div className="eyebrow mb-1">Linked Reports</div>
-              <div className="font-display text-3xl text-ink">{num(linkedReports)}</div>
+          {/* Related reports */}
+          <div>
+            <div className="kicker text-meta">Related reports</div>
+            <div className="grid grid-cols-2 gap-2 mt-2">
+              <div className="border border-rule bg-surface-dim p-4">
+                <div className="eyebrow mb-1">Reports filed</div>
+                <div className="mono font-black text-[28px] text-ink">
+                  {num(entry.reportCount)}
+                </div>
+              </div>
+              <div className="border border-rule bg-surface-dim p-4">
+                <div className="eyebrow mb-1">Linked reports</div>
+                <div className="mono font-black text-[28px] text-ink">{num(linkedReports)}</div>
+              </div>
             </div>
           </div>
 
-          <div className="bg-dark text-paper p-5">
-            <Kicker color="orange">Seen this scam?</Kicker>
-            <p className="text-paper/80 text-sm mt-2 mb-4">
-              Add your evidence to strengthen the case and warn the next target.
-            </p>
-            <ButtonLink href={`/report?scam=${entry.slug}`} variant="primary" size="md" full>
-              Report to this Entry →
+          {staffVerified && (
+            <div>
+              <div className="kicker text-meta">How verified</div>
+              <p className="mt-2 text-[16px] leading-[1.55]" style={{ color: "#3E3B35" }}>
+                Two independent verifiers reproduced the indicators; staff review signed off.
+                First seen {byline(entry.firstSeen)}.
+              </p>
+            </div>
+          )}
+
+          <div>
+            <div className="kicker text-meta">Timeline</div>
+            <div className="mt-2 text-[16px] text-body-2">
+              First seen {byline(entry.firstSeen)} · last {lastSeen}
+            </div>
+          </div>
+
+          <div>
+            <ButtonLink href={`/report?scam=${entry.slug}`} variant="ghost" size="md" full>
+              Report a sighting →
             </ButtonLink>
+            <Link
+              href="/database"
+              className="inline-block mt-3 kicker text-accent hover:underline underline-offset-4"
+            >
+              Open the full database →
+            </Link>
           </div>
         </aside>
       </div>

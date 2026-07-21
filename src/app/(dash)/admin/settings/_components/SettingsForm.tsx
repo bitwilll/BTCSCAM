@@ -23,24 +23,24 @@ function Row({
   msg: { ok: boolean; text: string } | null;
 }) {
   return (
-    <div className="border border-line bg-paper-2 p-4">
+    <div className="border border-rule bg-surface-dim p-4">
       <div className="flex flex-col sm:flex-row sm:items-end gap-3">
         <label className="flex-1 min-w-0">
           <span className="eyebrow block mb-1">{label}</span>
           {children}
-          <span className="mono text-[11px] text-ink-500 mt-1 block">{hint}</span>
+          <span className="mono text-[11px] text-meta mt-1 block">{hint}</span>
         </label>
         <button
           type="button"
           disabled={pending || !dirty}
           onClick={onSave}
-          className="kicker bg-ink text-paper px-5 py-2.5 hover:bg-btc hover:text-black disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+          className="kicker bg-ink text-paper px-5 py-2.5 hover:bg-action-hover disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
         >
           {pending ? "…" : "Save"}
         </button>
       </div>
       {msg && (
-        <p className={`mono text-[11px] mt-2 ${msg.ok ? "text-up" : "text-alert-strong"}`}>{msg.text}</p>
+        <p className={`mono text-[11px] mt-2 ${msg.ok ? "text-safe" : "text-danger"}`}>{msg.text}</p>
       )}
     </div>
   );
@@ -56,7 +56,7 @@ export function SettingsForm({
   todaysNumber: string;
 }) {
   const inputCls =
-    "w-full px-3 py-2.5 text-sm border border-line bg-paper text-ink focus:outline-none focus:border-ink";
+    "w-full px-3 py-2.5 text-sm border border-rule bg-paper text-ink focus:outline-none focus:border-ink";
 
   // threatcon
   const [tc, setTc] = useState(THREATCON_LEVELS.includes(threatcon as (typeof THREATCON_LEVELS)[number]) ? threatcon : "ELEVATED");

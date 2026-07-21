@@ -25,14 +25,14 @@ export function ConsultReply({ requestId }: { requestId: string }) {
   return (
     <div>
       <label className="block">
-        <span className="kicker text-ink-600 block mb-1.5">Staff reply</span>
+        <span className="kicker text-body-2 block mb-1.5">Staff reply</span>
         <textarea
           ref={ref}
           rows={4}
           disabled={pending}
           placeholder="Write a reply to the requester…"
           aria-label="Staff reply"
-          className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink disabled:opacity-50"
+          className="w-full border border-ink bg-surface-dim px-3 py-2.5 text-sm focus:outline-none focus:border-ink disabled:opacity-50"
         />
       </label>
       <div className="mt-3 flex items-center gap-3">
@@ -40,12 +40,12 @@ export function ConsultReply({ requestId }: { requestId: string }) {
           type="button"
           disabled={pending}
           onClick={submit}
-          className="kicker inline-flex items-center justify-center gap-2 bg-btc text-black hover:bg-btc-dark hover:text-white px-4 py-2.5 text-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="kicker inline-flex items-center justify-center gap-2 bg-ink text-paper hover:bg-action-hover px-4 py-2.5 text-xs transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {pending ? "Sending…" : "Send Reply"}
         </button>
         {msg && (
-          <span className={`mono text-[11px] ${msg.ok ? "text-up" : "text-alert-strong"}`}>
+          <span className={`mono text-[11px] ${msg.ok ? "text-safe" : "text-danger"}`}>
             {msg.text}
           </span>
         )}

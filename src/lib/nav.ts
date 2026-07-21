@@ -67,7 +67,7 @@ export const FOOTER_NAV: { heading: string; links: NavLink[] }[] = [
       { label: "Donate", href: "/donate" },
       { label: "Consultation", href: "/consultation" },
       { label: "Film Fundraiser", href: "/film-fundraiser" },
-      { label: "For Satoshi", href: "/about#for-satoshi" },
+      { label: "For Satoshi", href: "/for-satoshi" },
     ],
   },
   {

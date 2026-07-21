@@ -9,10 +9,10 @@ export function CheckoutForm({ defaultEmail }: { defaultEmail: string }) {
   const [state, action, pending] = useActionState<CheckoutState, FormData>(placeOrder, null);
 
   return (
-    <form action={action} className="space-y-5">
+    <form action={action} className="space-y-6">
       <fieldset className="space-y-4">
-        <legend className="kicker text-sm !tracking-[0.16em] border-b border-line pb-2 mb-4 w-full">
-          Shipping Details
+        <legend className="mb-4 w-full border-b border-ink pb-2.5 kicker text-ink">
+          Shipping details
         </legend>
         <Field label="Full name" name="name" autoComplete="name" />
         <Field
@@ -32,16 +32,16 @@ export function CheckoutForm({ defaultEmail }: { defaultEmail: string }) {
       </fieldset>
 
       <fieldset>
-        <legend className="kicker text-sm !tracking-[0.16em] border-b border-line pb-2 mb-4 w-full">
-          Payment Method
+        <legend className="mb-4 w-full border-b border-ink pb-2.5 kicker text-ink">
+          Payment method
         </legend>
         <label className="block">
-          <span className="kicker text-ink-600 block mb-1.5">Pay with</span>
+          <span className="kicker mb-1.5 block text-ink">Pay with</span>
           <select
             name="cryptoMethod"
             defaultValue="BTC"
             required
-            className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink"
+            className="w-full border border-ink bg-paper px-3.5 py-2.5 text-[16px] text-ink focus:outline-none"
           >
             {CRYPTO_METHODS.map((m) => (
               <option key={m.method} value={m.method}>
@@ -49,18 +49,18 @@ export function CheckoutForm({ defaultEmail }: { defaultEmail: string }) {
               </option>
             ))}
           </select>
-          <span className="mono text-[10px] text-ink-400 mt-1 block">
+          <span className="mt-1.5 block text-[14px] text-meta">
             You&apos;ll get the exact wallet address and QR code on the next screen.
           </span>
         </label>
       </fieldset>
 
-      {state?.error && <p className="mono text-[12px] text-alert-strong">{state.error}</p>}
+      {state?.error && <p className="text-[14px] font-bold text-danger">{state.error}</p>}
 
       <Button type="submit" variant="primary" size="lg" full disabled={pending}>
         {pending ? "Placing order…" : "Place order & get payment address"}
       </Button>
-      <p className="mono text-[11px] uppercase tracking-wide text-ink-500 text-center">
+      <p className="text-center text-[14px] text-meta">
         No charge is taken now · You send crypto after the order is created
       </p>
     </form>
@@ -84,16 +84,16 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="kicker text-ink-600 block mb-1.5">{label}</span>
+      <span className="kicker mb-1.5 block text-ink">{label}</span>
       <input
         name={name}
         type={type}
         autoComplete={autoComplete}
         defaultValue={defaultValue}
         required
-        className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink"
+        className="w-full border border-ink bg-paper px-3.5 py-2.5 text-[16px] text-ink focus:outline-none"
       />
-      {hint && <span className="mono text-[10px] text-ink-400 mt-1 block">{hint}</span>}
+      {hint && <span className="mt-1.5 block text-[14px] text-meta">{hint}</span>}
     </label>
   );
 }

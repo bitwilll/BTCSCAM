@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { Container, MediaPlaceholder, Tag, Kicker, SectionHeader } from "@/components/ui";
+import { MediaPlaceholder, Tag, SectionHeader } from "@/components/ui";
 import { usd, toStrArray } from "@/lib/format";
 import { ProductCard } from "../_components/ProductCard";
 import { AddToCart } from "./_components/AddToCart";
@@ -40,25 +40,37 @@ export default async function ProductPage({
   });
 
   const images = toStrArray(product.imageLabels);
-  const cover = images[0] || `[ ${product.category} ]`;
+  const alt = (images[0] || product.name).replace(/[[\]]/g, "").trim();
   const inStock = product.stock > 0;
 
   return (
-    <Container className="py-10">
-      <nav className="mb-6 mono text-[11px] uppercase tracking-wide text-ink-500">
-        <Link href="/store" className="hover:text-btc-dark">
+    <div className="mx-auto max-w-[1140px] px-6 py-10 fade-up">
+      <nav className="mb-6 kicker text-meta">
+        <Link href="/store" className="hover:text-ink">
           Store
         </Link>{" "}
-        <span className="text-ink-400">/</span>{" "}
-        <Link href={`/store?category=${encodeURIComponent(product.category)}`} className="capitalize hover:text-btc-dark">
+        <span className="text-faint">/</span>{" "}
+        <Link
+          href={`/store?category=${encodeURIComponent(product.category)}`}
+          className="hover:text-ink"
+        >
           {product.category}
         </Link>
       </nav>
 
-      <div className="grid gap-10 lg:grid-cols-[1fr_1fr]">
-        {/* Gallery */}
+      <div className="grid gap-10 lg:grid-cols-2">
+        {/* ── Big image ── */}
         <div>
-          <MediaPlaceholder src={product.imageUrl} label={cover} ratio="4/3" />
+          {product.imageUrl ? (
+            <div
+              className="bg-surface-alt bg-cover bg-center shadow-card"
+              style={{ aspectRatio: "4/3", backgroundImage: `url(${product.imageUrl})` }}
+              role="img"
+              aria-label={alt}
+            />
+          ) : (
+            <div className="hatch shadow-card" style={{ aspectRatio: "4/3" }} role="img" aria-label={alt} />
+          )}
           {images.length > 1 && (
             <div className="mt-3 grid grid-cols-3 gap-3">
               {images.slice(1, 4).map((label, i) => (
@@ -68,60 +80,64 @@ export default async function ProductPage({
           )}
         </div>
 
-        {/* Detail */}
+        {/* ── Detail ── */}
         <div>
-          <div className="flex items-center gap-2">
-            {product.badge && <Tag tone="orange">{product.badge}</Tag>}
-            <Kicker color="muted" className="capitalize">
-              {product.category}
-            </Kicker>
+          <div className="flex flex-wrap items-center gap-2.5">
+            <span className="kicker text-meta">{product.category}</span>
+            {product.badge && <Tag tone="black">{product.badge}</Tag>}
           </div>
-          <h1 className="mt-3 font-display text-4xl sm:text-5xl leading-[0.95] text-ink">{product.name}</h1>
-          <div className="mt-4 font-display text-4xl text-btc-dark">{usd(product.priceUsd)}</div>
-          <p className="mt-4 text-lg text-ink-600 leading-relaxed">{product.description}</p>
+          <h1
+            className="mt-3 font-bold text-ink"
+            style={{ fontSize: "clamp(28px,3.5vw,40px)", lineHeight: 1.12, textWrap: "balance" }}
+          >
+            {product.name}
+          </h1>
+          <div className="mt-3 font-bold text-[24px] text-ink">{usd(product.priceUsd)}</div>
+          <p className="mt-4 text-[18px] leading-[1.65] text-body-2" style={{ textWrap: "pretty" }}>
+            {product.description}
+          </p>
 
-          <div className="mt-5 flex items-center gap-2">
-            {inStock ? (
-              <Tag tone="green">In stock</Tag>
-            ) : (
-              <Tag tone="red">Sold out</Tag>
-            )}
-            <span className="mono text-[11px] uppercase tracking-wide text-ink-500">
-              Ships worldwide · Crypto only
+          <div className="mt-5 flex flex-wrap items-center gap-2.5">
+            {inStock ? <Tag tone="green">In stock</Tag> : <Tag tone="red">Sold out</Tag>}
+            <span className="text-[14px] uppercase tracking-[.05em] text-meta">
+              Crypto only — BTC · LN · USDC
             </span>
           </div>
 
-          <div className="mt-6 border-t border-line pt-6">
+          <div className="mt-6 border-t border-ink pt-6">
             {inStock ? (
               <AddToCart productId={product.id} />
             ) : (
-              <p className="mono text-sm text-ink-500">
+              <p className="text-[16px] leading-[1.5] text-meta">
                 This item is currently sold out. Follow The Rug Report for restock alerts.
               </p>
             )}
           </div>
 
-          <div className="mt-6 border border-line bg-paper-2 p-4">
+          <div className="mt-6 border border-rule bg-surface-dim p-4">
             <div className="eyebrow mb-1">Where your money goes</div>
-            <p className="text-sm text-ink-600 leading-snug">
-              100% of store proceeds fund investigations, the community Scam Database and victim support.
-              Not financial advice — just a good tee.
+            <p className="text-[16px] leading-[1.5] text-body-2">
+              100% of store proceeds fund investigations, the community Scam Database and victim
+              support. Not financial advice — just a good tee.
             </p>
           </div>
         </div>
       </div>
 
-      {/* Related */}
+      {/* ── Related ── */}
       {related.length > 0 && (
         <section className="mt-16">
-          <SectionHeader title="More In This Category" action={{ label: "Open Store", href: "/store" }} />
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <SectionHeader title="More in this category" action={{ label: "Open store", href: "/store" }} />
+          <div
+            className="grid gap-[18px]"
+            style={{ gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))" }}
+          >
             {related.map((p) => (
               <ProductCard key={p.id} product={p} />
             ))}
           </div>
         </section>
       )}
-    </Container>
+    </div>
   );
 }

@@ -17,17 +17,17 @@ export const metadata: Metadata = {
 
 const STAFF_ROLES = ["copywriter", "editor", "manager", "admin"];
 
-const STATUS_TONE: Record<string, "outline" | "orange" | "green" | "black" | "red" | "paper"> = {
+const STATUS_TONE: Record<string, "outline" | "warn" | "green" | "black" | "red" | "paper"> = {
   pending: "paper",
-  triaging: "orange",
+  triaging: "warn",
   verified: "green",
   published: "black",
   rejected: "red",
   duplicate: "outline",
 };
 
-const th = "text-left kicker text-ink-500 px-3 py-2 whitespace-nowrap";
-const td = "px-3 py-3 align-top border-t border-line";
+const th = "text-left kicker text-meta px-3 py-2 whitespace-nowrap";
+const td = "px-3 py-3 align-top border-t border-rule";
 
 export default async function ReportsAdminPage({
   searchParams,
@@ -88,9 +88,9 @@ export default async function ReportsAdminPage({
           hint={active ? `Nothing with status "${active}".` : "Community reports will appear here as they come in."}
         />
       ) : (
-        <div className="border border-line-strong bg-paper overflow-x-auto">
+        <div className="border border-ink bg-paper overflow-x-auto">
           <table className="w-full text-sm border-collapse">
-            <thead className="bg-paper-2">
+            <thead className="bg-surface-dim">
               <tr>
                 <th className={th}>Report</th>
                 <th className={th}>Category</th>
@@ -104,10 +104,10 @@ export default async function ReportsAdminPage({
             </thead>
             <tbody>
               {reports.map((r) => (
-                <tr key={r.id} className="hover:bg-paper-2/60">
+                <tr key={r.id} className="hover:bg-surface-dim">
                   <td className={td}>
                     <div className="font-bold text-ink leading-tight max-w-[220px]">{r.scamName}</div>
-                    <div className="mono text-[11px] text-ink-500 mt-1 line-clamp-2 max-w-[220px]">
+                    <div className="mono text-[11px] text-meta mt-1 line-clamp-2 max-w-[220px]">
                       {r.description}
                     </div>
                     {r.url && (
@@ -115,20 +115,20 @@ export default async function ReportsAdminPage({
                         href={r.url}
                         target="_blank"
                         rel="noreferrer nofollow"
-                        className="mono text-[10px] text-btc-dark hover:text-ink break-all"
+                        className="mono text-[10px] text-accent hover:text-ink break-all"
                       >
                         {r.url}
                       </a>
                     )}
-                    <div className="mono text-[10px] text-ink-400 mt-1">{byline(r.createdAt)}</div>
+                    <div className="mono text-[10px] text-faint mt-1">{byline(r.createdAt)}</div>
                   </td>
-                  <td className={`${td} mono text-[11px] uppercase text-ink-600 whitespace-nowrap`}>
+                  <td className={`${td} mono text-[11px] uppercase text-body-2 whitespace-nowrap`}>
                     {r.category.replace(/-/g, " ")}
                   </td>
-                  <td className={`${td} mono text-[11px] text-ink-600 whitespace-nowrap`}>
+                  <td className={`${td} mono text-[11px] text-body-2 whitespace-nowrap`}>
                     {r.chain || "—"}
                   </td>
-                  <td className={`${td} font-display text-lg text-alert-strong whitespace-nowrap`}>
+                  <td className={`${td} mono font-bold text-[16px] text-danger whitespace-nowrap`}>
                     {r.amountLostUsd != null ? compactUsd(Number(r.amountLostUsd)) : "—"}
                   </td>
                   <td className={td}>
@@ -139,10 +139,10 @@ export default async function ReportsAdminPage({
                       {r.submittedBy?.displayName ?? "Guest"}
                     </div>
                     {r.reporterEmail && (
-                      <div className="mono text-[10px] text-ink-500 break-all">{r.reporterEmail}</div>
+                      <div className="mono text-[10px] text-meta break-all">{r.reporterEmail}</div>
                     )}
                   </td>
-                  <td className={`${td} mono text-[11px] text-ink-600 whitespace-nowrap`}>
+                  <td className={`${td} mono text-[11px] text-body-2 whitespace-nowrap`}>
                     {r.assignedTo?.displayName ?? "—"}
                   </td>
                   <td className={td}>
@@ -181,7 +181,7 @@ function FilterTab({
       className={`kicker px-3 py-1.5 border capitalize ${
         activeState
           ? "bg-ink text-paper border-ink"
-          : "bg-paper text-ink-600 border-line-strong hover:border-ink"
+          : "bg-paper text-body-2 border-ink hover:border-ink"
       }`}
     >
       {label}

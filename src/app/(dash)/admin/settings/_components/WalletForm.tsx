@@ -34,14 +34,14 @@ export function WalletForm({
   }
 
   return (
-    <div className={`border p-4 ${isPlaceholder ? "border-alert-strong/40 bg-alert-strong/5" : "border-line bg-paper-2"}`}>
+    <div className={`border p-4 ${isPlaceholder ? "border-danger/40 bg-danger/5" : "border-rule bg-surface-dim"}`}>
       <div className="flex items-center justify-between gap-3 mb-3">
         <div>
           <span className="kicker text-ink">{method}</span>
-          <span className="mono text-[11px] text-ink-500 ml-2">{label} · {network}</span>
+          <span className="mono text-[11px] text-meta ml-2">{label} · {network}</span>
         </div>
         {isPlaceholder && (
-          <span className="kicker inline-flex items-center px-2 py-[3px] leading-none bg-alert-strong text-white">
+          <span className="kicker inline-flex items-center px-2 py-[3px] leading-none bg-danger text-white">
             Placeholder
           </span>
         )}
@@ -53,7 +53,7 @@ export function WalletForm({
           <input
             value={addr}
             onChange={(e) => setAddr(e.target.value)}
-            className={`${inputCls} ${isPlaceholder ? "border-alert-strong/50" : "border-line"}`}
+            className={`${inputCls} ${isPlaceholder ? "border-danger/50" : "border-rule"}`}
             aria-label={`${method} address`}
             spellCheck={false}
           />
@@ -64,7 +64,7 @@ export function WalletForm({
             value={memoVal}
             onChange={(e) => setMemoVal(e.target.value)}
             placeholder="XRP / Cosmos destination tag"
-            className={`${inputCls} border-line`}
+            className={`${inputCls} border-rule`}
             aria-label={`${method} memo`}
             spellCheck={false}
           />
@@ -76,12 +76,12 @@ export function WalletForm({
           type="button"
           disabled={pending || !dirty}
           onClick={save}
-          className="kicker bg-ink text-paper px-5 py-2.5 hover:bg-btc hover:text-black disabled:opacity-40 disabled:cursor-not-allowed"
+          className="kicker bg-ink text-paper px-5 py-2.5 hover:bg-action-hover disabled:opacity-40 disabled:cursor-not-allowed"
         >
           {pending ? "Saving…" : "Save Address"}
         </button>
         {msg && (
-          <span className={`mono text-[11px] ${msg.ok ? "text-up" : "text-alert-strong"}`}>{msg.text}</span>
+          <span className={`mono text-[11px] ${msg.ok ? "text-safe" : "text-danger"}`}>{msg.text}</span>
         )}
       </div>
     </div>

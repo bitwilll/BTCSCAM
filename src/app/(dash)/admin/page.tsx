@@ -147,10 +147,12 @@ export default async function AdminHubPage() {
 
   return (
     <div>
-      <div className="border-b-2 border-ink pb-5 mb-8">
+      <div className="border-b border-ink pb-5 mb-8">
         <Kicker color="red">Administration</Kicker>
-        <h1 className="font-display text-4xl sm:text-5xl text-ink leading-[0.9] mt-2">Admin Panel</h1>
-        <p className="mt-3 text-ink-600 max-w-2xl">
+        <h1 className="font-display text-ink mt-2" style={{ fontSize: "clamp(30px,4vw,44px)", lineHeight: 1.1 }}>
+          Admin panel
+        </h1>
+        <p className="mt-3 text-[16px] leading-[1.6] text-body-2 max-w-2xl">
           Full administrative control of BTCSCAM.COM. Every action taken here is written to the audit log.
         </p>
       </div>
@@ -158,22 +160,22 @@ export default async function AdminHubPage() {
       {groups.map((g) => (
         <div key={g} className="mb-10">
           <SectionHeader title={g} />
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-px bg-line border border-line">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {visible
               .filter((s) => s.group === g)
               .map((s) => (
                 <Link
                   key={s.href}
                   href={s.href}
-                  className="group bg-paper-2 p-5 hover:bg-paper transition-colors flex flex-col justify-between gap-6"
+                  className="group bg-white shadow-card p-5 hover:bg-surface-dim transition-colors flex flex-col justify-between gap-6 hover:no-underline"
                 >
                   <div>
-                    <span className="kicker text-ink group-hover:text-btc-dark">{s.label} →</span>
-                    <p className="mono text-[11px] text-ink-500 mt-2 leading-snug">{s.desc}</p>
+                    <span className="kicker text-ink group-hover:text-accent">{s.label} →</span>
+                    <p className="text-[14px] text-meta mt-2 leading-snug">{s.desc}</p>
                   </div>
                   <div className="flex items-baseline gap-2">
-                    <span className="font-display text-3xl text-ink">{s.metric}</span>
-                    <span className="mono text-[10px] uppercase tracking-wide text-ink-500">{s.metricSub}</span>
+                    <span className="mono font-black text-[32px] text-ink">{s.metric}</span>
+                    <span className="text-[14px] uppercase tracking-[.05em] text-meta">{s.metricSub}</span>
                   </div>
                 </Link>
               ))}

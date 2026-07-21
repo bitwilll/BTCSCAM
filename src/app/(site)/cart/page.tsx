@@ -1,8 +1,9 @@
+import Link from "next/link";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { getSession } from "@/lib/auth";
-import { Container, PageHeader, EmptyState, ButtonLink, MediaPlaceholder } from "@/components/ui";
-import { usd, toStrArray } from "@/lib/format";
+import { PageHeader, EmptyState, ButtonLink } from "@/components/ui";
+import { usd } from "@/lib/format";
 import { CartControls } from "./_components/CartControls";
 
 export const dynamic = "force-dynamic";
@@ -17,8 +18,8 @@ export default async function CartPage() {
 
   if (!user) {
     return (
-      <Container className="py-10">
-        <PageHeader kicker="The Store" title="Your Cart" />
+      <div className="mx-auto max-w-[720px] px-6 py-10 fade-up">
+        <PageHeader kicker="The store" title="Your cart" />
         <EmptyState
           title="Sign in to start a cart"
           hint="Your cart is tied to your account so it follows you across devices. Log in or create a free account to shop."
@@ -27,13 +28,13 @@ export default async function CartPage() {
               <ButtonLink href="/login?next=/cart" variant="primary" size="md">
                 Log in
               </ButtonLink>
-              <ButtonLink href="/store" variant="outline" size="md">
+              <ButtonLink href="/store" variant="ghost" size="md">
                 Browse store
               </ButtonLink>
             </div>
           }
         />
-      </Container>
+      </div>
     );
   }
 
@@ -47,10 +48,10 @@ export default async function CartPage() {
   const totalUnits = items.reduce((sum, i) => sum + i.quantity, 0);
 
   return (
-    <Container className="py-10">
+    <div className="mx-auto max-w-[720px] px-6 py-10 fade-up">
       <PageHeader
-        kicker="The Store"
-        title="Your Cart"
+        kicker="The store"
+        title="Your cart"
         lede={
           items.length > 0
             ? `${totalUnits} item${totalUnits === 1 ? "" : "s"} funding the community watch.`
@@ -59,80 +60,79 @@ export default async function CartPage() {
       />
 
       {items.length === 0 ? (
-        <EmptyState
-          title="Your cart is empty"
-          hint="Nothing in here yet. Grab a tee, a pin or the print annual — every order bankrolls an investigation."
-          action={
+        <div className="py-8 text-center">
+          <p className="text-[16px] text-meta">Cart&rsquo;s empty. The swag funds the watch.</p>
+          <div className="mt-4 flex justify-center">
             <ButtonLink href="/store" variant="primary" size="md">
               Browse the store
             </ButtonLink>
-          }
-        />
+          </div>
+        </div>
       ) : (
-        <div className="grid gap-10 lg:grid-cols-[1fr_360px]">
-          {/* Line items */}
-          <div className="border-t border-line">
+        <>
+          {/* ── Rows per the v4 cart drawer spec ── */}
+          <div>
             {items.map((item) => {
-              const cover = toStrArray(item.product.imageLabels)[0] || `[ ${item.product.category} ]`;
               const lineTotal = item.product.priceUsd * item.quantity;
               return (
                 <div
                   key={item.id}
-                  className="flex flex-col gap-4 border-b border-line py-5 sm:flex-row sm:items-center"
+                  className="flex items-center gap-3.5 border-b border-rule py-3.5 last:border-b-0"
                 >
-                  <div className="w-full sm:w-28 shrink-0">
-                    <MediaPlaceholder label={cover} ratio="4/3" />
-                  </div>
+                  <Link
+                    href={`/store/${item.product.slug}`}
+                    className={`h-16 w-16 flex-none border border-ink ${
+                      item.product.imageUrl ? "bg-surface-alt bg-cover bg-center" : "hatch"
+                    }`}
+                    style={
+                      item.product.imageUrl
+                        ? { backgroundImage: `url(${item.product.imageUrl})` }
+                        : undefined
+                    }
+                    aria-label={item.product.name}
+                  />
                   <div className="min-w-0 flex-1">
-                    <h3 className="font-extrabold leading-tight text-ink">{item.product.name}</h3>
-                    <div className="mono text-[11px] uppercase tracking-wide text-ink-500 mt-1 capitalize">
+                    <Link
+                      href={`/store/${item.product.slug}`}
+                      className="font-bold text-[16px] leading-tight text-ink hover:underline underline-offset-4"
+                    >
+                      {item.product.name}
+                    </Link>
+                    <div className="mt-0.5 text-[14px] uppercase tracking-[.02em] text-meta">
                       {item.product.category} · {usd(item.product.priceUsd)} each
                     </div>
-                    <div className="mt-2 font-display text-xl text-ink">{usd(lineTotal)}</div>
+                    <CartControls itemId={item.id} quantity={item.quantity} />
                   </div>
-                  <CartControls itemId={item.id} quantity={item.quantity} />
+                  <span className="flex-none font-bold text-[18px] text-ink">{usd(lineTotal)}</span>
                 </div>
               );
             })}
           </div>
 
-          {/* Summary */}
-          <aside className="lg:border-l lg:border-line lg:pl-8">
-            <div className="border border-ink bg-paper-2 p-6">
-              <h2 className="kicker text-sm !tracking-[0.16em] border-b border-line pb-2 mb-4">
-                Order Summary
-              </h2>
-              <div className="flex items-center justify-between text-sm text-ink-600">
-                <span>Subtotal</span>
-                <span className="font-mono text-ink">{usd(subtotal)}</span>
-              </div>
-              <div className="flex items-center justify-between text-sm text-ink-600 mt-2">
-                <span>Shipping</span>
-                <span className="mono text-[11px] uppercase tracking-wide text-ink-500">
-                  Calculated at fulfillment
-                </span>
-              </div>
-              <div className="mt-4 flex items-center justify-between border-t border-line pt-4">
-                <span className="kicker text-ink">Total due</span>
-                <span className="font-display text-3xl text-btc-dark">{usd(subtotal)}</span>
-              </div>
-              <div className="mt-6">
-                <ButtonLink href="/checkout" variant="primary" size="lg" full>
-                  Proceed to checkout
-                </ButtonLink>
-              </div>
-              <p className="mono text-[11px] uppercase tracking-wide text-ink-500 mt-3 text-center">
-                Crypto only · No cards
-              </p>
+          {/* ── Footer per drawer spec: heavy rule, TOTAL, notes, ink CHECKOUT ── */}
+          <div className="border-t-[3px] border-ink pt-[18px]">
+            <div className="flex items-baseline justify-between">
+              <span className="font-bold text-[18px] uppercase tracking-[.02em] text-ink">Total</span>
+              <span className="font-bold text-[21px] text-ink">{usd(subtotal)}</span>
             </div>
-            <div className="mt-4">
-              <ButtonLink href="/store" variant="ghost" size="sm">
-                ← Keep shopping
-              </ButtonLink>
+            <div className="mt-1.5 text-[16px] uppercase tracking-[.02em] text-meta">
+              Free shipping over $50 · Crypto only — BTC · LN · USDC
             </div>
-          </aside>
-        </div>
+            <ButtonLink href="/checkout" variant="primary" size="lg" full className="mt-3.5">
+              Checkout →
+            </ButtonLink>
+            <div className="mt-2.5 text-center text-[14px] text-meta">
+              Ships worldwide · 30-day returns · 100% of profit funds the watchdesk
+            </div>
+          </div>
+
+          <div className="mt-7">
+            <Link href="/store" className="kicker text-meta hover:text-ink">
+              ← Keep shopping
+            </Link>
+          </div>
+        </>
       )}
-    </Container>
+    </div>
   );
 }

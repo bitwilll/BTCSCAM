@@ -11,8 +11,8 @@ import {
 const ARTICLE_STATUSES = ["draft", "review", "published", "archived"] as const;
 
 const sel =
-  "mt-1 border border-line-strong bg-paper px-2 py-1.5 text-xs focus:outline-none focus:border-ink disabled:opacity-50";
-const cap = "mono text-[10px] uppercase tracking-wide text-ink-400";
+  "mt-1 border border-ink bg-paper px-2 py-1.5 text-xs focus:outline-none focus:border-ink disabled:opacity-50";
+const cap = "mono text-[10px] uppercase tracking-wide text-faint";
 const btn = "kicker px-2 py-1.5 border transition-colors disabled:opacity-50";
 
 export function ArticleControls({
@@ -66,8 +66,8 @@ export function ArticleControls({
           onClick={() => run(() => toggleFeature(articleId))}
           className={`${btn} ${
             isFeatured
-              ? "bg-btc text-black border-btc"
-              : "bg-paper text-ink-600 border-line-strong hover:border-ink"
+              ? "bg-ink text-paper border-ink"
+              : "bg-paper text-body-2 border-ink hover:border-ink"
           }`}
         >
           {isFeatured ? "★ Featured" : "☆ Feature"}
@@ -80,7 +80,7 @@ export function ArticleControls({
                 type="button"
                 disabled={pending}
                 onClick={() => run(() => deleteArticle(articleId))}
-                className={`${btn} bg-alert-strong text-white border-alert-strong`}
+                className={`${btn} bg-danger text-white border-danger`}
               >
                 Confirm
               </button>
@@ -88,7 +88,7 @@ export function ArticleControls({
                 type="button"
                 disabled={pending}
                 onClick={() => setConfirming(false)}
-                className={`${btn} bg-paper text-ink-600 border-line-strong hover:border-ink`}
+                className={`${btn} bg-paper text-body-2 border-ink hover:border-ink`}
               >
                 Cancel
               </button>
@@ -98,7 +98,7 @@ export function ArticleControls({
               type="button"
               disabled={pending}
               onClick={() => setConfirming(true)}
-              className={`${btn} bg-paper text-alert-strong border-line-strong hover:border-alert-strong`}
+              className={`${btn} bg-paper text-danger border-ink hover:border-danger`}
             >
               Delete
             </button>
@@ -106,7 +106,7 @@ export function ArticleControls({
       </div>
 
       {msg && (
-        <span className={`mono text-[10px] ${msg.ok ? "text-up" : "text-alert-strong"}`}>
+        <span className={`mono text-[10px] ${msg.ok ? "text-safe" : "text-danger"}`}>
           {msg.text}
         </span>
       )}

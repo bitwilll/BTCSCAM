@@ -5,8 +5,9 @@ import { prisma } from "@/lib/db";
 import { getSession } from "@/lib/auth";
 import { can } from "@/lib/rbac";
 import { PRIVILEGES } from "@/lib/constants";
-import { Container, SectionHeader, Tag, Avatar } from "@/components/ui";
-import { byline, timeAgo, toStrArray } from "@/lib/format";
+import { Tag } from "@/components/ui";
+import { timeAgo, toStrArray } from "@/lib/format";
+import { trustScore, trustTier, TRUST_TITLE } from "../../_components/trust";
 import { VoteButtons } from "./_components/VoteButtons";
 import { CommentForm } from "./_components/CommentForm";
 import { CommentReply } from "./_components/CommentReply";
@@ -35,10 +36,14 @@ type CommentRecord = {
   isDeleted: boolean;
   parentId: string | null;
   createdAt: Date;
-  author: { displayName: string; title: string | null } | null;
+  author: { displayName: string; title: string | null; reputation: number } | null;
 };
 
 type CommentNode = CommentRecord & { children: CommentNode[] };
+
+function initials(name: string) {
+  return name.trim().slice(0, 2).toUpperCase();
+}
 
 export default async function ThreadPage({ params }: PageProps) {
   const { slug } = await params;
@@ -54,7 +59,7 @@ export default async function ThreadPage({ params }: PageProps) {
     prisma.forumComment.findMany({
       where: { threadId: thread.id },
       orderBy: { score: "desc" },
-      include: { author: { select: { displayName: true, title: true } } },
+      include: { author: { select: { displayName: true, title: true, reputation: true } } },
     }),
   ]);
 
@@ -83,140 +88,196 @@ export default async function ThreadPage({ params }: PageProps) {
   }
 
   const canComment = Boolean(user) && can(user, PRIVILEGES.FORUM_COMMENT) && !thread.isLocked;
+  const poster = canComment && user ? { name: user.displayName, ts: trustScore(user.reputation) } : null;
   const tags = toStrArray(thread.tags);
   const bodyParagraphs = thread.body.split(/\n{2,}/).filter((p) => p.trim().length);
   const threadId = thread.id;
+  const authorTs = trustScore(thread.author?.reputation);
 
   function renderNode(node: CommentNode, depth: number) {
-    const indent = Math.min(depth, 6) * 18;
+    const ts = trustScore(node.author?.reputation);
     return (
-      <div key={node.id} style={{ marginLeft: indent }} className="pt-4">
-        <div className="flex gap-3">
-          {!node.isDeleted && (
-            <VoteButtons
-              targetType="comment"
-              targetId={node.id}
-              initialScore={node.score}
-              initialVote={voteFor("comment", node.id)}
-              size="sm"
-            />
-          )}
-          <div className="min-w-0 flex-1 border-l border-line pl-3">
-            <div className="mono text-[11px] text-ink-500 uppercase tracking-wide flex flex-wrap gap-x-2 gap-y-0.5">
-              <span className="text-ink-700 font-semibold">
+      <div key={node.id}>
+        {/* v4 reply row */}
+        <div className="flex gap-3.5 py-5 px-1 border-b border-rule">
+          <div className="flex-none w-[42px] h-[42px] bg-surface-alt text-ink flex items-center justify-center font-sans font-bold text-[16px]">
+            {initials(node.isDeleted ? "??" : node.author?.displayName ?? "??")}
+          </div>
+          <div className="min-w-0 flex-1">
+            <div className="flex gap-2.5 items-baseline flex-wrap">
+              <span className="font-sans font-bold text-[16px] text-ink">
                 {node.isDeleted ? "[removed]" : node.author?.displayName ?? "[deleted]"}
               </span>
-              {!node.isDeleted && node.author?.title && <span>{node.author.title}</span>}
-              <span>{timeAgo(node.createdAt)}</span>
+              {!node.isDeleted && node.author && (
+                <span className="font-sans font-bold text-[14px] text-safe" title={TRUST_TITLE}>
+                  TS {ts} · {trustTier(ts)}
+                </span>
+              )}
+              {!node.isDeleted && node.author?.title && (
+                <span className="text-[14px] text-meta">{node.author.title}</span>
+              )}
+              <span className="text-[14px] text-meta">{timeAgo(node.createdAt)}</span>
             </div>
-            <p className={`mt-1.5 text-sm leading-snug ${node.isDeleted ? "text-ink-400 italic" : "text-ink-700"}`}>
+            <p
+              className={`mt-2 text-[16px] leading-[1.7] max-w-[64ch] ${
+                node.isDeleted ? "text-faint italic" : "text-ink"
+              }`}
+            >
               {node.isDeleted ? "This comment was removed." : node.body}
             </p>
-            {canComment && !node.isDeleted && (
-              <div className="mt-2">
-                <CommentReply threadId={threadId} parentId={node.id} />
+            {!node.isDeleted && (
+              <div className="mt-2.5 flex items-center gap-2 flex-wrap">
+                <VoteButtons
+                  targetType="comment"
+                  targetId={node.id}
+                  initialScore={node.score}
+                  initialVote={voteFor("comment", node.id)}
+                />
+                {poster && (
+                  <CommentReply
+                    threadId={threadId}
+                    parentId={node.id}
+                    posterName={poster.name}
+                    posterTs={poster.ts}
+                  />
+                )}
               </div>
             )}
           </div>
         </div>
-        {node.children.map((child) => renderNode(child, depth + 1))}
+        {/* nested children: 1px rule + left indent (v4) */}
+        {node.children.length > 0 && (
+          <div className={depth < 6 ? "ml-[21px] border-l border-rule pl-[18px]" : ""}>
+            {node.children.map((child) => renderNode(child, depth + 1))}
+          </div>
+        )}
       </div>
     );
   }
 
   return (
-    <Container className="py-10 max-w-3xl">
-      {/* Breadcrumb */}
-      <div className="mono text-[11px] uppercase tracking-wide text-ink-500 mb-5">
-        <Link href="/forum" className="text-btc-dark hover:text-ink">Forum</Link>
-        {thread.category && (
-          <>
-            <span className="mx-2">/</span>
-            <Link href={`/forum/${thread.category.slug}`} className="text-btc-dark hover:text-ink">
-              {thread.category.name}
-            </Link>
-          </>
+    <div className="max-w-[980px] mx-auto px-6 pt-8 pb-16 fade-up">
+      {/* ── breadcrumb (v4) ── */}
+      <div className="text-[14px] text-meta tracking-[.05em]">
+        <Link href="/forum" className="text-ink font-bold hover:underline underline-offset-4">
+          ← ALL THREADS
+        </Link>{" "}
+        /{" "}
+        {thread.category ? (
+          <Link
+            href={`/forum/${thread.category.slug}`}
+            className="hover:underline underline-offset-4"
+          >
+            {thread.category.name}
+          </Link>
+        ) : (
+          "Forum"
         )}
       </div>
 
-      {/* Thread head */}
-      <div className="flex gap-4 border-b-2 border-ink pb-6">
-        <VoteButtons
-          targetType="thread"
-          targetId={thread.id}
-          initialScore={thread.score}
-          initialVote={voteFor("thread", thread.id)}
-        />
-        <div className="min-w-0 flex-1">
-          <div className="flex flex-wrap items-center gap-2 mb-2">
-            {thread.isPinned && <Tag tone="orange">Pinned</Tag>}
+      {/* ── thread card (v4) ── */}
+      <div className="mt-4 bg-white shadow-card">
+        <div className="px-6 py-[22px]">
+          <div className="flex gap-2 items-center flex-wrap">
+            {thread.isPinned && <Tag tone="black">Pinned</Tag>}
             {thread.isLocked && <Tag tone="red">Locked</Tag>}
+            {thread.category && (
+              <span className="kicker text-meta">{thread.category.name}</span>
+            )}
           </div>
-          <h1 className="font-display text-4xl sm:text-5xl text-ink leading-[0.95]">{thread.title}</h1>
-          <div className="mt-3 flex items-center gap-2.5">
-            <Avatar name={thread.author?.displayName ?? "Anon"} size={30} />
-            <div className="mono text-[11px] uppercase tracking-wide text-ink-500 flex flex-wrap gap-x-3 gap-y-0.5">
-              <span className="text-ink-700 font-semibold">
+          <h1
+            className="font-display text-ink mt-2.5"
+            style={{ fontSize: "clamp(32px,4.5vw,52px)", lineHeight: 1.2, textWrap: "balance" }}
+          >
+            {thread.title}
+          </h1>
+          <div className="flex gap-3 items-center mt-4 flex-wrap">
+            <div className="flex-none w-[42px] h-[42px] bg-ink text-paper flex items-center justify-center font-sans font-bold text-[16px]">
+              {initials(thread.author?.displayName ?? "??")}
+            </div>
+            <div>
+              <span className="font-sans font-bold text-[16px] text-ink">
                 {thread.author ? thread.author.displayName : "[deleted]"}
               </span>
-              {thread.author?.title && <span>{thread.author.title}</span>}
-              <span>{byline(thread.createdAt)}</span>
-              <span>{timeAgo(thread.createdAt)}</span>
+              {thread.author && (
+                <span className="ml-2.5 font-sans font-bold text-[14px] text-safe" title={TRUST_TITLE}>
+                  TS {authorTs} · {trustTier(authorTs)}
+                </span>
+              )}
+              {thread.author?.title && (
+                <span className="ml-2.5 text-[14px] text-meta">{thread.author.title}</span>
+              )}
             </div>
+            <span className="ml-auto text-[14px] text-meta">
+              Active {timeAgo(thread.updatedAt)}
+            </span>
+          </div>
+
+          <div className="prose-bs mt-5">
+            {bodyParagraphs.length ? (
+              bodyParagraphs.map((p, i) => <p key={i}>{p}</p>)
+            ) : (
+              <p>{thread.body}</p>
+            )}
+          </div>
+
+          {tags.length > 0 && (
+            <div className="mt-5 flex flex-wrap gap-2">
+              {tags.map((t) => (
+                <Tag key={t} tone="paper">
+                  #{t}
+                </Tag>
+              ))}
+            </div>
+          )}
+
+          <div className="mt-4">
+            <VoteButtons
+              targetType="thread"
+              targetId={thread.id}
+              initialScore={thread.score}
+              initialVote={voteFor("thread", thread.id)}
+            />
           </div>
         </div>
-      </div>
-
-      {/* Thread body */}
-      <div className="prose-bs mt-6">
-        {bodyParagraphs.length ? (
-          bodyParagraphs.map((p, i) => <p key={i}>{p}</p>)
-        ) : (
-          <p>{thread.body}</p>
-        )}
-      </div>
-
-      {tags.length > 0 && (
-        <div className="mt-5 flex flex-wrap gap-2">
-          {tags.map((t) => (
-            <Tag key={t} tone="paper">#{t}</Tag>
-          ))}
+        <div className="bg-surface-dim border-t border-rule px-6 py-2.5 text-[14px] text-meta uppercase tracking-[.02em]">
+          {comments.length} {comments.length === 1 ? "reply" : "replies"}
         </div>
+      </div>
+
+      {/* ── replies (v4 nested rows) ── */}
+      {roots.length ? (
+        <div>{roots.map((r) => renderNode(r, 0))}</div>
+      ) : (
+        <p className="py-6 text-[16px] text-meta">No replies yet — start the discussion.</p>
       )}
 
-      {/* Comments */}
-      <section className="mt-10">
-        <SectionHeader title={`${comments.length} ${comments.length === 1 ? "Comment" : "Comments"}`} />
-        {roots.length ? (
-          <div>{roots.map((r) => renderNode(r, 0))}</div>
-        ) : (
-          <p className="mono text-sm text-ink-500 py-4">No comments yet — start the discussion.</p>
-        )}
-      </section>
-
-      {/* Composer */}
-      <section className="mt-8">
+      {/* ── composer (v4 card) ── */}
+      <div className="mt-[22px]">
         {thread.isLocked ? (
-          <div className="border border-line-strong bg-paper-2 p-4 mono text-[12px] uppercase tracking-wide text-ink-500">
-            🔒 This thread is locked. New comments are disabled.
+          <div className="bg-surface-dim border border-rule px-4 py-3.5 text-[14px] text-meta uppercase tracking-[.02em]">
+            This thread is locked. New replies are disabled.
           </div>
         ) : user ? (
-          canComment ? (
-            <CommentForm threadId={thread.id} />
+          canComment && poster ? (
+            <CommentForm threadId={thread.id} posterName={poster.name} posterTs={poster.ts} />
           ) : (
-            <div className="border border-line-strong bg-paper-2 p-4 mono text-[12px] uppercase tracking-wide text-ink-500">
-              Your account can't comment on the forum.
+            <div className="bg-surface-dim border border-rule px-4 py-3.5 text-[14px] text-meta uppercase tracking-[.02em]">
+              Your account can&apos;t reply on the forum.
             </div>
           )
         ) : (
-          <div className="border border-line-strong bg-paper-2 p-4 text-sm text-ink-600">
-            <Link href={`/login?next=/forum/thread/${thread.slug}`} className="text-btc-dark underline font-semibold">
+          <div className="bg-surface-dim border border-rule px-4 py-3.5 text-[16px] text-body-2">
+            <Link
+              href={`/login?next=/forum/thread/${thread.slug}`}
+              className="text-accent font-bold hover:underline underline-offset-4"
+            >
               Log in
             </Link>{" "}
-            to comment.
+            to join the thread.
           </div>
         )}
-      </section>
-    </Container>
+      </div>
+    </div>
   );
 }

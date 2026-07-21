@@ -16,22 +16,22 @@ export const metadata: Metadata = {
 
 const STAFF_ROLES = ["copywriter", "editor", "manager", "admin"];
 
-const STATUS_TONE: Record<string, "paper" | "orange" | "black" | "green"> = {
+const STATUS_TONE: Record<string, "paper" | "warn" | "black" | "green"> = {
   new: "paper",
-  scheduled: "orange",
+  scheduled: "warn",
   in_progress: "black",
   closed: "green",
 };
 
-const URGENCY_TONE: Record<string, "red" | "orange" | "paper" | "outline"> = {
+const URGENCY_TONE: Record<string, "red" | "warn" | "paper" | "outline"> = {
   critical: "red",
-  high: "orange",
+  high: "warn",
   normal: "paper",
   low: "outline",
 };
 
-const th = "text-left kicker text-ink-500 px-3 py-2 whitespace-nowrap";
-const td = "px-3 py-3 align-top border-t border-line";
+const th = "text-left kicker text-meta px-3 py-2 whitespace-nowrap";
+const td = "px-3 py-3 align-top border-t border-rule";
 
 export default async function ConsultationsAdminPage({
   searchParams,
@@ -89,9 +89,9 @@ export default async function ConsultationsAdminPage({
           hint={active ? `Nothing with status "${active.replace(/_/g, " ")}".` : "Incoming requests will appear here."}
         />
       ) : (
-        <div className="border border-line-strong bg-paper overflow-x-auto">
+        <div className="border border-ink bg-paper overflow-x-auto">
           <table className="w-full text-sm border-collapse">
-            <thead className="bg-paper-2">
+            <thead className="bg-surface-dim">
               <tr>
                 <th className={th}>Requester</th>
                 <th className={th}>Topic</th>
@@ -105,27 +105,27 @@ export default async function ConsultationsAdminPage({
             </thead>
             <tbody>
               {requests.map((r) => (
-                <tr key={r.id} className="hover:bg-paper-2/60">
+                <tr key={r.id} className="hover:bg-surface-dim">
                   <td className={td}>
                     <div className="font-bold text-ink">{r.name}</div>
-                    <div className="mono text-[10px] text-ink-500 break-all">{r.email}</div>
-                    <div className="mono text-[10px] text-ink-400 mt-1">
+                    <div className="mono text-[10px] text-meta break-all">{r.email}</div>
+                    <div className="mono text-[10px] text-faint mt-1">
                       {byline(r.createdAt)} · updated {timeAgo(r.updatedAt)}
                     </div>
                   </td>
-                  <td className={`${td} mono text-[11px] uppercase text-ink-600 whitespace-nowrap`}>
+                  <td className={`${td} mono text-[11px] uppercase text-body-2 whitespace-nowrap`}>
                     {r.topic.replace(/-/g, " ")}
                   </td>
                   <td className={`${td} whitespace-nowrap`}>
                     <Tag tone={URGENCY_TONE[r.urgency] ?? "paper"}>{r.urgency}</Tag>
                   </td>
-                  <td className={`${td} font-display text-lg text-alert-strong whitespace-nowrap`}>
+                  <td className={`${td} mono font-bold text-[16px] text-danger whitespace-nowrap`}>
                     {r.amountUsd != null ? compactUsd(Number(r.amountUsd)) : "—"}
                   </td>
-                  <td className={`${td} mono text-[11px] text-ink-600 whitespace-nowrap`}>
+                  <td className={`${td} mono text-[11px] text-body-2 whitespace-nowrap`}>
                     {r._count.messages} msg
                     {r.assignedTo && (
-                      <span className="block text-ink-400">→ {r.assignedTo.displayName}</span>
+                      <span className="block text-faint">→ {r.assignedTo.displayName}</span>
                     )}
                   </td>
                   <td className={td}>
@@ -142,7 +142,7 @@ export default async function ConsultationsAdminPage({
                   <td className={`${td} whitespace-nowrap`}>
                     <Link
                       href={`/admin/consultations/${r.id}`}
-                      className="kicker text-btc-dark hover:text-ink"
+                      className="kicker text-accent hover:text-ink"
                     >
                       Open →
                     </Link>
@@ -172,7 +172,7 @@ function FilterTab({
       className={`kicker px-3 py-1.5 border capitalize ${
         activeState
           ? "bg-ink text-paper border-ink"
-          : "bg-paper text-ink-600 border-line-strong hover:border-ink"
+          : "bg-paper text-body-2 border-ink hover:border-ink"
       }`}
     >
       {label}

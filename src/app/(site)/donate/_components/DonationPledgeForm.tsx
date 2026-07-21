@@ -11,7 +11,7 @@ export function DonationPledgeForm() {
   return (
     <form action={action} className="space-y-4">
       {state?.ok && (
-        <div className="border border-up bg-up/10 px-3 py-2.5 mono text-[12px] text-ink">
+        <div className="inline-block bg-safe px-3.5 py-1.5 font-sans font-bold text-[14px] tracking-[.05em] text-white">
           {state.message}
         </div>
       )}
@@ -30,11 +30,11 @@ export function DonationPledgeForm() {
 
       <div className="grid sm:grid-cols-2 gap-4">
         <label className="block">
-          <span className="kicker text-ink-600 block mb-1.5">Asset</span>
+          <span className="kicker text-meta">Asset</span>
           <select
             name="cryptoMethod"
             defaultValue="BTC"
-            className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink"
+            className="mt-2 w-full border border-ink bg-white px-4 py-[13px] font-sans text-[16px] outline-ink"
           >
             {CRYPTO_METHODS.map((m) => (
               <option key={m.method} value={m.method}>
@@ -61,13 +61,13 @@ export function DonationPledgeForm() {
       />
 
       <label className="block">
-        <span className="kicker text-ink-600 block mb-1.5">Message (optional)</span>
+        <span className="kicker text-meta">Message (optional)</span>
         <textarea
           name="message"
           rows={3}
           maxLength={500}
           placeholder="Keep exposing them."
-          className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink resize-y"
+          className="mt-2 w-full border border-ink bg-white px-4 py-[13px] font-sans text-[16px] leading-[1.55] outline-ink resize-y"
         />
       </label>
 
@@ -77,19 +77,19 @@ export function DonationPledgeForm() {
           name="isAnonymous"
           className="mt-0.5 h-4 w-4 accent-[#f7931a] shrink-0"
         />
-        <span className="text-sm text-ink-600">
+        <span className="text-[16px] text-body-2">
           List me as <strong className="text-ink">Anonymous</strong> on the supporters wall.
         </span>
       </label>
 
       {state && !state.ok && state.error && (
-        <p className="mono text-[12px] text-alert">{state.error}</p>
+        <p className="text-[14px] font-bold text-danger">{state.error}</p>
       )}
 
       <Button type="submit" variant="primary" size="lg" full disabled={pending}>
         {pending ? "Recording…" : "Record my pledge"}
       </Button>
-      <p className="mono text-[10px] text-ink-400 leading-relaxed">
+      <p className="text-[14px] leading-[1.6] text-meta">
         Crypto only — no card processor, no middleman. Recording a pledge does not move funds; send
         from your own wallet using the address above.
       </p>
@@ -116,7 +116,7 @@ function Text({
 }) {
   return (
     <label className="block">
-      <span className="kicker text-ink-600 block mb-1.5">{label}</span>
+      <span className="kicker text-meta">{label}</span>
       <input
         name={name}
         type={type}
@@ -125,9 +125,9 @@ function Text({
         placeholder={placeholder}
         min={type === "number" ? "0" : undefined}
         step={type === "number" ? "any" : undefined}
-        className="w-full border border-line-strong bg-paper-2 px-3 py-2.5 text-sm focus:outline-none focus:border-ink"
+        className="mt-2 w-full border border-ink bg-white px-4 py-[13px] font-sans text-[16px] outline-ink"
       />
-      {hint && <span className="mono text-[10px] text-ink-400 mt-1 block">{hint}</span>}
+      {hint && <span className="mt-1 block text-[14px] text-meta">{hint}</span>}
     </label>
   );
 }

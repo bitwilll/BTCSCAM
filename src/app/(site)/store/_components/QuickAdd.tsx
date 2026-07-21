@@ -10,11 +10,11 @@ export function QuickAdd({ productId }: { productId: string }) {
   const [pending, start] = useTransition();
 
   return (
-    <div className="mt-3">
+    <div>
       {added ? (
-        <div className="flex items-center justify-between gap-2">
-          <span className="kicker text-up">✓ In cart</span>
-          <Link href="/cart" className="kicker text-btc-dark hover:text-ink">
+        <div className="flex flex-wrap items-center justify-between gap-2">
+          <span className="kicker text-safe">✓ In cart</span>
+          <Link href="/cart" className="kicker text-accent hover:underline underline-offset-4">
             View cart →
           </Link>
         </div>
@@ -30,12 +30,12 @@ export function QuickAdd({ productId }: { productId: string }) {
               else setErr(r.error ?? "Could not add to cart.");
             })
           }
-          className="kicker inline-flex w-full items-center justify-center gap-2 border border-ink bg-transparent px-3 py-1.5 text-[11px] text-ink transition-colors hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:opacity-50"
+          className="kicker inline-flex w-full cursor-pointer items-center justify-center border border-ink bg-ink px-[18px] py-[11px] text-paper hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-50"
         >
           {pending ? "Adding…" : "Add to cart"}
         </button>
       )}
-      {err && <p className="mono text-[11px] text-alert-strong mt-1.5">{err}</p>}
+      {err && <p className="mt-1.5 text-[14px] font-bold text-danger">{err}</p>}
     </div>
   );
 }

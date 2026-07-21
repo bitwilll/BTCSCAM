@@ -6,6 +6,7 @@ import { canAny } from "@/lib/rbac";
 import { PRIVILEGES, ROLE_LABELS } from "@/lib/constants";
 import { Container, PageHeader, Avatar } from "@/components/ui";
 import { ProfileForm } from "./_components/ProfileForm";
+import { num } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
@@ -25,10 +26,14 @@ export default async function ProfilePage() {
   });
 
   return (
-    <Container className="py-8 lg:py-10 max-w-3xl">
-      <PageHeader kicker="My Desk" title="Edit Profile" lede="Control how you appear across the Watch — on bylines, forum threads and reports.">
-        <Link href="/desk" className="kicker text-btc-dark hover:text-ink">
-          ← Back to My Desk
+    <Container className="pt-8 pb-10 max-w-3xl fade-up">
+      <PageHeader
+        kicker="My Desk"
+        title="Edit profile"
+        lede="Control how you appear across the Watch — on bylines, forum threads and reports."
+      >
+        <Link href="/desk" className="kicker text-accent hover:underline underline-offset-4">
+          ← Back to my desk
         </Link>
       </PageHeader>
 
@@ -42,30 +47,36 @@ export default async function ProfilePage() {
           />
         </div>
 
-        <aside className="lg:border-l lg:border-line lg:pl-8">
+        <aside className="lg:border-l lg:border-rule lg:pl-8">
           <div className="flex items-center gap-3">
             <Avatar name={user.displayName} size={48} />
             <div className="min-w-0">
-              <div className="font-display text-xl text-ink leading-none truncate">{user.displayName}</div>
-              <div className="mono text-[11px] text-ink-500 uppercase tracking-wide mt-1">@{user.username}</div>
+              <div className="font-display text-[21px] leading-[1.2] text-ink truncate">
+                {user.displayName}
+              </div>
+              <div className="mt-1 text-[14px] text-meta uppercase tracking-[.02em]">
+                @{user.username}
+              </div>
             </div>
           </div>
-          <dl className="mt-5 space-y-3">
+          <dl className="mt-5 space-y-3.5">
             <div>
               <dt className="eyebrow">Role</dt>
-              <dd className="mono text-sm text-ink-700">{ROLE_LABELS[user.role]}</dd>
+              <dd className="mt-0.5 text-[16px] text-body-2">{ROLE_LABELS[user.role]}</dd>
             </div>
             <div>
               <dt className="eyebrow">Email</dt>
-              <dd className="mono text-sm text-ink-700 break-all">{user.email}</dd>
+              <dd className="mt-0.5 mono text-[14px] text-body-2 break-all">{user.email}</dd>
             </div>
             <div>
-              <dt className="eyebrow">Reputation</dt>
-              <dd className="font-display text-2xl text-btc-dark">{user.reputation.toLocaleString("en-US")}</dd>
+              <dt className="eyebrow">Trust score</dt>
+              <dd className="mt-0.5 mono font-bold text-[24px] text-ink">
+                TS {num(user.reputation)}
+              </dd>
             </div>
           </dl>
-          <p className="mono text-[10px] text-ink-400 uppercase tracking-wide mt-6 leading-relaxed">
-            Role, email and reputation are managed by the newsroom and cannot be changed here.
+          <p className="mt-6 text-[14px] text-meta leading-[1.5]">
+            Role, email and trust score are managed by the newsroom and cannot be changed here.
           </p>
         </aside>
       </div>

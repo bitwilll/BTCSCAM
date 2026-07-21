@@ -4,7 +4,7 @@ import { useState, useTransition } from "react";
 import { toggleProduct, setStock, type Result } from "@/actions/admin-ops";
 
 const btn = "kicker px-2 py-1.5 border transition-colors disabled:opacity-50";
-const cap = "mono text-[10px] uppercase tracking-wide text-ink-400";
+const cap = "mono text-[10px] uppercase tracking-wide text-faint";
 
 export function ProductControls({
   productId,
@@ -34,8 +34,8 @@ export function ProductControls({
         onClick={() => run(() => toggleProduct(productId))}
         className={`${btn} ${
           isActive
-            ? "bg-up text-black border-up"
-            : "bg-paper text-ink-600 border-line-strong hover:border-ink"
+            ? "bg-safe text-white border-safe"
+            : "bg-paper text-body-2 border-ink hover:border-ink"
         }`}
       >
         {isActive ? "● Active" : "○ Inactive"}
@@ -51,13 +51,13 @@ export function ProductControls({
             onChange={(e) => setStockValue(e.target.value)}
             disabled={pending}
             aria-label="Stock quantity"
-            className="w-20 border border-line-strong bg-paper px-2 py-1.5 text-xs focus:outline-none focus:border-ink disabled:opacity-50"
+            className="w-20 border border-ink bg-paper px-2 py-1.5 text-xs focus:outline-none focus:border-ink disabled:opacity-50"
           />
           <button
             type="button"
             disabled={pending}
             onClick={() => run(() => setStock(productId, Number(stockValue)))}
-            className={`${btn} bg-ink text-paper border-ink hover:bg-ink-800`}
+            className={`${btn} bg-ink text-paper border-ink hover:bg-action-hover`}
           >
             Save
           </button>
@@ -65,7 +65,7 @@ export function ProductControls({
       </div>
 
       {msg && (
-        <span className={`mono text-[10px] ${msg.ok ? "text-up" : "text-alert-strong"}`}>
+        <span className={`mono text-[10px] ${msg.ok ? "text-safe" : "text-danger"}`}>
           {msg.text}
         </span>
       )}

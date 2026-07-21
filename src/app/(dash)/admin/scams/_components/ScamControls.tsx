@@ -7,8 +7,8 @@ import { SCAM_STATUSES } from "@/lib/constants";
 const SCAM_SEVERITIES = ["elevated", "high", "critical"] as const;
 
 const sel =
-  "mt-1 w-full border border-line-strong bg-paper px-2 py-1.5 text-xs focus:outline-none focus:border-ink disabled:opacity-50";
-const cap = "mono text-[10px] uppercase tracking-wide text-ink-400";
+  "mt-1 w-full border border-ink bg-paper px-2 py-1.5 text-xs focus:outline-none focus:border-ink disabled:opacity-50";
+const cap = "mono text-[10px] uppercase tracking-wide text-faint";
 
 export function ScamControls({
   scamId,
@@ -74,7 +74,7 @@ export function ScamControls({
       </label>
 
       {msg && (
-        <span className={`mono text-[10px] ${msg.ok ? "text-up" : "text-alert-strong"}`}>
+        <span className={`mono text-[10px] ${msg.ok ? "text-safe" : "text-danger"}`}>
           {msg.text}
         </span>
       )}

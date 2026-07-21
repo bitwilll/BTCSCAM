@@ -103,10 +103,13 @@ async function main() {
   for (const a of alerts) await prisma.alert.create({ data: a });
 
   console.log("Seeding articles…");
+  // v4 art direction: public-domain paintings (Wikimedia Commons) as editorial imagery.
+  const painting = (file: string, width = 900) =>
+    `https://commons.wikimedia.org/wiki/Special:FilePath/${file}?width=${width}`;
   const body = (paras: string[]) => paras.join("\n\n");
   const article = (a: {
     title: string; dek: string; kicker: string; category: string; severity?: string;
-    author: { id: string }; cover: string; read: number; featured?: boolean; developing?: boolean; paras: string[];
+    author: { id: string }; cover: string; coverUrl?: string; read: number; featured?: boolean; developing?: boolean; paras: string[];
   }) =>
     prisma.article.create({
       data: {
@@ -117,6 +120,7 @@ async function main() {
         category: a.category,
         severity: a.severity ?? "none",
         coverLabel: a.cover,
+        coverImageUrl: a.coverUrl ?? null,
         readMinutes: a.read,
         isFeatured: a.featured ?? false,
         isDeveloping: a.developing ?? false,
@@ -132,15 +136,17 @@ async function main() {
     title: "Inside the $47M 'Pig-Butchering' Ring That Ran on Fake Exchange Apps",
     dek: "A six-month trail of shell domains, cloned trading dashboards and 3,800 victims — and the four red flags that were visible from day one.",
     kicker: "Investigation", category: "investigation", severity: "critical",
-    author: mara, cover: "[ photo: seized fake trading dashboard ]", read: 14, featured: true,
+    author: mara, cover: "[ photo: seized fake trading dashboard ]",
+    coverUrl: painting("Hieronymus_Bosch_051.jpg", 1800), read: 14, featured: true,
     paras: [
-      "For six months, the operators of \"NovaTrade Pro\" ran what looked like a boutique derivatives exchange: a polished dashboard, a 24/7 support desk, even a proof-of-reserves page. None of it was real.",
-      "Our review of 3,800 victim statements, domain records and on-chain flows shows a single syndicate moving at least $47 million through 61 cloned exchange front-ends.",
-      "## How the front-end fooled everyone",
-      "The dashboard rendered live-looking balances that never touched a real order book. Deposits were swept within minutes to a rotating set of consolidation wallets.",
-      "## The four red flags",
-      "Every victim we interviewed encountered at least one of four signals before depositing: an unsolicited DM, a too-smooth onboarding call, a withdrawal that 'required' a tax pre-payment, and a domain registered less than 90 days earlier.",
-      "The lesson is old but keeps costing people everything: if you did not seek out the platform yourself, assume it sought out you for a reason.",
+      "For six months, the operators of \"NovaTrade Pro\" ran what looked like a boutique derivatives exchange: a polished dashboard, a 24/7 support desk, even a proof-of-reserves page. None of it was real. Our review of 3,800 victim statements, domain records and on-chain flows shows a single syndicate moving at least $47 million through 61 cloned exchange front-ends.",
+      "## The romance funnel",
+      "Victims never found NovaTrade through an ad. They were walked in — patiently — by \"mentors\" met on dating apps and language-exchange groups. The playbook is industrial: three weeks of small talk, a screenshot of a winning trade, then an invitation to \"practice\" with $200.",
+      "> They let me withdraw twice. That's what convinced me. The third deposit was my pension.",
+      "Withdrawals worked until they didn't. Once an account crossed roughly $15,000, the dashboard invented a reason to freeze it: a \"withdrawal insurance fee\", a \"tax clearance\", an \"account upgrade\". Each fee was payable only by fresh deposit.",
+      "### Four red flags visible from day one",
+      "- Domain registered 11 days before the first deposit — always check registration dates.\n- \"Proof of reserves\" page had no verifiable on-chain addresses.\n- Support pushed victims from email to Telegram within one message.\n- Withdrawal fees payable only by new deposit. No legitimate venue does this.",
+      "The database entry for NovaTrade Pro and its 60 sibling domains is live, with wallet clusters and indicator hashes. If a \"mentor\" is coaching you into any platform on that list, stop. Ask the forum first — the community answers in minutes.",
     ],
   });
 
@@ -159,50 +165,60 @@ async function main() {
   const others = [
     {
       title: "Fake 'Ledger Live' App Slips Past Play Store Review — 12,000 Downloads Before Takedown",
-      dek: "A trojanized wallet manager reached the store's front page before removal.", kicker: "News", category: "news",
-      author: dev, cover: "[ photo: fake app listing ]", read: 5,
-      paras: ["A counterfeit 'Ledger Live' listing passed automated review and stayed live long enough to reach 12,000 installs.", "The app harvested recovery phrases entered during a fake 'device sync' step. Ledger never asks for your 24 words in software."],
+      dek: "The trojanized wallet asked users to 'restore' their 24 words on first launch. Google pulled it in 72 hours; the seeds were gone in minutes.", kicker: "News", category: "news", severity: "critical",
+      author: dev, cover: "[ photo: phone with fake wallet app ]", coverUrl: painting("Quentin_Massys_001.jpg"), read: 6,
+      paras: [
+        "The listing looked immaculate: the right logo, a plausible changelog, 4.6 stars from farmed reviews. \"Ledger Live 3.0 — Official Update\" sat in search results for three days and was installed more than 12,000 times before Google removed it.",
+        "## Verify signatures, every time",
+        "The app itself did almost nothing — except at first launch, where a pixel-perfect \"restore your wallet\" screen collected 24-word phrases and posted them to a server in real time. Drains began within four minutes of entry, our on-chain review shows.",
+        "### Protect yourself",
+        "- Download wallet apps only from links on the vendor's own domain.\n- Check the developer name and release hash before installing.\n- No app ever needs your full seed to 'sync' or 'verify'.\n- Typed a seed into a screen? Assume it is burned. Move funds now.",
+      ],
     },
     {
       title: "Drainer-as-a-Service Kit 'Inferno v4' Now Rents for $99 a Week",
-      dek: "Industrialized wallet-draining keeps getting cheaper and easier.", kicker: "Threat Intel", category: "threat-intel", severity: "high",
-      author: lena, cover: "[ diagram: drainer kit architecture ]", read: 6,
-      paras: ["The latest Inferno build lowers the technical bar for wallet-draining to almost nothing: point-and-click phishing pages, hosted signing prompts, and affiliate splits.", "Signing an opaque approval is the whole attack. Revoke unused allowances regularly."],
+      dek: "The kit behind most fake mints this quarter ships with cloned UIs, approval-swap scripts and a revenue dashboard for its 'affiliates'.", kicker: "Threat Intel", category: "threat-intel", severity: "high",
+      author: lena, cover: "[ diagram: drainer kit rental flow ]", coverUrl: painting("Pieter_Bruegel_d._Ä._037.jpg"), read: 8,
+      paras: [
+        "Wallet draining is no longer a skill — it's a subscription. Inferno v4, the kit our tracker links to over 400 live phishing deployments, now advertises weekly rentals with onboarding support and a 20% platform fee on stolen funds.",
+        "## Crime, subscription-priced",
+        "Point-and-click phishing pages, hosted signing prompts, affiliate splits. Signing an opaque approval is the whole attack — revoke unused allowances regularly.",
+      ],
     },
     {
       title: "Deepfake 'Saylor' Giveaway Streams Are Back — 240 Channels Pulled This Weekend",
       dek: "The 'send 1 BTC, get 2 back' loop never dies; it just changes faces.", kicker: "News", category: "news",
-      author: dev, cover: "[ photo: deepfake stream still ]", read: 4,
+      author: dev, cover: "[ photo: deepfake stream still ]", coverUrl: painting("Marinus_Claesz._van_Reymerswaele_001.jpg"), read: 4,
       paras: ["Over a single weekend, 240 livestream channels running deepfaked 'giveaway' loops were reported and pulled.", "No one doubles your Bitcoin. Every 'send X, receive 2X' stream is a theft funnel."],
     },
     {
       title: "Address Poisoning, Explained: Why You Should Never Copy From History",
       dek: "Attackers seed your history with lookalike addresses that match the first and last four characters.", kicker: "Field Guide", category: "field-guide",
-      author: contributor, cover: "[ diagram: address poisoning attack ]", read: 7,
+      author: contributor, cover: "[ diagram: address poisoning attack ]", coverUrl: painting("Van_Eyck_-_Arnolfini_Portrait.jpg"), read: 7,
       paras: ["Address poisoning plants a lookalike address into your transaction history so a careless copy-paste sends funds to the attacker.", "Verify the full address, use an allow-list, and never paste from history."],
     },
     {
       title: "The 'Recovery Agent' Who Scams You Twice",
       dek: "After the rug comes the DM: 'We can trace your funds.'", kicker: "Field Guide", category: "field-guide",
-      author: mara, cover: "[ photo: recovery scam dm thread ]", read: 6,
+      author: mara, cover: "[ photo: recovery scam dm thread ]", coverUrl: painting("The_Garden_of_earthly_delights.jpg"), read: 6,
       paras: ["Recovery scams target victims at their most desperate, promising to trace and return stolen funds for an upfront fee.", "Legitimate recovery never asks for gas fees, taxes, or 'unlock' payments up front."],
     },
     {
       title: "Court Freezes $9.8M Tied to 'BitVault Capital' After Community Dossier",
       dek: "A 214-page evidence pack assembled by forum members became Exhibit A.", kicker: "Community Win", category: "community-win",
-      author: manager, cover: "[ photo: court filing stack ]", read: 9,
+      author: manager, cover: "[ photo: court filing stack ]", coverUrl: painting("Sanzio_01.jpg"), read: 9,
       paras: ["A freeze order over $9.8M cites wallet clusters first mapped in this community's forum threads.", "Distributed, documented, on-chain evidence works. This is what the Watch is for."],
     },
     {
       title: "Five Wallet-Hygiene Rules the Pros Actually Follow",
       dek: "No hardware fetishism, no paranoia theater — just the habits that keep coins where they belong.", kicker: "Field Guide", category: "field-guide",
-      author: contributor, cover: "[ photo: hardware wallet on desk ]", read: 5,
+      author: contributor, cover: "[ photo: hardware wallet on desk ]", coverUrl: painting("Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"), read: 5,
       paras: ["Segregate funds, revoke allowances, verify addresses, keep a cold vault, and never sign what you can't read.", "These five habits prevent the overwhelming majority of retail losses."],
     },
     {
       title: "Q2 2026 Scam Losses Hit $2.1B — Down 8%, but Drainer Kits Doubled",
       dek: "Fewer mega-ponzis, far more industrialized wallet-draining.", kicker: "Data", category: "data",
-      author: lena, cover: "[ chart: q2 losses by category ]", read: 10,
+      author: lena, cover: "[ chart: q2 losses by category ]", coverUrl: painting("Hans_Holbein_the_Younger_-_The_Ambassadors_-_Google_Art_Project.jpg"), read: 10,
       paras: ["Total reported losses fell 8% quarter-over-quarter to $2.1B, but drainer-kit incidents doubled.", "The damage is shifting from a few enormous ponzis to a long tail of automated theft."],
     },
   ];
@@ -259,17 +275,21 @@ async function main() {
     data: { slug: slug("Lost 4 BTC to a recovery agent - what now"), title: "Lost 4 BTC to a 'recovery agent' — what now?", body: "After the first scam I paid a 'recovery agent' who then vanished. Documenting everything here. What are my realistic options?", categoryId: catRecords["help-i-was-scammed"], authorId: member2.id, upvotes: 96, score: 96, tags: ["recovery", "support"] },
   });
 
-  // Store — merch (crypto checkout only)
+  // Store — v4's nine-product catalog (crypto checkout only; Unsplash imagery per design)
+  const unsplash = (id: string) => `https://images.unsplash.com/${id}?w=800&q=75`;
   const products = [
-    { name: "\"Verify Everything\" Heavy Tee", description: "Union-made heavyweight cotton tee, broadsheet print. Proceeds fund investigations.", priceUsd: 3400, category: "apparel", badge: "BESTSELLER", images: ["[ tee: front ]", "[ tee: back ]"] },
-    { name: "Threat Board Enamel Pin", description: "Die-struck enamel pin of the struck-through SCAM wordmark.", priceUsd: 1200, category: "sticker", images: ["[ pin ]"] },
-    { name: "The Rug Report — Print Annual 2026", description: "224-page print collection of the year's biggest scams, charts and field guides.", priceUsd: 4800, category: "print", badge: "NEW", images: ["[ book cover ]"] },
-    { name: "Wallet-Hygiene Field Card (5-pack)", description: "Pocket reference cards of the five rules the pros follow.", priceUsd: 900, category: "print", images: ["[ card ]"] },
-    { name: "\"Not Financial Advice\" Mug", description: "Enamel camp mug for your morning threat brief.", priceUsd: 1800, category: "apparel", images: ["[ mug ]"] },
-    { name: "Cold-Storage Sticker Sheet", description: "Weatherproof vinyl sticker sheet — tag your hardware.", priceUsd: 700, category: "sticker", images: ["[ stickers ]"] },
-  ];
+    { name: "NOT YOUR KEYS Tee", description: "Heavyweight cotton. The full sentence on the back: not your coins.", priceUsd: 3200, category: "apparel", badge: "BESTSELLER", img: unsplash("photo-1576566588028-4147f3842f27"), label: "[ photo: black tee, orange block print ]" },
+    { name: "VERIFY EVERYTHING Hoodie", description: "The moderator uniform. Embroidered wordmark, kangaroo pocket for your hardware wallet.", priceUsd: 6800, category: "apparel", img: unsplash("photo-1556821840-3a63f95609a7"), label: "[ photo: hoodie flat lay ]" },
+    { name: "SEED PHRASE Steel Plate", description: "410 stainless, letter punches included. Your 24 words, fireproof. Not a toy.", priceUsd: 4500, category: "gear", img: unsplash("photo-1544816155-12df9643f363"), label: "[ photo: steel backup plate + punch set ]" },
+    { name: "SCAM ALERT Klaxon Mug", description: "Enamel, 350ml. The ticker's red badge, on your desk before coffee.", priceUsd: 2200, category: "desk", img: unsplash("photo-1517256064527-09c73fc73e38"), label: "[ photo: red enamel mug ]" },
+    { name: "RED FLAGS Field Notebook", description: "48 pages. Checklist per page: domain age, custody, yield math, exit path.", priceUsd: 1400, category: "desk", img: unsplash("photo-1544716278-ca5e3f4abd8c"), label: "[ photo: pocket notebook ]" },
+    { name: "WATCHMAN Cap", description: "Unstructured, orange stitch. For duty hours, which are all hours.", priceUsd: 2800, category: "apparel", img: unsplash("photo-1588850561407-ed78c282e89b"), label: "[ photo: black cap, orange stitch ]" },
+    { name: "THREAT BOARD Poster", description: "A2 risograph print of the ten scam archetypes. Frame not included; vigilance is.", priceUsd: 1800, category: "desk", img: unsplash("photo-1513519245088-0e12902e5a38"), label: "[ photo: risograph poster ]" },
+    { name: "COLD STORAGE Sticker Pack", description: "12 vinyl stickers. Laptop-grade adhesive, scam-grade skepticism.", priceUsd: 900, category: "gear", img: unsplash("photo-1572375992501-4b0892d50c69"), label: "[ photo: sticker sheet ]" },
+    { name: "BTC SCAM Gift Card", description: "Crypto-only store credit, emailed as a redeem code. The safest gift in crypto.", priceUsd: 2500, category: "gift", img: unsplash("photo-1613243555988-441166d4d6fd"), label: "[ photo: orange gift card ]" },
+  ] as const;
   for (const p of products) {
-    await prisma.product.create({ data: { slug: slug(p.name), name: p.name, description: p.description, priceUsd: p.priceUsd, category: p.category, badge: p.badge, imageLabels: p.images } });
+    await prisma.product.create({ data: { slug: slug(p.name), name: p.name, description: p.description, priceUsd: p.priceUsd, category: p.category, badge: "badge" in p ? (p as { badge?: string }).badge : undefined, imageUrl: p.img, imageLabels: [p.label] } });
   }
 
   // Crypto wallets (PLACEHOLDER addresses — replace before going live)
@@ -289,11 +309,43 @@ async function main() {
   });
   await prisma.consultationMessage.create({ data: { requestId: cReq.id, authorId: manager.id, fromStaff: true, body: "Thanks for reaching out. First: stop all contact with them, screenshot everything, and file at /report. A volunteer will follow up within 24h." } });
 
-  // Sting ops, gatherings, art, media
+  // Sting ops, gatherings, art, media — v4 content
   await prisma.stingOperation.create({ data: { slug: "operation-cold-wallet", title: "Operation Cold Wallet", status: "active", summary: "Coordinated honeypot of 12 fake-recovery agents to map their infrastructure.", body: "Volunteers pose as victims to document scripts and wallet flows. Evidence feeds the Scam Database." } });
-  await prisma.gathering.create({ data: { slug: "watch-meetup-lisbon", title: "Watch Meetup — Lisbon", description: "In-person meetup for community investigators. Talks on on-chain tracing.", location: "Lisbon, PT", startsAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 21) } });
-  await prisma.scamArt.create({ data: { slug: "the-doubler", title: "The Doubler", artist: "Anon", imageLabel: "[ art: neon 'send 1 get 2' ]", description: "Satirical piece on giveaway scams." } });
-  await prisma.mediaItem.create({ data: { slug: "scamcast-ep-41", title: "ScamCast Ep. 41 — Anatomy of a Pig-Butchering Ring", kind: "podcast", duration: "42:10", description: "Mara Okafor breaks down the NovaTrade Pro investigation." } });
+
+  const day = 1000 * 60 * 60 * 24;
+  const gatherings = [
+    { slug: "spotting-drainers-101", title: "Spotting drainers 101 — live workshop", description: "Hands-on session: reading signing prompts, spotting approval swaps, revoking allowances.", location: "Online · 19:00 UTC", isVirtual: true, days: 1 },
+    { slug: "btcscam-meetup-verification-night", title: "BTCSCAM meetup: verification night", description: "In-person verification sprint — bring dossiers, leave with confirmations.", location: "Berlin · c-base", isVirtual: false, days: 12 },
+    { slug: "ask-a-forensic-analyst-ama", title: "Ask a forensic analyst — open AMA", description: "On-chain tracing questions answered live by the watchdesk's analysts.", location: "Online · 17:00 UTC", isVirtual: true, days: 25 },
+    { slug: "scam-ctf-48h", title: "Scam CTF — 48h defense exercise", description: "Teams of four defend a simulated victim through a weekend of live social-engineering.", location: "Online · teams of 4", isVirtual: true, days: 46 },
+  ];
+  for (const g of gatherings) {
+    await prisma.gathering.create({ data: { slug: g.slug, title: g.title, description: g.description, location: g.location, isVirtual: g.isVirtual, startsAt: new Date(Date.now() + day * g.days) } });
+  }
+
+  // Scam Art — v4 gallery: community pieces presented via public-domain paintings
+  const artPieces = [
+    { t: "Rug Pull No. 5", a: "@satoshiglass", m: "RISOGRAPH · EDITION OF 50", img: painting("Pieter_Bruegel_the_Elder_-_The_Fall_of_the_Rebel_Angels_-_Google_Art_Project.jpg"), d: "After Bruegel's falling angels — a token chart mid-collapse, holders tumbling out of the frame." },
+    { t: "Seed Phrase (Redacted)", a: "Anna K.", m: "OIL ON STEEL PLATE", img: painting("Van_Eyck_-_Arnolfini_Portrait.jpg"), d: "Twelve words she never wrote down. A portrait of the only secret worth keeping." },
+    { t: "1000x — A Study in Greed", a: "@blockprintbob", m: "WOODCUT", img: painting("Quentin_Massys_001.jpg"), d: "Massys' money changer, re-cut: the scales weigh a promise against a private key." },
+    { t: "Cold Storage", a: "M. Iwata", m: "SILVER GELATIN PRINT", img: painting("Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"), d: "Alone above the fog with nothing but a steel plate of entropy. Self-custody as landscape." },
+    { t: "The Mempool Dreams", a: "@txfeepoet", m: "GENERATIVE · NFT", img: painting("The_Garden_of_earthly_delights.jpg"), d: "Bosch's garden as an unconfirmed-transaction queue: every pleasure pending, every fee a sin." },
+    { t: "Exit Scam Sunset", a: "watchmen collective", m: "SCREEN PRINT · NFT TWIN", img: painting("Claude_Monet,_Impression,_soleil_levant.jpg"), d: "An impressionist sunrise over a dead exchange — the founders sailed at dawn." },
+  ];
+  for (const ap of artPieces) {
+    await prisma.scamArt.create({ data: { slug: slug(ap.t), title: ap.t, artist: ap.a, imageLabel: ap.m, imageUrl: ap.img, description: ap.d } });
+  }
+
+  // ScamCast — v4 episode list
+  const casts = [
+    { slug: "ep-012-tracing-inferno-v4", title: "EP 012 — The analyst who traced Inferno v4", duration: "48 MIN", description: "with Lena Vogt", daysAgo: 3 },
+    { slug: "ep-011-reformed-recovery-agent", title: "EP 011 — Confessions of a reformed 'recovery agent'", duration: "61 MIN", description: "guest anonymized", daysAgo: 10 },
+    { slug: "ep-010-forum-dossier-froze-9-8m", title: "EP 010 — How a forum dossier froze $9.8M", duration: "44 MIN", description: "with ModSentinel", daysAgo: 17 },
+    { slug: "ep-009-pig-butchering-industry", title: "EP 009 — Pig-butchering: the industry behind the DM", duration: "57 MIN", description: "with Mara Okafor", daysAgo: 24 },
+  ];
+  for (const c of casts) {
+    await prisma.mediaItem.create({ data: { slug: c.slug, title: c.title, kind: "podcast", duration: c.duration, description: c.description, publishedAt: new Date(Date.now() - day * c.daysAgo) } });
+  }
 
   // Subscribers
   await prisma.subscriber.createMany({ data: [{ email: "reader1@example.com" }, { email: "reader2@example.com", list: "alerts" }] });

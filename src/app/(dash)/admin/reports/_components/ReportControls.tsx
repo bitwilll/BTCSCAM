@@ -10,9 +10,9 @@ import {
 import { REPORT_STATUSES } from "@/lib/constants";
 
 const sel =
-  "w-full mt-1 border border-line-strong bg-paper px-2 py-1.5 text-xs focus:outline-none focus:border-ink disabled:opacity-50";
+  "w-full mt-1 border border-ink bg-paper px-2 py-1.5 text-xs focus:outline-none focus:border-ink disabled:opacity-50";
 const lbl = "block";
-const cap = "mono text-[10px] uppercase tracking-wide text-ink-400";
+const cap = "mono text-[10px] uppercase tracking-wide text-faint";
 
 type StaffOption = { id: string; displayName: string; role: string };
 type ScamOption = { id: string; name: string };
@@ -102,7 +102,7 @@ export function ReportControls({
       </label>
 
       {msg && (
-        <span className={`mono text-[10px] ${msg.ok ? "text-up" : "text-alert-strong"}`}>
+        <span className={`mono text-[10px] ${msg.ok ? "text-safe" : "text-danger"}`}>
           {msg.text}
         </span>
       )}

@@ -1,15 +1,26 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui";
 import { SCAM_TYPES, SCAM_STATUSES } from "@/lib/constants";
 
-function qs(params: Record<string, string | undefined>): string {
+export const DB_SEVERITIES = ["critical", "high", "elevated"] as const;
+
+// v4 verification language for our status values
+export const STATUS_LABELS: Record<string, string> = {
+  active: "Active",
+  monitoring: "Under review",
+  confirmed: "Staff-verified",
+  frozen: "Verified · Frozen",
+  dormant: "Dormant",
+};
+
+export function qs(params: Record<string, string | undefined>): string {
   const sp = new URLSearchParams();
   for (const [k, v] of Object.entries(params)) if (v) sp.set(k, v);
   const s = sp.toString();
   return s ? `/database?${s}` : "/database";
 }
 
+// v4 chip: px-[9px] py-[3px] 700 14px — active ink/paper, inactive 1px rule border
 function Chip({
   href,
   active,
@@ -22,10 +33,10 @@ function Chip({
   return (
     <Link
       href={href}
-      className={`kicker inline-flex items-center px-2.5 py-1 border capitalize transition-colors ${
+      className={`inline-flex items-center px-[9px] py-[3px] font-sans font-bold text-[14px] leading-tight tracking-[.05em] uppercase transition-colors hover:no-underline ${
         active
-          ? "bg-ink text-paper border-ink"
-          : "border-line-strong text-ink-600 hover:bg-panel hover:text-ink"
+          ? "bg-ink text-paper border border-ink"
+          : "bg-transparent border border-rule text-body-2 hover:bg-surface-alt"
       }`}
     >
       {children}
@@ -36,75 +47,96 @@ function Chip({
 export function FilterBar({
   type,
   status,
+  severity,
   q,
+  countLabel,
 }: {
   type?: string;
   status?: string;
+  severity?: string;
   q?: string;
+  countLabel: string;
 }) {
   return (
-    <div className="border border-line bg-paper-2 p-5 mb-8 flex flex-col gap-5">
-      {/* Search */}
-      <form method="get" action="/database" className="flex flex-col sm:flex-row gap-2">
-        {type && <input type="hidden" name="type" value={type} />}
-        {status && <input type="hidden" name="status" value={status} />}
-        <div className="flex-1">
-          <label htmlFor="scam-search" className="eyebrow block mb-1.5">
-            Search the database
-          </label>
+    <>
+      {/* Search + report CTA (v4) */}
+      <div className="mt-6 flex gap-3 flex-wrap items-center">
+        <form
+          method="get"
+          action="/database"
+          className="min-w-0"
+          style={{ flex: "1 1 320px" }}
+        >
+          {type && <input type="hidden" name="type" value={type} />}
+          {status && <input type="hidden" name="status" value={status} />}
+          {severity && <input type="hidden" name="severity" value={severity} />}
           <input
-            id="scam-search"
             name="q"
             type="search"
             defaultValue={q ?? ""}
-            placeholder="Name or summary — e.g. drainer, Ledger, pig-butchering"
-            className="w-full bg-paper border border-line-strong px-3 py-2.5 text-sm text-ink placeholder:text-ink-400 focus:outline-none focus:border-ink"
+            placeholder="Search name, domain, handle, chain…"
+            aria-label="Search the database"
+            className="w-full border border-ink bg-white px-4 py-[13px] mono text-[15px] text-ink outline-ink placeholder:text-faint"
           />
-        </div>
-        <div className="flex items-end gap-2">
-          <Button type="submit" variant="dark" size="md">
+          <button type="submit" className="sr-only">
             Search
-          </Button>
-          {(q || type || status) && (
-            <Link
-              href="/database"
-              className="kicker inline-flex items-center px-4 py-2.5 text-xs border border-line-strong text-ink-600 hover:bg-panel hover:text-ink"
-            >
-              Reset
-            </Link>
-          )}
-        </div>
-      </form>
+          </button>
+        </form>
+        <Link
+          href="/report"
+          className="inline-flex items-center px-5 py-[13px] kicker bg-transparent text-ink border border-ink hover:bg-ink hover:text-paper hover:no-underline"
+        >
+          + Report a scam
+        </Link>
+      </div>
 
-      {/* Type filter */}
-      <div>
-        <span className="eyebrow block mb-2">Scam Type</span>
-        <div className="flex flex-wrap gap-2">
-          <Chip href={qs({ status, q })} active={!type}>
-            All types
+      {/* Filter chip rows (v4) */}
+      <div className="mt-3 flex flex-col gap-2">
+        <div className="flex flex-wrap gap-2 items-center">
+          <span className="eyebrow mr-1">Type</span>
+          <Chip href={qs({ status, severity, q })} active={!type}>
+            All
           </Chip>
           {SCAM_TYPES.map((t) => (
-            <Chip key={t} href={qs({ type: t, status, q })} active={type === t}>
+            <Chip key={t} href={qs({ type: t, status, severity, q })} active={type === t}>
               {t.replace(/-/g, " ")}
             </Chip>
           ))}
         </div>
-      </div>
-
-      {/* Status filter */}
-      <div>
-        <span className="eyebrow block mb-2">Status</span>
-        <div className="flex flex-wrap gap-2">
-          <Chip href={qs({ type, q })} active={!status}>
-            All statuses
+        <div className="flex flex-wrap gap-2 items-center">
+          <span className="eyebrow mr-1">Severity</span>
+          <Chip href={qs({ type, status, q })} active={!severity}>
+            All
           </Chip>
-          {SCAM_STATUSES.map((s) => (
-            <Chip key={s} href={qs({ type, status: s, q })} active={status === s}>
+          {DB_SEVERITIES.map((s) => (
+            <Chip key={s} href={qs({ type, status, severity: s, q })} active={severity === s}>
               {s}
             </Chip>
           ))}
         </div>
+        <div className="flex flex-wrap gap-2 items-center">
+          <span className="eyebrow mr-1">Verification</span>
+          <Chip href={qs({ type, severity, q })} active={!status}>
+            All
+          </Chip>
+          {SCAM_STATUSES.map((s) => (
+            <Chip key={s} href={qs({ type, status: s, severity, q })} active={status === s}>
+              {STATUS_LABELS[s] ?? s}
+            </Chip>
+          ))}
+          <span className="ml-auto text-[14px] text-meta">
+            {countLabel}
+            {q && (
+              <>
+                {" · "}
+                <Link href={qs({ type, status, severity })} className="text-accent hover:underline underline-offset-4">
+                  clear search ×
+                </Link>
+              </>
+            )}
+          </span>
+        </div>
       </div>
-    </div>
+    </>
   );
 }

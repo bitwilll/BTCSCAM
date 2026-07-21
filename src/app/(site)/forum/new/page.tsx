@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { requireUser } from "@/lib/guards";
-import { Container, PageHeader } from "@/components/ui";
+import { trustScore } from "../_components/trust";
 import { NewThreadForm } from "./_components/NewThreadForm";
 
 export const dynamic = "force-dynamic";
@@ -18,26 +18,39 @@ export default async function NewThreadPage() {
     orderBy: { order: "asc" },
     select: { id: true, name: true },
   });
+  const ts = trustScore(user.reputation);
 
   return (
-    <Container className="py-12 max-w-2xl">
-      <div className="mono text-[11px] uppercase tracking-wide text-ink-500 mb-4">
-        <Link href="/forum" className="text-btc-dark hover:text-ink">Forum</Link>
-        <span className="mx-2">/</span>
-        <span>New Thread</span>
+    <div className="max-w-[720px] mx-auto px-6 pt-8 pb-16 fade-up">
+      {/* ── breadcrumb (v4) ── */}
+      <div className="text-[14px] text-meta tracking-[.05em]">
+        <Link href="/forum" className="text-ink font-bold hover:underline underline-offset-4">
+          ← ALL THREADS
+        </Link>{" "}
+        / New thread
       </div>
 
-      <PageHeader
-        kicker="Community Forum"
-        title="Start a Thread"
-        lede="Raise the alarm, request help, or crowdsource a trace. Keep it factual — the community verifies everything."
-      />
+      <div className="mt-4 min-w-0">
+        <div className="kicker text-meta">Community watch</div>
+        <h1
+          className="font-display text-ink mt-1.5"
+          style={{ fontSize: "clamp(32px,4.5vw,52px)", lineHeight: 1.1 }}
+        >
+          Start a thread
+        </h1>
+        <p className="mt-2.5 text-[18px] leading-[1.65] text-body-2 max-w-[60ch]">
+          Raise the alarm, request help, or crowdsource a trace. Keep it factual — the forum
+          verifies everything.
+        </p>
+      </div>
 
-      <p className="mono text-[11px] uppercase tracking-wide text-ink-500 mb-6">
-        Posting as <span className="text-ink-700 font-semibold">{user.displayName}</span>
-      </p>
-
-      <NewThreadForm categories={categories} />
-    </Container>
+      {/* ── composer card (v4) ── */}
+      <div className="mt-5 bg-white shadow-card p-5">
+        <div className="kicker text-meta">
+          New thread — posting as {user.displayName} · TS {ts}
+        </div>
+        <NewThreadForm categories={categories} />
+      </div>
+    </div>
   );
 }

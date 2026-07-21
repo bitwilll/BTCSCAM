@@ -10,12 +10,16 @@ export function CommentForm({
   compact = false,
   autoFocus = false,
   onSubmitted,
+  posterName,
+  posterTs,
 }: {
   threadId: string;
   parentId?: string;
   compact?: boolean;
   autoFocus?: boolean;
   onSubmitted?: () => void;
+  posterName?: string;
+  posterTs?: number;
 }) {
   const [state, action, pending] = useActionState<CommentState, FormData>(addComment, null);
   const ref = useRef<HTMLTextAreaElement>(null);
@@ -31,32 +35,43 @@ export function CommentForm({
 
   const isReply = Boolean(parentId);
 
+  // v4 comment composer: white card, shadow-card, paper textarea, posting-as line.
   return (
-    <form action={action} className={compact ? "" : "border border-line bg-paper-2 p-4"}>
+    <form action={action} className={`bg-white shadow-card ${compact ? "p-3.5" : "p-4"}`}>
       <input type="hidden" name="threadId" value={threadId} />
       {parentId && <input type="hidden" name="parentId" value={parentId} />}
-      <label className="block">
-        <span className="kicker text-ink-600 block mb-1.5">{isReply ? "Your reply" : "Add a comment"}</span>
-        <textarea
-          ref={ref}
-          name="body"
-          required
-          rows={compact ? 3 : 4}
-          autoFocus={autoFocus}
-          placeholder={isReply ? "Reply with evidence, links, or next steps…" : "Share what you know. Verify everything."}
-          className="w-full border border-line-strong bg-paper px-3 py-2.5 text-sm focus:outline-none focus:border-ink resize-y"
-        />
-      </label>
-      {state?.error && <p className="mono text-[12px] text-alert-strong mt-2">{state.error}</p>}
-      <div className="mt-3 flex items-center gap-3">
-        <Button type="submit" variant="primary" size="sm" disabled={pending}>
-          {pending ? "Posting…" : isReply ? "Post reply" : "Post comment"}
-        </Button>
-        {isReply && onSubmitted && (
-          <button type="button" onClick={onSubmitted} className="kicker text-ink-500 hover:text-ink">
-            Cancel
-          </button>
-        )}
+      <textarea
+        ref={ref}
+        name="body"
+        required
+        rows={3}
+        autoFocus={autoFocus}
+        placeholder="Sourced claims only — speculation gets labeled."
+        className="w-full border border-rule bg-paper px-3.5 py-3 text-[16px] leading-[1.5] text-ink placeholder:text-faint resize-y focus:outline-none focus:border-ink"
+      />
+      {state?.error && <p className="mt-2 text-[14px] text-danger">{state.error}</p>}
+      <div className="mt-2.5 flex justify-between items-center gap-2.5 flex-wrap">
+        <span className="text-[14px] text-meta uppercase tracking-[.02em]">
+          {isReply ? "Replying as" : "Posting as"}{" "}
+          {posterName ? (
+            <>
+              {posterName}
+              {typeof posterTs === "number" && <> · TS {posterTs}</>}
+            </>
+          ) : (
+            "the watch"
+          )}
+        </span>
+        <div className="flex items-center gap-3">
+          {isReply && onSubmitted && (
+            <button type="button" onClick={onSubmitted} className="kicker text-meta hover:text-ink">
+              Cancel
+            </button>
+          )}
+          <Button type="submit" variant="primary" size="sm" disabled={pending}>
+            {pending ? "Posting…" : "Post reply"}
+          </Button>
+        </div>
       </div>
     </form>
   );

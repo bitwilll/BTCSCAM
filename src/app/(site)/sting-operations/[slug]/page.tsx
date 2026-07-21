@@ -2,9 +2,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { prisma } from "@/lib/db";
-import { Container, ButtonLink, Kicker } from "@/components/ui";
+import { ButtonLink, Kicker } from "@/components/ui";
 import { byline } from "@/lib/format";
-import { SITE } from "@/lib/constants";
 import { StatusTag } from "../_components/StatusTag";
 import { Prose } from "../_components/Prose";
 
@@ -28,19 +27,28 @@ export default async function StingOperationDetail({ params }: Params) {
   if (!op) notFound();
 
   return (
-    <Container className="py-10 max-w-3xl">
-      <Link href="/sting-operations" className="kicker text-btc-dark hover:text-ink">
+    <div className="max-w-[760px] mx-auto px-6 pt-10 pb-16 fade-up">
+      <Link href="/sting-operations" className="kicker text-accent hover:underline underline-offset-4">
         ← All operations
       </Link>
 
-      <header className="border-b-2 border-ink pb-6 mb-8 mt-4">
+      <header className="border-b border-ink pb-6 mb-8 mt-4">
         <div className="flex items-center gap-3 mb-3">
           <StatusTag status={op.status} />
-          <Kicker color="muted">Operation File</Kicker>
+          <span className="mono font-semibold text-[14px] text-meta uppercase">
+            OP {op.slug.replace(/-/g, " ")}
+          </span>
         </div>
-        <h1 className="font-display text-5xl sm:text-6xl text-ink leading-[0.9]">{op.title}</h1>
-        <p className="mt-4 text-lg text-ink-600">{op.summary}</p>
-        <div className="mt-4 mono text-[11px] uppercase tracking-wide text-ink-500">
+        <h1
+          className="font-display"
+          style={{ fontSize: "clamp(32px,4.5vw,52px)", lineHeight: 1.1, textWrap: "balance" }}
+        >
+          {op.title}
+        </h1>
+        <p className="mt-4 text-[18px] leading-[1.65] text-body-2" style={{ textWrap: "pretty" }}>
+          {op.summary}
+        </p>
+        <div className="mt-4 text-[14px] text-meta uppercase tracking-[.02em]">
           Filed {byline(op.createdAt)}
         </div>
       </header>
@@ -48,16 +56,16 @@ export default async function StingOperationDetail({ params }: Params) {
       {op.body ? (
         <Prose body={op.body} />
       ) : (
-        <p className="text-ink-600">
+        <p className="text-[16px] leading-[1.6] text-body-2">
           The full write-up for this operation has not been released yet. Check back once the
           evidence has been cleared for publication.
         </p>
       )}
 
-      {/* Sidebar-style callout */}
-      <aside className="mt-10 border border-line bg-paper-2 p-6">
-        <Kicker color="orange">Spotted this operator?</Kicker>
-        <p className="text-ink-600 mt-2">
+      {/* Evidence callout */}
+      <aside className="mt-10 border border-rule bg-surface-dim p-6">
+        <Kicker color="accent">Spotted this operator?</Kicker>
+        <p className="mt-2 text-[16px] leading-[1.6] text-body-2">
           If you have first-hand evidence — screenshots, wallet addresses or scripts — send it to
           our investigators. Verified reports feed straight into the Scam Database.
         </p>
@@ -65,15 +73,15 @@ export default async function StingOperationDetail({ params }: Params) {
           <ButtonLink href="/report" variant="primary" size="md">
             Report a scam
           </ButtonLink>
-          <ButtonLink href="/consultation" variant="outline" size="md">
+          <ButtonLink href="/consultation" variant="ghost" size="md">
             Contact the team
           </ButtonLink>
         </div>
       </aside>
 
-      <p className="mono text-[11px] uppercase tracking-wide text-ink-400 mt-8 text-center">
-        {SITE.disclaimer}
+      <p className="mt-8 text-[14px] text-meta uppercase tracking-[.05em] text-center">
+        Watch, don&apos;t touch · No real funds ever enter an op
       </p>
-    </Container>
+    </div>
   );
 }

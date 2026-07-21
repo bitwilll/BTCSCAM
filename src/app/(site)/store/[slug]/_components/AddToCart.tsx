@@ -15,7 +15,8 @@ export function AddToCart({ productId }: { productId: string }) {
   return (
     <div>
       <div className="flex flex-wrap items-center gap-4">
-        <div className="flex items-center border border-ink">
+        {/* v4 ghost stepper: square − / + */}
+        <div className="flex items-center gap-2.5">
           <button
             type="button"
             aria-label="Decrease quantity"
@@ -23,7 +24,7 @@ export function AddToCart({ productId }: { productId: string }) {
               setQty((q) => clamp(q - 1));
               setAdded(false);
             }}
-            className="kicker px-3 py-2.5 text-ink hover:bg-ink hover:text-paper transition-colors"
+            className="h-[42px] w-[42px] cursor-pointer border border-ink bg-transparent font-bold text-[16px] text-ink hover:bg-surface-alt"
           >
             −
           </button>
@@ -40,7 +41,7 @@ export function AddToCart({ productId }: { productId: string }) {
               setQty(clamp(Number(e.target.value) || 1));
               setAdded(false);
             }}
-            className="w-14 border-x border-ink bg-paper-2 py-2.5 text-center font-mono text-sm text-ink focus:outline-none"
+            className="h-[42px] w-14 border border-ink bg-paper text-center font-bold text-[16px] text-ink focus:outline-none"
           />
           <button
             type="button"
@@ -49,12 +50,13 @@ export function AddToCart({ productId }: { productId: string }) {
               setQty((q) => clamp(q + 1));
               setAdded(false);
             }}
-            className="kicker px-3 py-2.5 text-ink hover:bg-ink hover:text-paper transition-colors"
+            className="h-[42px] w-[42px] cursor-pointer border border-ink bg-transparent font-bold text-[16px] text-ink hover:bg-surface-alt"
           >
             +
           </button>
         </div>
 
+        {/* ink ADD button (v4) */}
         <button
           type="button"
           disabled={pending}
@@ -66,21 +68,21 @@ export function AddToCart({ productId }: { productId: string }) {
               else setErr(r.error ?? "Could not add to cart.");
             })
           }
-          className="kicker inline-flex items-center justify-center gap-2 bg-btc px-6 py-3.5 text-sm text-black transition-colors hover:bg-btc-dark hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+          className="kicker inline-flex cursor-pointer items-center justify-center border border-ink bg-ink px-6 py-[13px] text-paper hover:bg-action-hover disabled:cursor-not-allowed disabled:opacity-50"
         >
           {pending ? "Adding…" : "Add to cart"}
         </button>
       </div>
 
       {added && (
-        <div className="mt-4 flex items-center gap-3 border border-line bg-paper-2 px-4 py-3">
-          <span className="kicker text-up">✓ Added to cart</span>
-          <Link href="/cart" className="kicker text-btc-dark hover:text-ink">
+        <div className="mt-4 inline-flex flex-wrap items-center gap-3 border border-safe px-[18px] py-3.5">
+          <span className="kicker text-safe">✓ Added to cart</span>
+          <Link href="/cart" className="kicker text-accent hover:underline underline-offset-4">
             Go to cart →
           </Link>
         </div>
       )}
-      {err && <p className="mono text-[12px] text-alert-strong mt-3">{err}</p>}
+      {err && <p className="mt-3 text-[14px] font-bold text-danger">{err}</p>}
     </div>
   );
 }

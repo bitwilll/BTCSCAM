@@ -3,19 +3,18 @@
 import { useState, useTransition } from "react";
 import { voteAction } from "@/actions/engagement";
 import { num } from "@/lib/format";
+import { ArrowUpIcon } from "../../../_components/icons";
 
 export function VoteButtons({
   targetType,
   targetId,
   initialScore,
   initialVote = 0,
-  size = "md",
 }: {
   targetType: "thread" | "comment";
   targetId: string;
   initialScore: number;
   initialVote?: 1 | 0 | -1;
-  size?: "sm" | "md";
 }) {
   const [score, setScore] = useState(initialScore);
   const [vote, setVote] = useState<1 | 0 | -1>(initialVote);
@@ -56,33 +55,45 @@ export function VoteButtons({
     });
   }
 
-  const arrow = size === "sm" ? "text-sm" : "text-base";
-  const scoreSize = size === "sm" ? "text-base" : "text-2xl";
-  const scoreColor = vote === 1 ? "text-btc-dark" : vote === -1 ? "text-alert-strong" : "text-ink";
-
-  return (
-    <div className="flex flex-col items-center gap-0.5 select-none shrink-0" title={err ?? undefined}>
+  // v4 thread screen: big ghost UPVOTE button — 1px ink border, hover surface-alt.
+  if (targetType === "thread") {
+    return (
       <button
         type="button"
-        aria-label="Upvote"
+        aria-label="Upvote thread"
         aria-pressed={vote === 1}
         onClick={() => cast(1)}
         disabled={pending}
-        className={`leading-none ${arrow} ${vote === 1 ? "text-btc-dark" : "text-ink-400 hover:text-ink"} disabled:opacity-50`}
+        title={err ?? undefined}
+        className={`inline-flex items-center gap-[7px] px-4 py-2 font-sans font-bold text-[14px] uppercase tracking-[.05em] border cursor-pointer select-none disabled:opacity-50 ${
+          vote === 1
+            ? "border-brand bg-masthead text-ink"
+            : "border-ink bg-transparent text-ink hover:bg-surface-alt"
+        }`}
       >
-        ▲
+        <ArrowUpIcon />
+        Upvote · {num(score)}
       </button>
-      <span className={`font-display leading-none ${scoreSize} ${scoreColor}`}>{num(score)}</span>
-      <button
-        type="button"
-        aria-label="Downvote"
-        aria-pressed={vote === -1}
-        onClick={() => cast(-1)}
-        disabled={pending}
-        className={`leading-none ${arrow} ${vote === -1 ? "text-alert-strong" : "text-ink-400 hover:text-ink"} disabled:opacity-50`}
-      >
-        ▼
-      </button>
-    </div>
+    );
+  }
+
+  // v4 comment vote: quiet button with arrow — text-body-2, hover surface-alt.
+  return (
+    <button
+      type="button"
+      aria-label="Upvote comment"
+      aria-pressed={vote === 1}
+      onClick={() => cast(1)}
+      disabled={pending}
+      title={err ?? undefined}
+      className={`inline-flex items-center gap-1.5 px-3 py-1.5 font-sans font-bold text-[14px] border cursor-pointer select-none disabled:opacity-50 ${
+        vote === 1
+          ? "border-brand bg-masthead text-ink"
+          : "border-transparent bg-transparent text-body-2 hover:bg-surface-alt hover:text-ink"
+      }`}
+    >
+      <ArrowUpIcon />
+      {num(score)}
+    </button>
   );
 }
