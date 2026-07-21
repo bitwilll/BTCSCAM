@@ -1,0 +1,483 @@
+// BTCSCAM.COM — Prisma schema
+// Portable across Postgres (prod) and SQLite (dev fallback):
+//   - "enum"-like fields are String + validated in app code (see src/lib/constants.ts)
+//   - array fields are Json (works on both providers)
+// To fall back to SQLite: set provider = "sqlite" and DATABASE_URL="file:./dev.db".
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─────────────────────────────────────────────────────────── Users & RBAC ──
+
+model User {
+  id            String   @id @default(cuid())
+  email         String   @unique
+  username      String   @unique
+  passwordHash  String
+  displayName   String
+  role          String   @default("member") // reader|member|contributor|copywriter|editor|manager|admin
+  title         String? // e.g. "Chief Investigations Editor"
+  bio           String?
+  avatarLabel   String? // placeholder label for avatar
+  reputation    Int      @default(0)
+  // Effective privileges = rolePrivileges(role) ∪ extraPrivileges − revokedPrivileges
+  extraPrivileges   Json  @default("[]")
+  revokedPrivileges Json  @default("[]")
+  isActive      Boolean  @default(true)
+  isBanned      Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  articles        Article[]
+  forumThreads    ForumThread[]
+  forumComments   ForumComment[]
+  votes           Vote[]
+  savedArticles   SavedArticle[]
+  scamVerifications ScamVerification[]
+  reportsSubmitted  ScamReport[]  @relation("ReportSubmitter")
+  reportsAssigned   ScamReport[]  @relation("ReportAssignee")
+  orders            Order[]
+  cartItems         CartItem[]
+  consultAssigned   ConsultationRequest[] @relation("ConsultAssignee")
+  consultMessages   ConsultationMessage[]
+  auditActions      AuditLog[]    @relation("AuditActor")
+}
+
+// ─────────────────────────────────────────────────────────────── Content ──
+
+model Article {
+  id           String    @id @default(cuid())
+  slug         String    @unique
+  title        String
+  dek          String? // standfirst / summary
+  body         String // markdown
+  kicker       String? // e.g. INVESTIGATION, FIELD GUIDE
+  category     String    @default("news") // news|threat-intel|field-guide|data|community-win|exchange-watch|magazine|scamcast|rug-report
+  severity     String    @default("none") // none|elevated|high|critical
+  coverLabel   String? // media placeholder label (used when no image)
+  coverImageUrl String? // optional real cover image URL (renders instead of placeholder)
+  sourceName   String? // attribution when curated from an external source
+  sourceUrl    String? // link back to the original source
+  readMinutes  Int       @default(5)
+  tags         Json      @default("[]")
+  isFeatured   Boolean   @default(false)
+  isDeveloping Boolean   @default(false)
+  status       String    @default("published") // draft|review|published|archived
+  viewCount    Int       @default(0)
+  authorId     String?
+  author       User?     @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  publishedAt  DateTime? @default(now())
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  saves    SavedArticle[]
+
+  @@index([category])
+  @@index([status])
+}
+
+model SavedArticle {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  articleId String
+  article   Article  @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, articleId])
+}
+
+// ──────────────────────────────────────────────────────── Scam database ──
+
+model ScamEntry {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  name          String
+  type          String // ponzi|impersonation|drainer|giveaway|phishing|pig-butchering|rug-pull|recovery|other
+  chains        Json     @default("[]") // ["bitcoin","evm",...]
+  status        String   @default("active") // active|monitoring|confirmed|frozen|dormant
+  severity      String   @default("high") // elevated|high|critical
+  summary       String
+  details       String? // markdown
+  verifiedCount Int      @default(0)
+  reportCount   Int      @default(0)
+  amountAtRiskUsd BigInt?
+  addresses     Json     @default("[]") // on-chain addresses observed
+  firstSeen     DateTime @default(now())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  verifications ScamVerification[]
+  reports       ScamReport[]
+
+  @@index([status])
+  @@index([type])
+}
+
+model ScamVerification {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  scamId    String
+  scam      ScamEntry @relation(fields: [scamId], references: [id], onDelete: Cascade)
+  createdAt DateTime  @default(now())
+
+  @@unique([userId, scamId])
+}
+
+model ScamReport {
+  id             String   @id @default(cuid())
+  scamName       String
+  category       String   @default("other")
+  chain          String?
+  amountLostUsd  BigInt?
+  walletAddresses Json    @default("[]")
+  url            String?
+  description    String
+  evidenceUrls   Json     @default("[]")
+  status         String   @default("pending") // pending|triaging|verified|published|rejected|duplicate
+  staffNotes     String?
+  reporterEmail  String?
+  submittedById  String?
+  submittedBy    User?    @relation("ReportSubmitter", fields: [submittedById], references: [id], onDelete: SetNull)
+  assignedToId   String?
+  assignedTo     User?    @relation("ReportAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  linkedScamId   String?
+  linkedScam     ScamEntry? @relation(fields: [linkedScamId], references: [id], onDelete: SetNull)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([status])
+}
+
+// ─────────────────────────────────────────────────────────────── Alerts ──
+
+model Alert {
+  id        String   @id @default(cuid())
+  severity  String   @default("high") // elevated|high|critical
+  title     String
+  body      String?
+  chain     String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+// ───────────────────────────────────────────────────────────────  Forum ──
+
+model ForumCategory {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String?
+  order       Int      @default(0)
+  threads     ForumThread[]
+}
+
+model ForumThread {
+  id         String   @id @default(cuid())
+  slug       String   @unique
+  title      String
+  body       String
+  tags       Json     @default("[]")
+  upvotes    Int      @default(1)
+  downvotes  Int      @default(0)
+  score      Int      @default(1)
+  viewCount  Int      @default(0)
+  isPinned   Boolean  @default(false)
+  isLocked   Boolean  @default(false)
+  categoryId String
+  category   ForumCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  authorId   String?
+  author     User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  comments   ForumComment[]
+
+  @@index([categoryId])
+  @@index([score])
+}
+
+model ForumComment {
+  id        String   @id @default(cuid())
+  body      String
+  upvotes   Int      @default(1)
+  downvotes Int      @default(0)
+  score     Int      @default(1)
+  isDeleted Boolean  @default(false)
+  threadId  String
+  thread    ForumThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  parentId  String?
+  parent    ForumComment? @relation("CommentTree", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  replies   ForumComment[] @relation("CommentTree")
+  authorId  String?
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([threadId])
+}
+
+model Vote {
+  id         String   @id @default(cuid())
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  targetType String // thread|comment
+  targetId   String
+  value      Int // 1 | -1
+  createdAt  DateTime @default(now())
+
+  @@unique([userId, targetType, targetId])
+}
+
+// ───────────────────────────────────────────────────────────────  Store ──
+
+model Product {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  name        String
+  description String
+  priceUsd    Int // cents
+  category    String   @default("apparel") // apparel|print|sticker|book|digital
+  imageLabels Json     @default("[]")
+  imageUrl    String? // optional real product image URL
+  badge       String? // e.g. "BESTSELLER"
+  stock       Int      @default(100)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  cartItems  CartItem[]
+  orderItems OrderItem[]
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+}
+
+model Order {
+  id            String   @id @default(cuid())
+  orderNumber   String   @unique
+  status        String   @default("pending_payment") // pending_payment|paid|processing|shipped|delivered|cancelled
+  email         String
+  subtotalUsd   Int
+  totalUsd      Int
+  cryptoMethod  String? // BTC|ETH|USDT|...
+  cryptoAddress String?
+  cryptoNetwork String?
+  txHash        String?
+  shipping      Json     @default("{}") // {name,address,city,country,zip}
+  timeline      Json     @default("[]") // [{status,at,note}]
+  trackingCarrier String?
+  trackingNumber  String?
+  userId        String?
+  user          User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  createdAt     DateTime @default(now())
+  paidAt        DateTime?
+  updatedAt     DateTime @updatedAt
+
+  items OrderItem[]
+
+  @@index([status])
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  name      String
+  priceUsd  Int
+  quantity  Int
+}
+
+// ─────────────────────────────────────────────────── Crypto payments ──
+
+model CryptoWallet {
+  id       String  @id @default(cuid())
+  method   String  @unique // BTC|ETH|USDT|USDC|XMR|XRP|TRX|CRYPT|OSM
+  label    String // "Bitcoin"
+  network  String // "Bitcoin mainnet", "ERC-20", "TRC-20", ...
+  address  String // PLACEHOLDER — replace with real address
+  memo     String? // for XRP/OSM destination tags
+  isActive Boolean @default(true)
+  order    Int     @default(0)
+}
+
+model Donation {
+  id           String   @id @default(cuid())
+  donorName    String?
+  email        String?
+  message      String?
+  amountUsd    Int? // optional estimated value, cents
+  cryptoMethod String
+  cryptoAddress String
+  txHash       String?
+  isAnonymous  Boolean  @default(false)
+  status       String   @default("pledged") // pledged|confirmed
+  createdAt    DateTime @default(now())
+}
+
+// ──────────────────────────────────────────────────────── Consultation ──
+
+model ConsultationRequest {
+  id           String   @id @default(cuid())
+  name         String
+  email        String
+  topic        String   @default("victim-support") // victim-support|recovery-guidance|business-security|press|legal|other
+  urgency      String   @default("normal") // low|normal|high|critical
+  message      String
+  walletInvolved String?
+  amountUsd    BigInt?
+  status       String   @default("new") // new|scheduled|in_progress|closed
+  assignedToId String?
+  assignedTo   User?    @relation("ConsultAssignee", fields: [assignedToId], references: [id], onDelete: SetNull)
+  scheduledAt  DateTime?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  messages ConsultationMessage[]
+
+  @@index([status])
+}
+
+model ConsultationMessage {
+  id        String   @id @default(cuid())
+  requestId String
+  request   ConsultationRequest @relation(fields: [requestId], references: [id], onDelete: Cascade)
+  authorId  String?
+  author    User?    @relation(fields: [authorId], references: [id], onDelete: SetNull)
+  fromStaff Boolean  @default(false)
+  body      String
+  createdAt DateTime @default(now())
+}
+
+// ───────────────────────────────────────────────── Community & media ──
+
+model StingOperation {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  title     String
+  status    String   @default("active") // active|closed|planning
+  summary   String
+  body      String?
+  createdAt DateTime @default(now())
+}
+
+model Gathering {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  description String
+  location    String
+  isVirtual   Boolean  @default(false)
+  startsAt    DateTime
+  createdAt   DateTime @default(now())
+}
+
+model ScamArt {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  artist      String
+  imageLabel  String
+  imageUrl    String?
+  description String?
+  createdAt   DateTime @default(now())
+}
+
+model MediaItem {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  title       String
+  kind        String   @default("podcast") // podcast|video
+  duration    String? // "42:10"
+  description String
+  imageUrl    String?
+  mediaUrl    String? // external episode / video link
+  publishedAt DateTime @default(now())
+}
+
+// ─────────────────────────────────────────────── News aggregation ──
+
+model NewsSource {
+  id           String   @id @default(cuid())
+  name         String
+  feedUrl      String   @unique
+  homepage     String?
+  isActive     Boolean  @default(true)
+  lastFetchedAt DateTime?
+  createdAt    DateTime @default(now())
+
+  items NewsFeedItem[]
+}
+
+model NewsFeedItem {
+  id          String   @id @default(cuid())
+  sourceId    String?
+  source      NewsSource? @relation(fields: [sourceId], references: [id], onDelete: SetNull)
+  sourceName  String // snapshot label
+  title       String
+  url         String   @unique
+  summary     String?
+  imageUrl    String?
+  author      String?
+  publishedAt DateTime?
+  status      String   @default("fetched") // fetched|approved|dismissed|published
+  pushedArticleId String?
+  fetchedAt   DateTime @default(now())
+
+  @@index([status])
+  @@index([publishedAt])
+}
+
+// ─────────────────────────────────────────────────────────── Platform ──
+
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  list      String   @default("rug-report") // rug-report|alerts|all
+  confirmed Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model MarketTicker {
+  id        String   @id @default(cuid())
+  symbol    String   @unique
+  priceUsd  Float
+  changePct Float    @default(0)
+  updatedAt DateTime @updatedAt
+}
+
+model SiteSetting {
+  key   String @id
+  value String
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String?
+  actor      User?    @relation("AuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  action     String
+  targetType String?
+  targetId   String?
+  meta       Json     @default("{}")
+  createdAt  DateTime @default(now())
+
+  @@index([createdAt])
+}

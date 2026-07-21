@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# BTCSCAM: local-only planning/design artifacts (do not publish)
+/design-source
+/.build
+/.claude/launch.json
