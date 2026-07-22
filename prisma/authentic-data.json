@@ -1,0 +1,961 @@
+{
+  "scams": [
+    {
+      "slug": "terraform",
+      "name": "Terraform Labs / TerraUSD (UST) collapse",
+      "type": "other",
+      "chains": [
+        "terra"
+      ],
+      "status": "confirmed",
+      "severity": "critical",
+      "summary": "Algorithmic stablecoin UST and LUNA collapsed in May 2022, erasing ~$40B. Jury found fraud Apr 2024 ($4.5B SEC remedies); Do Kwon pleaded guilty Aug 2025 and was sentenced to 15 years in Dec 2025.",
+      "details": "Terraform Labs, co-founded by Do Kwon, sold an interconnected suite of crypto assets from April 2018 until May 2022, centered on TerraUSD (UST), an \"algorithmic stablecoin,\" and its sister token LUNA. Per the SEC, Kwon falsely claimed the Korean payments app Chai settled transactions on the Terra blockchain, and when UST depegged in May 2021 he secretly arranged for a third-party trading firm to buy massive amounts of UST to restore the peg while publicly crediting the algorithm. In May 2022 UST depegged again and the ecosystem collapsed, wiping out roughly $40 billion (some estimates ~$50 billion across three days) and triggering cascading 2022 crypto failures.\n\nOn April 5, 2024, a New York jury unanimously found Terraform and Kwon liable for securities fraud in the SEC's civil case. In June 2024 they agreed to pay over $4.5 billion — Terraform: $3.59B disgorgement, $467M prejudgment interest, $420M civil penalty; Kwon: $110M disgorgement plus $14.3M interest and an $80M penalty — with Terraform winding down operations and distributing assets to victims through bankruptcy.\n\nCriminally, Kwon was extradited from Montenegro (arrested there in March 2023, roughly 21 months in custody) and handed to the FBI on December 31, 2024, appearing before a magistrate in the Southern District of New York. On August 12, 2025, he pleaded guilty to two counts — conspiracy to commit commodities, securities, and wire fraud, and wire fraud — down from nine counts carrying up to 130 years, and agreed to forfeit over $19 million. On December 11, 2025, Judge Paul A. Engelmayer sentenced him to 15 years in prison — above the 12 years prosecutors sought — calling it \"a fraud of epic generational scale\". Kwon must serve at least half the sentence before prosecutors will support transfer to South Korea, where he faces further charges.\n\nSources: [SEC press release 2024-73](https://www.sec.gov/newsroom/press-releases/2024-73), [SEC charges (2023-32)](https://www.sec.gov/newsroom/press-releases/2023-32), [DOJ SDNY sentencing release](https://www.justice.gov/usao-sdny/pr/crypto-enabled-fraudster-sentenced-orchestrating-40-billion-fraud), [DOJ extradition release](https://www.justice.gov/archives/opa/pr/do-kwon-extradited-united-states-montenegro-face-charges-relating-fraud-resulting-40b-losses), [CoinDesk sentencing report](https://www.coindesk.com/policy/2025/12/10/terraform-s-do-kwon-sentenced-to-15-years-in-prison-for-fraud)",
+      "lossUsd": 40000000000,
+      "firstSeenYear": 2018,
+      "officialAction": "DOJ: guilty plea Aug 2025, 15-year sentence Dec 2025; SEC: $4.5B fraud judgment Jun 2024",
+      "sources": [
+        "https://www.sec.gov/newsroom/press-releases/2024-73",
+        "https://www.sec.gov/newsroom/press-releases/2023-32",
+        "https://www.justice.gov/usao-sdny/pr/crypto-enabled-fraudster-sentenced-orchestrating-40-billion-fraud",
+        "https://www.justice.gov/archives/opa/pr/do-kwon-extradited-united-states-montenegro-face-charges-relating-fraud-resulting-40b-losses",
+        "https://www.coindesk.com/policy/2025/12/10/terraform-s-do-kwon-sentenced-to-15-years-in-prison-for-fraud"
+      ],
+      "verdict": "corrected"
+    },
+    {
+      "slug": "huione",
+      "name": "Huione Guarantee (Haowang Guarantee)",
+      "type": "other",
+      "chains": [
+        "multi-chain"
+      ],
+      "status": "active",
+      "severity": "critical",
+      "summary": "Cambodia-based Telegram gray marketplace serving scam operators; $27B+ in flows per Elliptic. Banned by Telegram and hit by FinCEN 311 action in 2025; successor markets keep the ecosystem active.",
+      "details": "Huione Guarantee, launched in 2021 under Cambodia's Huione Group conglomerate and later rebranded Haowang Guarantee, was a Chinese-language, Telegram-based \"guarantee\" (escrow) marketplace selling money-laundering services, stolen data, and fraud tooling to pig-butchering and cyber-scam operators. Elliptic documented over $27 billion in USDT-denominated transactions since 2021 — a total it later revised upward to roughly $31 billion by June 2026 — and called it \"the largest illicit online marketplace to have ever operated.\" The group also spans Huione Pay PLC, Huione Crypto, and a proprietary US-dollar stablecoin reported by Elliptic.\n\nOn May 1, 2025, FinCEN found Huione Group to be a financial institution of primary money laundering concern under Section 311 of the USA PATRIOT Act, citing at least $4 billion in illicit proceeds laundered between August 2021 and January 2025 — including at least $37 million from North Korean cyber heists and $36 million from crypto investment (pig-butchering) scams. On May 13, 2025, Telegram — acting on Elliptic intelligence — banned Haowang Guarantee and Xinbi Guarantee ($8.4 billion in USDT since 2022), a combined $35 billion+. FinCEN's final rule severing Huione Group from US correspondent banking was published October 16, 2025 and took effect November 17, 2025.\n\nThe ecosystem survived the bans. Huione had bought a 30% stake in Tudou Guarantee in December 2024; Tudou absorbed displaced users and processed over $12 billion before effectively ceasing public Telegram transactions in January 2026, while Xinbi Guarantee recovered and regrew following Telegram's intervention, with Elliptic reporting a similar number of guarantee markets still in operation. In 2026 US action continued: on June 23, 2026 the DOJ (Operation Riptide) seized a cloud account hosting backend infrastructure for Huione Group subsidiaries, and the same day FinCEN issued a proposed rule (NPRM, published in the Federal Register June 25, 2026) to extend the special measure to H-Pay Service PLC — which had assumed Huione Pay's role after the National Bank of Cambodia revoked Huione Pay's license in March 2025. Note: FinCEN's $4 billion measures laundered illicit proceeds, while Elliptic's figures (~$27–31 billion) measure total marketplace flows.\n\nSources: [DOJ press release, June 23, 2026](https://www.justice.gov/opa/pr/justice-department-seizes-backend-infrastructure-used-huione-group-money-laundering-services) · [Federal Register final rule, Oct 16, 2025](https://www.federalregister.gov/documents/2025/10/16/2025-19571/imposition-of-special-measure-regarding-huione-group-as-a-foreign-financial-institution-of-primary) · [Elliptic on the Telegram takedown](https://www.elliptic.co/blog/elliptic-data-telegram-market-takedown) · [Elliptic on the Section 311 action](https://www.elliptic.co/blog/us-treasury-takes-311-action-against-huione-group-what-this-means-for-you) · [Elliptic on the FBI case, June 2026](https://www.elliptic.co/blog/behind-the-fbi-case-against-huione) · [The Hacker News on Tudou's halt, Jan 2026](https://thehackernews.com/2026/01/tudou-guarantee-marketplace-halts.html)",
+      "lossUsd": 27000000000,
+      "firstSeenYear": 2021,
+      "officialAction": "FinCEN Section 311 special measure (finding May 1, 2025; final rule effective Nov 17, 2025; proposed extension to H-Pay via NPRM June 23, 2026); DOJ backend-infrastructure seizure (Operation Riptide) June 23, 2026",
+      "sources": [
+        "https://www.justice.gov/opa/pr/justice-department-seizes-backend-infrastructure-used-huione-group-money-laundering-services",
+        "https://www.federalregister.gov/documents/2025/10/16/2025-19571/imposition-of-special-measure-regarding-huione-group-as-a-foreign-financial-institution-of-primary",
+        "https://www.elliptic.co/blog/elliptic-data-telegram-market-takedown",
+        "https://www.elliptic.co/blog/us-treasury-takes-311-action-against-huione-group-what-this-means-for-you",
+        "https://www.elliptic.co/blog/behind-the-fbi-case-against-huione",
+        "https://thehackernews.com/2026/01/tudou-guarantee-marketplace-halts.html"
+      ],
+      "verdict": "corrected"
+    },
+    {
+      "slug": "prince-group",
+      "name": "Prince Group (Chen Zhi)",
+      "type": "pig-butchering",
+      "chains": [
+        "bitcoin",
+        "multi-chain"
+      ],
+      "status": "frozen",
+      "severity": "critical",
+      "summary": "DOJ indicted Prince Group's Chen Zhi (Oct 2025) over forced-labor pig-butchering compounds; record 127,271 BTC (~$15B) forfeiture; OFAC designated 146 targets in a joint US-UK action; Chen deported to China Jan 2026.",
+      "details": "Chen Zhi (\"Vincent\"), founder and chairman of Cambodia-based conglomerate Prince Holding Group, is accused by US authorities of running more than ten forced-labor scam compounds across Cambodia, where trafficked workers were forced under threat of violence to run \"pig-butchering\" crypto-investment fraud against victims worldwide, including Americans. By 2018 the enterprise was earning more than $30 million per day from fraudulent crypto-investment schemes, per TRM Labs. Proceeds were collected in bitcoin and stablecoins (USDT, USDC) and laundered through mining operations (the LuBian pool in China/Iran and Warp Data Technology), Byex Exchange, Huione Group, and a network of shell companies.\n\nOn October 14, 2025, the DOJ unsealed a Brooklyn (EDNY) indictment charging Chen with wire fraud conspiracy and money laundering conspiracy (up to 40 years if convicted) and filed the largest forfeiture action in US history: a civil complaint against 127,271 BTC, then worth over $15 billion, held in 25 unhosted wallets. Simultaneously, in a joint US-UK action, OFAC designated the Prince Group as a transnational criminal organization and sanctioned 146 targets (the UK imposed its own complementary designations); FinCEN issued a Section 311 action against Huione Group. Elliptic traced the seized coins to the December 2020 \"theft\" of ~127,426 BTC from Prince-linked LuBian mining pool; the funds sat dormant until mid-2024. In one affiliated-network takedown the FBI identified 259 US victims who lost $18 million — a partial figure.\n\nInto 2026 the case shifted markedly: Cambodia revoked Chen's citizenship by royal decree in December 2025, then arrested him and deported him to China in early January 2026 (announced January 7) at Beijing's request — meaning he faces Chinese, not US, proceedings for now. The EDNY civil forfeiture case remains ongoing (the BTC was worth roughly $9 billion by March 2026 amid price declines, per ICIJ, which also reported DOJ rejecting early victim claims and Chinese accusations that the US itself \"stole\" the coins). On June 23, 2026, OFAC expanded sanctions with 9 individuals and 26 entities — including second-in-command Hu Xiaowei — while FinCEN proposed tightening its Huione rule; Hong Kong's High Court separately froze roughly $1.1 billion in related assets, per press reports.\n\nSources: [DOJ press release (Oct 14, 2025)](https://www.justice.gov/opa/pr/chairman-prince-group-indicted-operating-cambodian-forced-labor-scam-compounds-engaged), [TRM Labs — Operation Prince](https://www.trmlabs.com/resources/blog/operation-prince-inside-the-global-effort-that-led-to-the-largest-forfeiture-in-us-history), [Chainalysis](https://www.chainalysis.com/blog/southeast-asia-crypto-scam-network-mining-pig-butchering-october-2025/), [Elliptic](https://www.elliptic.co/blog/15-billion-us-seizure-reveals-prince-groups-connection-to-iran-china-bitcoin-mining-theft), [ICIJ (Mar 2026)](https://www.icij.org/investigations/coin-laundry/questions-swirl-around-us-plans-for-record-15b-prince-group-crypto-seizure/), [U.S. Treasury (OFAC/FinCEN, Oct 14, 2025)](https://home.treasury.gov/news/press-releases/sb0278)",
+      "lossUsd": 15000000000,
+      "firstSeenYear": 2018,
+      "officialAction": "DOJ indictment + record 127,271 BTC (~$15B) civil forfeiture, Oct 14, 2025; OFAC TCO designation + sanctions on 146 targets in a joint US-UK action, Oct 2025; OFAC expansion (9 individuals, 26 entities), Jun 23, 2026; Chen Zhi deported by Cambodia to China, Jan 2026",
+      "sources": [
+        "https://www.justice.gov/opa/pr/chairman-prince-group-indicted-operating-cambodian-forced-labor-scam-compounds-engaged",
+        "https://home.treasury.gov/news/press-releases/sb0278",
+        "https://www.trmlabs.com/resources/blog/operation-prince-inside-the-global-effort-that-led-to-the-largest-forfeiture-in-us-history",
+        "https://www.elliptic.co/blog/15-billion-us-seizure-reveals-prince-groups-connection-to-iran-china-bitcoin-mining-theft",
+        "https://www.icij.org/investigations/coin-laundry/questions-swirl-around-us-plans-for-record-15b-prince-group-crypto-seizure/"
+      ],
+      "verdict": "corrected"
+    },
+    {
+      "slug": "ftx",
+      "name": "FTX",
+      "type": "other",
+      "chains": [
+        "multi-chain"
+      ],
+      "status": "confirmed",
+      "severity": "critical",
+      "summary": "FTX collapsed Nov 2022 with ~$8B in misused customer funds; SBF convicted on 7 counts, serving 25 years (upheld Jun 2026); estate has repaid creditors 105-120% of Nov 2022 claim values.",
+      "details": "FTX, once among the largest crypto exchanges, filed for Chapter 11 on November 11, 2022 after a surge in customer withdrawals exposed an ~$8 billion hole in its accounts. Customer deposits had been secretly funneled to founder Sam Bankman-Fried's trading firm Alameda Research to cover risky trades, venture bets, and loans.\n\nBankman-Fried was convicted in November 2023 on seven counts — two of wire fraud, two of conspiracy to commit wire fraud, and conspiracies to commit securities fraud, commodities fraud, and money laundering. Per the DOJ, he misappropriated billions in customer funds, defrauded FTX investors of more than $1.7 billion, and defrauded Alameda's lenders of more than $1.3 billion. On March 28, 2024 he was sentenced to 25 years in prison, three years of supervised release, and $11 billion in forfeiture. On June 12, 2026 the Second Circuit upheld both conviction and sentence, calling the evidence against him robust; a clemency petition is pending, though President Trump has said publicly he is not considering a pardon.\n\nThe FTX Recovery Trust began repaying creditors in February 2025, with rounds of ~$5B (May 2025), ~$1.6B (Sept 2025), ~$2.2B (March 2026), and a fifth ~$900M distribution starting July 31, 2026 — taking announced distributions past $9.7 billion. Customer classes have now recovered 105% (120% for small convenience claims) of claim values, though valued in November 2022 petition-date dollars rather than appreciated crypto prices.\n\nSources: [DOJ press release (Mar 2024)](https://www.justice.gov/archives/opa/pr/samuel-bankman-fried-sentenced-25-years-his-orchestration-multiple-fraudulent-schemes) · [FTX Recovery Trust fifth-distribution release (Jul 2026)](https://www.prnewswire.com/news-releases/ftx-announces-fifth-distribution-of-approximately-900-million-to-creditors-on-july-31-2026-302828726.html) · [CoinDesk on Second Circuit ruling (Jun 2026)](https://www.coindesk.com/policy/2026/06/12/ftx-s-sam-bankman-fried-loses-appeal-of-criminal-conviction-on-fraud-conspiracy-charges) · [CoinDesk on distribution schedule (Jan 2026)](https://www.coindesk.com/business/2026/01/14/ftx-estate-sets-next-creditor-payout-date-as-genesis-digital-assets-fights-usd1-billion-clawback-suit)",
+      "lossUsd": 8000000000,
+      "firstSeenYear": 2022,
+      "officialAction": "DOJ conviction Nov 2023 (7 counts); 25-year sentence + $11B forfeiture Mar 2024; Second Circuit affirmed conviction and sentence Jun 12, 2026",
+      "sources": [
+        "https://www.justice.gov/archives/opa/pr/samuel-bankman-fried-sentenced-25-years-his-orchestration-multiple-fraudulent-schemes",
+        "https://www.prnewswire.com/news-releases/ftx-announces-fifth-distribution-of-approximately-900-million-to-creditors-on-july-31-2026-302828726.html",
+        "https://www.coindesk.com/policy/2026/06/12/ftx-s-sam-bankman-fried-loses-appeal-of-criminal-conviction-on-fraud-conspiracy-charges",
+        "https://www.coindesk.com/business/2026/01/14/ftx-estate-sets-next-creditor-payout-date-as-genesis-digital-assets-fights-usd1-billion-clawback-suit"
+      ],
+      "verdict": "corrected"
+    },
+    {
+      "slug": "celsius",
+      "name": "Celsius Network",
+      "type": "other",
+      "chains": [
+        "multi-chain"
+      ],
+      "status": "confirmed",
+      "severity": "critical",
+      "summary": "Crypto lender that froze ~$4.7B in customer funds in June 2022; CEO Alex Mashinsky pleaded guilty to fraud, sentenced to 12 years in May 2025; FTC and CFTC actions resolved in 2026.",
+      "details": "Celsius Network, a centralized crypto lending platform, marketed itself as a \"safe\" bank alternative offering high yields while — per the CFTC — running a deceptive scheme from 2018 through June 2022, taking in roughly $20 billion in customer funds and deploying them into uncollateralized loans and risky DeFi positions. Celsius paused all withdrawals, swaps, and transfers on June 12, 2022 — when customers still held roughly $4.7 billion in crypto they could not access — and filed for Chapter 11 in the Southern District of New York on July 13, 2022, with about 600,000 accounts affected. The FTC charged that Celsius misappropriated more than $4 billion in consumer deposits.\n\nFounder-CEO Alexander Mashinsky was indicted on seven counts in July 2023 and pleaded guilty on December 3, 2024, to commodities fraud and securities fraud, admitting to misrepresenting Celsius's financial condition and manipulating the price of the CEL token. In May 2025 Judge John G. Koeltl sentenced him to 12 years in prison plus three years of supervised release, a $50,000 fine, and forfeiture of $48,393,446. On May 29, 2026, Mashinsky filed a pro se motion to vacate the sentence (claiming ineffective counsel tied to an FTX-related conflict); no ruling has issued.\n\nOn the civil side, the FTC's July 2023 settlement with the corporate entities imposed a $4.7 billion judgment — suspended so remaining assets could be returned through bankruptcy — and by July 2026 the three co-founders had been ordered to pay $16.5 million total (Mashinsky $10M in April 2026; Shlomi Daniel Leon $4.1M and Hanoch \"Nuke\" Goldstein $2.4M under June 29, 2026 orders) with permanent marketing bans. The CFTC resolved its action on June 18, 2026 with permanent trading and registration bans against Mashinsky; the SEC's parallel civil case against Celsius and Mashinsky (filed July 13, 2023) was stayed pending completion of the criminal proceedings. The bankruptcy plan was confirmed November 9, 2023, and the reorganized estate began distributing over $3 billion in crypto and fiat to creditors. Loss figures vary by source: ~$4.2B in account assets at filing vs. the FTC's $4.72B consumer-harm judgment (used here).\n\nSources: [DOJ SDNY sentencing release](https://www.justice.gov/usao-sdny/pr/founder-celsius-sentenced-12-years-fraud-and-market-manipulation), [FTC 2023 settlement](https://www.ftc.gov/news-events/news/press-releases/2023/07/ftc-reaches-settlement-crypto-platform-celsius-network-charges-former-executives-duping-consumers), [FTC July 2026 founder orders](https://www.ftc.gov/news-events/news/press-releases/2026/07/founders-celsius-network-ordered-pay-165-million-resolve-ftc-charges), [CFTC consent order June 2026](https://www.cftc.gov/PressRoom/PressReleases/9256-26), [Decrypt on motion to vacate](https://decrypt.co/369520/celsius-founder-mashinsky-files-12-year-crypto-fraud-sentence-vacated)",
+      "lossUsd": 4700000000,
+      "firstSeenYear": 2018,
+      "officialAction": "DOJ: guilty plea Dec 2024, 12-year sentence May 2025; FTC $4.7B suspended judgment 2023 + $16.5M founder orders 2026; CFTC permanent trading/registration bans June 2026",
+      "sources": [
+        "https://www.justice.gov/usao-sdny/pr/founder-celsius-sentenced-12-years-fraud-and-market-manipulation",
+        "https://www.ftc.gov/news-events/news/press-releases/2023/07/ftc-reaches-settlement-crypto-platform-celsius-network-charges-former-executives-duping-consumers",
+        "https://www.ftc.gov/news-events/news/press-releases/2026/07/founders-celsius-network-ordered-pay-165-million-resolve-ftc-charges",
+        "https://www.cftc.gov/PressRoom/PressReleases/9256-26",
+        "https://decrypt.co/369520/celsius-founder-mashinsky-files-12-year-crypto-fraud-sentence-vacated"
+      ],
+      "verdict": "corrected"
+    },
+    {
+      "slug": "onecoin",
+      "name": "OneCoin",
+      "type": "ponzi",
+      "chains": [
+        "none"
+      ],
+      "status": "confirmed",
+      "severity": "critical",
+      "summary": "Fake-cryptocurrency Ponzi/MLM (2014-17) that took $4B+ from 3.5M victims; co-founders convicted in US; founder Ruja Ignatova remains an FBI Ten Most Wanted fugitive with a $5M reward.",
+      "details": "**OneCoin Ltd**, founded in 2014 in Sofia, Bulgaria by Ruja Ignatova (\"Cryptoqueen\") and Karl Sebastian Greenwood, sold a purported cryptocurrency through a global multi-level-marketing network. OneCoin had no real public blockchain and the coins were worthless. Per DOJ, the scheme generated over **$4 billion** from more than **3.5 million victims** (over $4B in sales between Q4 2014 and Q4 2016 alone).\n\nIgnatova flew from Sofia to Athens on October 25, 2017 and has been a fugitive since. She was added to the FBI's **Ten Most Wanted** list in June 2022, and on June 26, 2024 the State Department raised the reward from $250,000 to **up to $5 million** under the Transnational Organized Crime Rewards Program. As of 2026 she remains at large, with investigators pursuing leads including offshore property holdings.\n\nAdjudicated outcomes (SDNY, Judge Edgardo Ramos): Greenwood pleaded guilty and was sentenced to **20 years** on September 12, 2023, forfeiting ~$300 million. Former Locke Lord partner **Mark Scott** was convicted at trial in November 2019 of laundering ~**$400 million** of proceeds through offshore funds and sentenced to **10 years** on January 25, 2024. Ignatova's brother Konstantin Ignatov, a cooperating witness, was sentenced to time served (34 months) in March 2024.\n\nLatest development: DOJ opened a victim compensation (remission) process using forfeited assets — over **$40 million** available, administered by Kroll via onecoinremission.com, with a claims deadline of **June 30, 2026**.\n\nSources: [DOJ SDNY — Greenwood sentenced](https://www.justice.gov/usao-sdny/pr/co-founder-multibillion-dollar-cryptocurrency-scheme-onecoin-sentenced-20-years-prison) | [DOJ SDNY — Scott sentenced](https://www.justice.gov/usao-sdny/pr/former-law-firm-partner-sentenced-10-years-prison-laundering-400-million-onecoin-fraud) | [State Dept — $5M reward](https://2021-2025.state.gov/up-to-5-million-reward-offer-for-information-leading-to-arrest-and-or-conviction-of-cryptocurrency-fraudster-ruja-ignatova/) | [DOJ — victim compensation process](https://www.justice.gov/opa/pr/justice-department-announces-compensation-process-onecoin-fraud-victims-funds-recovered) | [FBI — Ten Most Wanted](https://www.fbi.gov/news/stories/ruja-ignatova-added-to-fbis-ten-most-wanted-fugitives-list)",
+      "lossUsd": 4000000000,
+      "firstSeenYear": 2014,
+      "officialAction": "SDNY convictions: Greenwood 20 yrs + $300M forfeiture (Sept 2023), Scott 10 yrs (Jan 2024); Ignatova on FBI Ten Most Wanted with $5M State Dept reward (June 2024); DOJ victim remission open until June 30, 2026",
+      "sources": [
+        "https://www.justice.gov/usao-sdny/pr/co-founder-multibillion-dollar-cryptocurrency-scheme-onecoin-sentenced-20-years-prison",
+        "https://www.justice.gov/usao-sdny/pr/former-law-firm-partner-sentenced-10-years-prison-laundering-400-million-onecoin-fraud",
+        "https://2021-2025.state.gov/up-to-5-million-reward-offer-for-information-leading-to-arrest-and-or-conviction-of-cryptocurrency-fraudster-ruja-ignatova/",
+        "https://www.justice.gov/opa/pr/justice-department-announces-compensation-process-onecoin-fraud-victims-funds-recovered",
+        "https://www.irs.gov/node/126321"
+      ],
+      "verdict": "confirmed"
+    },
+    {
+      "slug": "bitconnect",
+      "name": "BitConnect",
+      "type": "ponzi",
+      "chains": [
+        "bitcoin"
+      ],
+      "status": "confirmed",
+      "severity": "critical",
+      "summary": "Crypto \"Lending Program\" Ponzi (2016-18) that took ~$2.4B via fake trading-bot returns; founder Satish Kumbhani indicted 2022, still a fugitive; US promoter sentenced, $17.6M restitution paid 2023.",
+      "details": "BitConnect, founded in 2016 by Satish Kumbhani, ran a \"Lending Program\" from late 2016/early 2017 until January 2018 that promised returns of up to 40% per month from a purported \"volatility software trading bot.\" Per the SEC and DOJ, no such trading occurred: earlier investors were paid with later investors' funds — a textbook Ponzi — while operators siphoned deposits to wallets they controlled. Its BCC token hit a peak market capitalization of about $3.4 billion before the platform abruptly shut down in January 2018.\n\nThe SEC charged BitConnect, Kumbhani, and top US promoter Glenn Arcaro on September 1, 2021, describing a $2 billion fraudulent unregistered offering (it had sued five other US promoters in May 2021). On February 25, 2022, a federal grand jury indicted Kumbhani on wire fraud, commodity price manipulation conspiracy, unlicensed money transmitting, and international money laundering conspiracy charges over approximately $2.4 billion taken from investors (the DOJ criminal figure; the SEC civil complaint cited $2 billion). Kumbhani, facing up to 70 years, has never been located — the DOJ says he remains at large, and he is also wanted in India.\n\nArcaro pleaded guilty in September 2021 and was sentenced in September 2022 to 38 months in prison for his role in the scheme, which reportedly defrauded at least 4,500 people in some 95 countries. The DOJ sold $56 million in seized crypto in 2021, and on January 12, 2023 announced distribution of $17,646,801 in restitution to about 800 victims in more than 40 countries.\n\nThe case remains live in India: the Enforcement Directorate announced seizure of roughly 16.5 billion rupees (~$190 million) in crypto plus cash and a Lexus in February 2025, and in January 2026 arrested two men (Nikunj Bhatt and Sanjay Kotadia) under the Prevention of Money Laundering Act, freezing about Rs 19 crore more, with roughly Rs 270 crore attached across the probe.\n\nSources: [SEC press release 2021-172](https://www.sec.gov/newsroom/press-releases/2021-172), [DOJ/IRS-CI indictment of Kumbhani](https://www.irs.gov/compliance/criminal-investigation/bitconnect-founder-indicted-in-global-2-point-4-billion-cryptocurrency-scheme), [DOJ $17.6M restitution announcement](https://www.irs.gov/node/118171), [CoinDesk: India ED seizes $190M (Feb 2025)](https://www.coindesk.com/policy/2025/02/17/india-s-directorate-of-enforcement-seizes-usd190m-in-bitconnect-fraud-case), [ED arrests two in BitConnect case (Jan 2026)](https://www.prokerala.com/news/articles/a1721278.html)",
+      "lossUsd": 2400000000,
+      "firstSeenYear": 2016,
+      "officialAction": "DOJ indictment of founder Satish Kumbhani Feb 2022 (fugitive); SEC fraud charges Sept 2021; promoter Glenn Arcaro sentenced 38 months Sept 2022 with $17.6M restitution distributed Jan 2023; India ED seizures 2025-26",
+      "sources": [
+        "https://www.sec.gov/newsroom/press-releases/2021-172",
+        "https://www.irs.gov/compliance/criminal-investigation/bitconnect-founder-indicted-in-global-2-point-4-billion-cryptocurrency-scheme",
+        "https://www.irs.gov/node/118171",
+        "https://www.coindesk.com/policy/2025/02/17/india-s-directorate-of-enforcement-seizes-usd190m-in-bitconnect-fraud-case",
+        "https://www.prokerala.com/news/articles/a1721278.html"
+      ],
+      "verdict": "corrected"
+    },
+    {
+      "slug": "plustoken",
+      "name": "PlusToken",
+      "type": "ponzi",
+      "chains": [
+        "bitcoin",
+        "ethereum",
+        "eos",
+        "xrp",
+        "multi-chain"
+      ],
+      "status": "confirmed",
+      "severity": "critical",
+      "summary": "2018-19 Chinese wallet Ponzi; court found 14.8B yuan (~$2.25B) defrauded from 2.6M+ investors. 14 ringleaders jailed up to 11 years (Nov 2020); ~$4.2B in crypto incl. 194,775 BTC forfeited to China.",
+      "details": "PlusToken launched in 2018 as a Chinese \"high-yield\" crypto wallet promising returns from exchange profit, mining income and referral bonuses, recruiting more than 2.6 million investors mainly in China and South Korea (Chainalysis says over 3 million across China, Korea and Japan). Chainalysis tracked roughly $2 billion in victim deposits; Chinese courts found 14.8 billion yuan (~$2.25 billion) was defrauded, while Chinese media reported total inflows above 50 billion yuan (~$7.6 billion). The scheme collapsed in mid-2019 when leaders fled; by mid-2020 Chinese police had arrested 27 alleged masterminds and 82 core members hiding in Cambodia, Vanuatu, Vietnam and Malaysia.\n\nIn November 2020 the Yancheng Intermediate People's Court in Jiangsu (after an initial district-court ruling on September 22, 2020) sentenced ringleader Chen Bo and 13 co-conspirators to between 2 and 11 years in prison with fines of 120,000-6 million yuan. The judgment disclosed seizures of 194,775 BTC, 833,083 ETH, 1.4M LTC, 27.6M EOS, 74,167 DASH, 487M XRP, 6B DOGE, 79,581 BCH and 213,724 USDT — worth ~$4.2 billion at the time — all forfeited to the national treasury.\n\nCourt documents show contractor Beijing Zhifan Technology Co. was engaged to convert seized assets to cash, and analysts report most of the bitcoin (~$1.3B at the time) was sold in 2019-2020; in January 2025 CryptoQuant's CEO argued all 194,775 BTC had been laundered through mixers and sold via exchanges such as Huobi. In August-October 2024, ~542,000 dormant seized ETH (~$1.3B) was redistributed to 294 wallets, with thousands of ETH sent to Binance, OKX and Bitget. As of 2026 China has issued no official statement on whether it still holds any PlusToken bitcoin; trackers such as Arkham list the holdings as unverified.\n\nSources:\n- [Chainalysis — The PlusToken Scam](https://www.chainalysis.com/blog/plustoken-scam-bitcoin-price/)\n- [CoinDesk — Ringleaders of PlusToken Scam Jailed for Up to 11 Years](https://www.coindesk.com/policy/2020/12/01/ringleaders-of-plustoken-scam-jailed-for-up-to-11-years)\n- [SCMP — Chinese cryptocurrency scam ringleaders jailed in US$2.25 billion Ponzi scheme](https://www.scmp.com/economy/china-economy/article/3112115/chinese-cryptocurrency-scam-ringleaders-jailed-us225-billion)\n- [The Block — $16 million worth of ether from PlusToken ponzi moves to exchanges (Oct 2024)](https://www.theblock.co/post/320365/plustoken-7000-eth-sent-to-exchanges)\n- [crypto.news — CryptoQuant CEO: China sold 194k Bitcoin from PlusToken (Jan 2025)](https://crypto.news/cryptoquant-ceo-china-sold-194k-bitcoin-from-plustoken/)",
+      "lossUsd": 2250000000,
+      "firstSeenYear": 2018,
+      "officialAction": "Nov 2020 convictions by Yancheng Intermediate People's Court (Jiangsu, China): 14 ringleaders sentenced to 2-11 years; ~$4.2B in seized crypto (incl. 194,775 BTC) forfeited to national treasury",
+      "sources": [
+        "https://www.chainalysis.com/blog/plustoken-scam-bitcoin-price/",
+        "https://www.coindesk.com/policy/2020/12/01/ringleaders-of-plustoken-scam-jailed-for-up-to-11-years",
+        "https://www.scmp.com/economy/china-economy/article/3112115/chinese-cryptocurrency-scam-ringleaders-jailed-us225-billion",
+        "https://www.theblock.co/post/320365/plustoken-7000-eth-sent-to-exchanges",
+        "https://crypto.news/cryptoquant-ceo-china-sold-194k-bitcoin-from-plustoken/"
+      ],
+      "verdict": "confirmed"
+    },
+    {
+      "slug": "thodex",
+      "name": "Thodex",
+      "type": "rug-pull",
+      "chains": [
+        "multi-chain"
+      ],
+      "status": "confirmed",
+      "severity": "critical",
+      "summary": "Turkish exchange Thodex halted trading in April 2021; CEO Faruk Fatih Özer fled, was extradited, sentenced to 11,196 years in 2023, and died in prison Nov 1, 2025. Losses disputed ($43M–$2.6B).",
+      "details": "Thodex, then one of Turkey's largest cryptocurrency exchanges, abruptly halted trading and withdrawals in April 2021, locking out users — Turkish authorities put claimed users at roughly 390,000–400,000. Founder-CEO Faruk Fatih Özer flew to Albania on April 20, 2021 as the platform went dark, claiming the exchange had only paused to investigate a cyberattack. After an Interpol red notice, he was arrested in Albania on August 30, 2022 and extradited to Turkey in April 2023.\n\nOn September 7, 2023, an Istanbul high criminal court convicted Özer of aggravated fraud, leading a criminal organization, and money laundering, sentencing him to 11,196 years (prosecutors had sought up to ~40,564 years) plus a 135 million lira (~$5M) fine. His siblings Serap and Güven Özer received identical sentences among roughly 20 defendants.\n\nLoss figures remain disputed. Chainalysis documented over $2 billion lost — nearly 90% of all 2021 rug-pull value, calling Thodex the biggest rug pull of the year — and some outlets cite $2.6 billion, while the Turkish prosecutor's indictment cited only 356 million lira (~$43 million at the time) and 2,027 formal complainants. The Chainalysis figure is the most-cited independent estimate; the court record reflects the far lower indictment figure.\n\nLatest developments: on January 30, 2025 an appellate ruling split the case, ordering release on the organized-crime count while upholding detention on fraud, with appeals ongoing. On November 1, 2025, Özer was found hanged in an apparent suicide in his single cell at Tekirdağ F-Type High Security Prison, ending the appeal process against him.\n\nSources: [Chainalysis 2021 scam report](https://www.chainalysis.com/blog/2021-crypto-scam-revenues/) · [Decrypt on sentencing](https://decrypt.co/155522/thodex-ceo-gets-11000-year-jail-sentence-over-2b-crypto-exchange-collapse) · [Türkiye Today on Jan 2025 appeal ruling](https://www.turkiyetoday.com/turkiye/thodex-founder-granted-partial-release-in-2-billion-crypto-scam-case-113004) · [DL News on death in prison](https://www.dlnews.com/articles/people-culture/turkish-thodex-crypto-exchange-founder-faruk-fatih-ozer-dead/) · [Wikipedia: Faruk Fatih Özer](https://en.wikipedia.org/wiki/Faruk_Fatih_%C3%96zer)",
+      "lossUsd": 2000000000,
+      "firstSeenYear": 2021,
+      "officialAction": "Extradited from Albania Apr 2023; Istanbul court sentenced Özer and two siblings to 11,196 years each for fraud, money laundering, and leading a criminal organization (Sept 7, 2023); appeal pending at his death Nov 1, 2025",
+      "sources": [
+        "https://www.chainalysis.com/blog/2021-crypto-scam-revenues/",
+        "https://decrypt.co/155522/thodex-ceo-gets-11000-year-jail-sentence-over-2b-crypto-exchange-collapse",
+        "https://www.turkiyetoday.com/turkiye/thodex-founder-granted-partial-release-in-2-billion-crypto-scam-case-113004",
+        "https://www.dlnews.com/articles/people-culture/turkish-thodex-crypto-exchange-founder-faruk-fatih-ozer-dead/",
+        "https://en.wikipedia.org/wiki/Faruk_Fatih_%C3%96zer"
+      ],
+      "verdict": "corrected"
+    },
+    {
+      "slug": "hyperverse",
+      "name": "HyperFund / HyperVerse",
+      "type": "ponzi",
+      "chains": [
+        "multi-chain"
+      ],
+      "status": "confirmed",
+      "severity": "critical",
+      "summary": "Global $1.89B crypto-mining Ponzi (2020-2022). DOJ/SEC charged founder Sam Lee and top promoters in Jan 2024; two promoters pleaded guilty; Lee remains a fugitive in Dubai.",
+      "details": "HyperFund launched in June 2020 under the \"HyperTech\" umbrella of Australian national Sam (Xue) Lee, rebranding as HyperVerse in December 2021 and later HyperNation. It sold memberships promising 0.5%–1% daily \"passive rewards\" until investors doubled or tripled their money, supposedly funded by large-scale crypto mining that did not exist. Withdrawals were blocked from July 2021, and Chainalysis ranked the collapse among 2022's largest crypto scams. HyperVerse's launch even featured a fake CEO, \"Steven Reece Lewis,\" played by a paid actor, plus purchased Cameo endorsements from Chuck Norris and Steve Wozniak.\n\nOn January 29, 2024, the DOJ (District of Maryland) charged Lee with conspiracy to commit securities fraud and wire fraud over the approximately $1.89 billion scheme, charged promoter Rodney \"Bitcoin Rodney\" Burton with unlicensed money transmitting offenses, and announced promoter Brenda \"Bitcoin Beautee\" Chunga's guilty plea to conspiracy to commit securities and wire fraud. The SEC filed parallel civil fraud charges against Lee and Chunga, describing a $1.7 billion crypto pyramid scheme (the SEC's figure differs from the DOJ's $1.89 billion).\n\nAs of July 2026, no sentences have been imposed. Burton — arrested at Miami International Airport in January 2024 — pleaded guilty on June 15, 2026 to conspiracy to operate an unlicensed money transmitting business, admitting he received at least $7,851,711; he faces up to 5 years, with sentencing set for July 23, 2026 before Judge Richard D. Bennett. Chunga's sentencing was continued to January 7, 2027. Lee remains a fugitive: after an Interpol Red Notice, he reportedly surrendered to Dubai authorities and was detained for about 60 days in late 2024 before release, with extradition to the US unresolved; he has reportedly continued promoting new schemes from Dubai.\n\nSources: [DOJ press release, Jan 2024](https://www.justice.gov/usao-md/pr/three-individuals-charged-189-billion-cryptocurrency-fraud-scheme) · [DOJ HyperFund case page](https://www.justice.gov/criminal/case/hyperfund-and-associated-cases) · [SEC press release 2024-11](https://www.sec.gov/newsroom/press-releases/2024-11) · [The Block: Bitcoin Rodney guilty plea](https://www.theblock.co/post/405197/bitcoin-rodney-pleads-guilty-in-1-8-billion-crypto-fraud-case) · [Wikipedia: HyperVerse](https://en.wikipedia.org/wiki/HyperVerse)",
+      "lossUsd": 1890000000,
+      "firstSeenYear": 2020,
+      "officialAction": "DOJ criminal charges + SEC civil fraud charges Jan 2024; Chunga guilty plea Jan 2024; Burton guilty plea Jun 2026 (sentencing Jul 23, 2026); Interpol Red Notice for fugitive founder Sam Lee",
+      "sources": [
+        "https://www.justice.gov/usao-md/pr/three-individuals-charged-189-billion-cryptocurrency-fraud-scheme",
+        "https://www.justice.gov/criminal/case/hyperfund-and-associated-cases",
+        "https://www.sec.gov/newsroom/press-releases/2024-11",
+        "https://www.theblock.co/post/405197/bitcoin-rodney-pleads-guilty-in-1-8-billion-crypto-fraud-case",
+        "https://en.wikipedia.org/wiki/HyperVerse"
+      ],
+      "verdict": "corrected"
+    },
+    {
+      "slug": "bybit-hack",
+      "name": "Bybit Hack (Lazarus Group / TraderTraitor)",
+      "type": "other",
+      "chains": [
+        "ethereum",
+        "bitcoin",
+        "multi-chain"
+      ],
+      "status": "confirmed",
+      "severity": "critical",
+      "summary": "DPRK's TraderTraitor (Lazarus) stole ~$1.5B in ETH from Bybit on Feb 21, 2025 via a compromised Safe{Wallet} developer machine — the largest crypto theft on record; under 4% of funds frozen.",
+      "details": "On February 21, 2025, attackers drained roughly 401,000 ETH (about $1.46B at the time; the FBI cites ~$1.5B) from Bybit during a routine cold-to-warm wallet transfer — the largest cryptocurrency theft on record. Forensics showed the attackers had socially engineered a Safe{Wallet} developer, stolen AWS session tokens, and injected malicious JavaScript into the Safe front-end so Bybit's multisig signers approved what looked like a legitimate transaction while the underlying logic redirected funds to attacker wallets.\n\nOn February 26, 2025, the FBI (IC3 alert I-022625-PSA) officially attributed the theft to North Korea's \"TraderTraitor\" activity (Lazarus Group, tied to the Reconnaissance General Bureau) and published attacker ETH addresses, urging exchanges, bridges, and node operators to block them. Bybit replenished reserves within days, stayed solvent, and launched a \"LazarusBounty\" program offering 10% of recovered funds (up to $140M).\n\nLaundering was rapid: TRM Labs tracked $400M moved by Feb 26, and by late March roughly 86% of the ETH had been swapped to Bitcoin, largely via THORChain, then dispersed across tens of thousands of wallets. Per Bybit CEO Ben Zhou's April 21, 2025 update, 68.57% remained traceable, 27.59% had \"gone dark\" through mixers (Wasabi, Tornado Cash, CryptoMixer, Railgun) and P2P/OTC channels, and only 3.84% was frozen (Chainalysis and partners froze $40M+). Figures conflict slightly — Bybit cites ~$1.4B, Elliptic $1.46B, the FBI ~$1.5B; the FBI figure is used here. As of early 2026, frozen funds remain under 4%, no perpetrators have been charged, and the operators remain at large in North Korea. On November 4, 2025, OFAC sanctioned DPRK banks (including Cheil Credit Bank, with 53 crypto addresses) and bankers laundering North Korean cybercrime proceeds; Elliptic estimates DPRK stole over $2B in crypto in 2025, driven chiefly by this hack.\n\nSources: [FBI IC3 PSA I-022625-PSA](https://www.ic3.gov/psa/2025/psa250226), [Chainalysis](https://www.chainalysis.com/blog/bybit-exchange-hack-february-2025-crypto-security-dprk/), [TRM Labs](https://www.trmlabs.com/resources/blog/the-bybit-hack-following-north-koreas-largest-exploit), [Elliptic](https://www.elliptic.co/blog/ofac-lists-53-crypto-addresses-of-sanctioned-north-korean-cheil-credit-bank), [CoinDesk](https://www.coindesk.com/markets/2025/04/21/over-usd380m-worth-of-crypto-stolen-during-bybit-s-usd1-4b-hack-has-gone-dark)",
+      "lossUsd": 1500000000,
+      "firstSeenYear": 2025,
+      "officialAction": "FBI IC3 PSA I-022625-PSA (Feb 26, 2025) officially attributing theft to DPRK TraderTraitor/Lazarus; OFAC sanctions on DPRK cybercrime-laundering banks and bankers (Nov 4, 2025)",
+      "sources": [
+        "https://www.ic3.gov/psa/2025/psa250226",
+        "https://www.chainalysis.com/blog/bybit-exchange-hack-february-2025-crypto-security-dprk/",
+        "https://www.trmlabs.com/resources/blog/the-bybit-hack-following-north-koreas-largest-exploit",
+        "https://www.elliptic.co/blog/ofac-lists-53-crypto-addresses-of-sanctioned-north-korean-cheil-credit-bank",
+        "https://www.coindesk.com/markets/2025/04/21/over-usd380m-worth-of-crypto-stolen-during-bybit-s-usd1-4b-hack-has-gone-dark"
+      ],
+      "verdict": "confirmed"
+    },
+    {
+      "slug": "finiko",
+      "name": "Finiko",
+      "type": "ponzi",
+      "chains": [
+        "bitcoin",
+        "multi-chain"
+      ],
+      "status": "confirmed",
+      "severity": "critical",
+      "summary": "Russian Ponzi (2018–2021) that took in over $1.5B in BTC across ~800,000 deposits promising up to 30% monthly returns; founder Kirill Doronin arrested July 2021; trial of 10 organizers in Kazan still ongoing in 2026.",
+      "details": "**Finiko** was a Kazan, Russia-based Ponzi scheme fronted by Instagram influencer **Kirill Doronin** with co-founders Zygmunt Zygmuntovich, Marat Sabirov, and Edward Sabirov. It promised monthly returns of up to 30 percent, accepted deposits in Bitcoin and Tether, and launched its own FNK token. Russian prosecutors date the criminal community to the **2018–2021** period; Chainalysis tracked its Bitcoin inflows from December 2019 until the July 2021 collapse, when withdrawals stopped.\n\nChainalysis found Finiko received **over $1.5 billion in Bitcoin across roughly 800,000 deposits**, mostly from victims in Russia and Ukraine — one of the largest documented crypto Ponzi schemes. Laundering included over $9M sent to Suex (the OTC broker later sanctioned by OFAC), ~$3.9M to mixers, and $34M through a cross-chain DeFi protocol. Loss figures conflict: Chainalysis's $1.5B reflects total Bitcoin inflows, whereas Russia's Interior Ministry tallied roughly 5 billion rubles (about $55–80M) in victim complaints, and the formal criminal case charges only ~209 million rubles in proven episodes involving 161 named victims.\n\nDoronin was arrested in Kazan at the end of **July 2021**. The trial of Doronin and nine co-defendants for fraud and organizing a criminal community began in the Vakhitovsky District Court of Kazan on **24 June 2024** and, per hearings reported into **early 2026**, remains under way with no verdict; Doronin denies guilt. Network director **Lilia Nuriyeva** was sentenced in May 2024 (4.5 years, reduced with pre-trial detention credit), and on **14 August 2024** Tatarstan's Supreme Court upheld her conviction, affirming Finiko's designation as a criminal community. Co-founder **Edward Sabirov was extradited from the UAE to Russia on 10 December 2025**; co-founders Marat Sabirov and Zygmunt Zygmuntovich reportedly remain at large.\n\nSources: [Chainalysis 2021 scam report](https://www.chainalysis.com/blog/2021-crypto-scam-revenues/), [The Block](https://www.theblock.co/post/115858/russian-pyramid-scheme-netted-over-1-5-billion-in-bitcoin-throughout-eastern-europe-says-chainalysis), [Kommersant (Nuriyeva appeal)](https://www.kommersant.ru/doc/6892724), [ForkLog](https://forklog.com/en/co-founder-of-finiko-pyramid-extradited-from-uae-to-russia/), [BeInCrypto](https://beincrypto.com/finiko-crypto-ponzi-executive-sentenced/)",
+      "lossUsd": 1500000000,
+      "firstSeenYear": 2018,
+      "officialAction": "Russian prosecution: founder Doronin arrested Jul 2021; exec Nuriyeva convicted May 2024 (Finiko ruled a criminal community, upheld 14 Aug 2024); co-founder E. Sabirov extradited from UAE 10 Dec 2025; main Kazan trial of 10 defendants ongoing",
+      "sources": [
+        "https://www.chainalysis.com/blog/2021-crypto-scam-revenues/",
+        "https://www.theblock.co/post/115858/russian-pyramid-scheme-netted-over-1-5-billion-in-bitcoin-throughout-eastern-europe-says-chainalysis",
+        "https://www.kommersant.ru/doc/6892724",
+        "https://forklog.com/en/co-founder-of-finiko-pyramid-extradited-from-uae-to-russia/",
+        "https://beincrypto.com/finiko-crypto-ponzi-executive-sentenced/"
+      ],
+      "verdict": "corrected"
+    },
+    {
+      "slug": "ronin-bridge",
+      "name": "Ronin Bridge hack (Axie Infinity)",
+      "type": "other",
+      "chains": [
+        "ethereum",
+        "ronin"
+      ],
+      "status": "confirmed",
+      "severity": "critical",
+      "summary": "North Korea's Lazarus Group stole 173,600 ETH and 25.5M USDC (~$625M) from Axie Infinity's Ronin bridge in March 2022. OFAC-sanctioned; ~$36M+ recovered; all users reimbursed.",
+      "details": "On March 23, 2022, attackers compromised five of the nine validator keys securing the Ronin Network, the Ethereum sidechain built by Sky Mavis for the game Axie Infinity, and approved two withdrawals from the Ronin bridge totaling 173,600 ETH and 25.5 million USDC — about $625 million at the time, then the largest DeFi hack on record. The breach went unnoticed until March 29, when a user could not withdraw ETH. (Reported loss figures range from ~$540M at transaction time to $612M-$625M at disclosure; $625M is the most widely cited.)\n\nOn April 14, 2022, the FBI attributed the attack to North Korea's Lazarus Group, and OFAC added the attacker's Ethereum address to its Lazarus Group SDN designation. The group laundered funds through more than 12,000 addresses in a five-stage process centered on Tornado Cash; OFAC's August 2022 sanctioning of Tornado Cash cited over $455 million laundered from this heist.\n\nRecovery has been partial but ongoing: in September 2022, US law enforcement working with Chainalysis seized over $30 million — the first-ever seizure of DPRK-stolen crypto (~10% of the haul). Norway's Økokrim seized roughly $5.9 million in 2023 and returned $5.7 million to Sky Mavis in June 2024, with about $40 million more frozen by law enforcement. Sky Mavis raised $150 million in April 2022 (led by Binance), reimbursed all users, and relaunched the bridge on June 28, 2022. No individual has been indicted specifically for the Ronin theft; Lazarus remains active and executed the $1.5 billion Bybit hack in February 2025.\n\nSources: [Chainalysis](https://www.chainalysis.com/blog/axie-infinity-ronin-bridge-dprk-hack-seizure/), [CoinDesk](https://www.coindesk.com/policy/2022/04/14/us-officials-tie-north-korean-hacker-group-to-axies-ronin-exploit), [CyberScoop](https://cyberscoop.com/ronin-bridge-hack-lazarus-group-north-korea-treasury-sanctions/), [Cointelegraph](https://cointelegraph.com/news/sky-mavis-recovers-5-7m-ronin-bridge-hack), [CoinDesk](https://www.coindesk.com/business/2022/04/06/sky-mavis-raises-150m-round-led-by-binance-to-reimburse-ronin-attack-victims)",
+      "lossUsd": 625000000,
+      "firstSeenYear": 2022,
+      "officialAction": "FBI attribution to Lazarus Group and OFAC SDN designation of attacker ETH address, Apr 14, 2022; OFAC Tornado Cash sanctions Aug 2022; ~$30M US seizure Sept 2022; Norway Okokrim seizure and $5.7M return to Sky Mavis, June 2024",
+      "sources": [
+        "https://www.chainalysis.com/blog/axie-infinity-ronin-bridge-dprk-hack-seizure/",
+        "https://www.coindesk.com/policy/2022/04/14/us-officials-tie-north-korean-hacker-group-to-axies-ronin-exploit",
+        "https://cyberscoop.com/ronin-bridge-hack-lazarus-group-north-korea-treasury-sanctions/",
+        "https://cointelegraph.com/news/sky-mavis-recovers-5-7m-ronin-bridge-hack",
+        "https://www.coindesk.com/business/2022/04/06/sky-mavis-raises-150m-round-led-by-binance-to-reimburse-ronin-attack-victims"
+      ],
+      "verdict": "confirmed"
+    },
+    {
+      "slug": "forsage",
+      "name": "Forsage",
+      "type": "ponzi",
+      "chains": [
+        "ethereum",
+        "tron",
+        "bsc"
+      ],
+      "status": "confirmed",
+      "severity": "high",
+      "summary": "Smart-contract Ponzi/pyramid on Ethereum, Tron and BSC that took ~$340M from millions of investors; SEC charged 11 (2022), DOJ indicted 4 founders (2023); co-founder extradited May 2026, trial Nov 2026.",
+      "details": "Forsage launched in January 2020 as a purported \"decentralized matrix\" DeFi platform on Ethereum, later expanding to Tron and Binance Smart Chain. Investors bought \"slots\" in Forsage smart contracts, which automatically diverted incoming funds to earlier investors — a coded Ponzi/pyramid. Blockchain analysis cited by prosecutors found over 80% of Ethereum-program investors received less than they put in, and more than half never received a payout. The Philippines SEC issued a cease-and-desist order in September 2020 and Montana's securities regulator followed in March 2021, yet promotion continued.\n\nOn August 1, 2022 the US SEC charged 11 individuals — four founders and seven promoters — alleging the scheme raised more than $300 million from millions of retail investors; promoters Samuel Ellis and Sarah Theissen settled civil charges (there have been no criminal guilty pleas by founders). On February 22, 2023 a federal grand jury in the District of Oregon indicted founders Vladimir Okhotnikov, Olena Oblamska (\"Lola Ferrari\"), Mikhail Sergeev and Sergey Maslakov for conspiracy to commit wire fraud over the ~$340 million scheme — the first US criminal case against a DeFi Ponzi (max 20 years each).\n\nIn March 2024 a Tbilisi, Georgia court convicted Okhotnikov in absentia, sentencing him to 10 years for laundering $1.1 million in Forsage proceeds and seizing about $1 million in assets. In February 2026 Thai police arrested Oblamska (a Ukrainian national, per DOJ; the 2023 indictment had described all four as Russian) in Phuket; she was extradited in May 2026, pleaded not guilty in Portland in mid-May 2026, and was detained pending a jury trial continued from July 14 to November 10, 2026 before Judge Karin J. Immergut. Okhotnikov (reportedly in Dubai, now promoting successor projects Meta Force/Holiverse), Sergeev and Maslakov remain at large.\n\nSources: [DOJ OPA indictment release (Feb 2023)](https://www.justice.gov/archives/opa/pr/forsage-founders-indicted-340m-defi-crypto-scheme), [SEC press release 2022-134](https://www.sec.gov/newsroom/press-releases/2022-134), [DOJ USAO-OR extradition release (May 2026)](https://www.justice.gov/usao-or/pr/ukrainian-national-extradited-thailand-face-conspiracy-charges), [TRM Labs case spotlight](https://www.trmlabs.com/resources/blog/law-enforcement-spotlight-forsage), [ICIJ Coin Laundry investigation](https://www.icij.org/investigations/coin-laundry/alleged-cryptocurrency-ponzi-scheme-goddess-extradited-from-thailand-to-face-conspiracy-charges-in-us/)",
+      "lossUsd": 340000000,
+      "firstSeenYear": 2020,
+      "officialAction": "SEC fraud charges Aug 2022 (11 charged); DOJ wire-fraud-conspiracy indictment Feb 2023; Georgian 10-yr conviction in absentia Mar 2024; co-founder Oblamska extradited May 2026, US trial set Nov 10, 2026",
+      "sources": [
+        "https://www.justice.gov/archives/opa/pr/forsage-founders-indicted-340m-defi-crypto-scheme",
+        "https://www.sec.gov/newsroom/press-releases/2022-134",
+        "https://www.justice.gov/usao-or/pr/ukrainian-national-extradited-thailand-face-conspiracy-charges",
+        "https://www.trmlabs.com/resources/blog/law-enforcement-spotlight-forsage",
+        "https://www.icij.org/investigations/coin-laundry/alleged-cryptocurrency-ponzi-scheme-goddess-extradited-from-thailand-to-face-conspiracy-charges-in-us/"
+      ],
+      "verdict": "corrected"
+    },
+    {
+      "slug": "inferno-drainer",
+      "name": "Inferno Drainer",
+      "type": "drainer",
+      "chains": [
+        "ethereum",
+        "bsc",
+        "multi-chain"
+      ],
+      "status": "active",
+      "severity": "critical",
+      "summary": "Drainer-as-a-service live since Nov 2022; faked a Nov 2023 shutdown. Group-IB tied ~$80M to year one (Scam Sniffer dashboard: ~$87M/137k); Check Point (May 2025) found it still active, $250M+ operator-claimed.",
+      "details": "**Inferno Drainer** is a drainer-as-a-service (DaaS) operation active since **November 2022** (per Group-IB — earlier than the \"early 2023\" often cited). Affiliates rent wallet-draining kits and phishing infrastructure, with the developers keeping a **20% commission** (15–20% in later variants). Group-IB documented **16,000+ unique phishing domains** impersonating **100+ crypto brands** and spoofing WalletConnect, Coinbase, and Seaport protocols, estimating **at least $80 million** stolen between Nov 2022 and Nov 2023; Scam Sniffer's Dune Analytics dashboard puts the year-one toll higher at **~$87 million from ~137,000 victims**.\n\nThe operators announced \"retirement\" on Telegram in **November 2023**, but Group-IB found the user panel still active into January 2024. **Check Point Research (May 7, 2025)** showed the shutdown was a deception: smart contracts deployed in September 2023 remained in use into 2025, the operators claimed **$250M+ cumulative stolen** by May 2024, and **between September 2024 and March 2025, 30,000+ wallets were drained for $9M+**, including a January 2025 Discord campaign using fake Collab.Land bots. New variants use single-use smart contracts, on-chain encrypted configs, and customer-hosted proxy C2 across **30+ EVM chains** (primarily Ethereum and BNB Chain).\n\nIn **October 2024**, Inferno announced (per Scam Sniffer) it was handing its platform to rival **Angel Drainer**, moving 2,845 ETH (~$7.5M) from its fee address — yet Check Point's 2025 research documents Inferno-branded operations continuing. **No arrests, indictments, or sanctions** against its operators are on public record as of mid-2026; attribution rests entirely on security-vendor research. Note: the $250M figure is the operators' own claim reported by Check Point; Group-IB's independent estimate (~$80M, or ~$87M per Scam Sniffer) covers only the first year.\n\nSources: [Check Point Research (May 2025)](https://research.checkpoint.com/2025/inferno-drainer-reloaded-deep-dive-into-the-return-of-the-most-sophisticated-crypto-drainer/) · [Group-IB (Jan 2024)](https://www.group-ib.com/blog/inferno-drainer/) · [The Hacker News](https://thehackernews.com/2024/01/inferno-malware-masqueraded-as-coinbase.html) · [The Record](https://therecord.media/inferno-drainer-cryptocurrency-scam-spoofing-blockchain-projects) · [Decrypt](https://decrypt.co/318561/inferno-drainer-malware-returns-stealing-9m-from-crypto-wallets-in-six-months)",
+      "lossUsd": 250000000,
+      "firstSeenYear": 2022,
+      "officialAction": "None publicly (no arrests, indictments, or sanctions as of Jul 2026); vendor-documented — Group-IB Jan 2024, Check Point Research May 2025",
+      "sources": [
+        "https://research.checkpoint.com/2025/inferno-drainer-reloaded-deep-dive-into-the-return-of-the-most-sophisticated-crypto-drainer/",
+        "https://www.group-ib.com/blog/inferno-drainer/",
+        "https://thehackernews.com/2024/01/inferno-malware-masqueraded-as-coinbase.html",
+        "https://therecord.media/inferno-drainer-cryptocurrency-scam-spoofing-blockchain-projects",
+        "https://decrypt.co/318561/inferno-drainer-malware-returns-stealing-9m-from-crypto-wallets-in-six-months"
+      ],
+      "verdict": "corrected"
+    },
+    {
+      "slug": "quadrigacx",
+      "name": "QuadrigaCX",
+      "type": "ponzi",
+      "chains": [
+        "bitcoin",
+        "ethereum",
+        "multi-chain"
+      ],
+      "status": "confirmed",
+      "severity": "high",
+      "summary": "Canada's largest crypto exchange collapsed in 2019 after CEO Gerald Cotten's death; OSC found he ran it as a Ponzi. C$215M owed to 76,000 users; creditors got 13 cents on the dollar in 2023.",
+      "details": "QuadrigaCX launched in December 2013 in Vancouver, founded by Gerald Cotten and Michael Patryn (Patryn was involved until 2016), and grew into Canada's largest cryptocurrency exchange. Cotten, 30, died on December 9, 2018 at a hospital in Jaipur, India, of complications from Crohn's disease, as the sole holder of the exchange's keys and passwords. The Nova Scotia Supreme Court granted Quadriga CCAA creditor protection on February 5, 2019, with Ernst & Young as monitor — the exchange owed roughly 76,000 users about C$215 million — and the companies were assigned into bankruptcy on April 15, 2019 with EY as trustee.\n\nThe Ontario Securities Commission's investigative report (June 11, 2020), based on 368,000+ client accounts and over 6 million transactions, called Quadriga \"an old-fashioned fraud wrapped in modern technology.\" It found Cotten operated the platform like a Ponzi scheme: he opened alias accounts credited with fictitious currency and crypto balances, traded them against real client assets, and covered withdrawal shortfalls with other clients' deposits. Of at least C$169 million in client losses, roughly C$115 million arose from Cotten's fraudulent trading, and about C$24 million of client funds was transferred to Cotten and his spouse between 2016 and 2018. Quadriga was never registered with any securities regulator.\n\nIn bankruptcy, EY recovered only about C$46 million against 17,648 proven claims totaling C$303.1 million (~US$222 million, including the CRA's C$11.7 million tax claim). In May 2023 EY paid an interim distribution of 13 cents on the dollar, with crypto claims valued at April 15, 2019 prices (C$6,739.08/BTC). No one was criminally charged; Cotten is deceased.\n\nLatest developments: British Columbia pursued co-founder Michael Patryn (aka Omar Dhanani, convicted in the US in 2005 for his role in the Shadowcrew identity-theft/money-laundering ring) under an unexplained wealth order, seizing about C$1 million in assets — $250,200 in cash plus 45 gold bars, four luxury watches and jewelry — from a CIBC safety deposit box in March 2024. In September 2025 the BC Supreme Court granted the province a default civil-forfeiture judgment after Patryn stopped contesting the case; a separate process will determine whether proceeds go to Quadriga's creditors.\n\nSources: [OSC report release (Jun 11, 2020)](https://www.newswire.ca/news-releases/osc-publishes-investigative-report-of-quadrigacx-871268566.html) · [OSC QuadrigaCX report](https://www.osc.ca/quadrigacxreport/) · [CoinDesk — OSC Ponzi finding (Jun 2020)](https://www.coindesk.com/markets/2020/06/11/quadriga-was-a-ponzi-scheme-ontario-securities-regulator-says) · [CoinDesk — 13% bankruptcy distribution (May 2023)](https://www.coindesk.com/business/2023/05/12/quadriga-cx-bankruptcy-claimants-to-get-13-on-the-dollar) · [CoinDesk — BC forfeiture of Patryn assets (Dec 2025)](https://www.coindesk.com/policy/2025/12/08/canadian-province-granted-forfeiture-of-quadrigacx-co-founder-s-assets-with-default-judgement)",
+      "lossUsd": 222300000,
+      "firstSeenYear": 2013,
+      "officialAction": "OSC investigative report Jun 2020 (Ponzi finding); EY bankruptcy Apr 2019 with 13% distribution May 2023; BC Supreme Court civil forfeiture of co-founder Patryn's assets Sept 2025",
+      "sources": [
+        "https://www.newswire.ca/news-releases/osc-publishes-investigative-report-of-quadrigacx-871268566.html",
+        "https://www.osc.ca/quadrigacxreport/",
+        "https://www.coindesk.com/markets/2020/06/11/quadriga-was-a-ponzi-scheme-ontario-securities-regulator-says",
+        "https://www.coindesk.com/business/2023/05/12/quadriga-cx-bankruptcy-claimants-to-get-13-on-the-dollar",
+        "https://www.coindesk.com/policy/2025/12/08/canadian-province-granted-forfeiture-of-quadrigacx-co-founder-s-assets-with-default-judgement"
+      ],
+      "verdict": "corrected"
+    },
+    {
+      "slug": "mining-capital-coin",
+      "name": "Mining Capital Coin (MCC)",
+      "type": "ponzi",
+      "chains": [
+        "bitcoin",
+        "multi-chain"
+      ],
+      "status": "confirmed",
+      "severity": "high",
+      "summary": "Fake crypto \"mining package\" MLM that took ~$62M from 65,000+ investors. CEO Luiz Capuci Jr. indicted May 2022, fled to Brazil; SEC won $46.2M default judgment Aug 2025. No US conviction.",
+      "details": "Mining Capital Coin (MCC International Corp., doing business as Mining Capital Coin Corp.) sold \"mining packages\" to 65,535 investors worldwide from at least January 2018, promising 1% daily returns paid weekly for up to 52 weeks from a purported international network of crypto mining machines, plus trading bots claimed to execute \"thousands of trades per second.\" Per the SEC, defendants later forced investors to withdraw earnings in MCC's own Capital Coin (CPTL) token via Bitchain, a fake exchange Capuci created, while funds were diverted to the founders' own wallets and a lavish lifestyle (Lamborghinis, a Ferrari, a yacht, and real estate). Promoters were recruited through a multi-level marketing structure.\n\nOn May 6, 2022, the DOJ unsealed an indictment (S.D. Fla.) charging CEO/founder Luiz Carlos Capuci Jr. with conspiracy to commit wire fraud, securities fraud, and international money laundering over the ~$62 million scheme (max 45 years). The SEC filed parallel fraud charges the same week against MCC, Capuci, co-founder Emerson Souza Pires, CPTLCoin Corp., and Bitchain, and on April 21, 2022 obtained a temporary restraining order and asset freeze. Note the figures conflict: DOJ pegged losses at ~$62M, while the SEC's proven disgorgement base was $28.49M (initially pleaded at ~$8.1M in package sales plus $3.2M in fees).\n\nCapuci, who holds dual US-Brazilian citizenship, fled to Brazil (which does not extradite its citizens) and remains a fugitive from the US criminal charges. Brazilian Federal Police's \"Operation Yang\" (~September 13, 2023) executed arrest and search warrants and seized roughly R$300 million (~$55M) across bank accounts and 52 properties; a Brazilian criminal trial opened August 21, 2024, with no publicly reported verdict. On August 26, 2025, the US federal court entered a $46.2M default judgment for the SEC: $28.49M joint disgorgement, $7.78M prejudgment interest, a $6M penalty for Capuci, $4M for Pires, and officer/director bars. As of mid-2026 there is no US criminal conviction; Capuci remains a fugitive and was reportedly still at liberty in Brazil (active on social media as of April 2025).\n\nSources: [DOJ press release (May 2022)](https://www.justice.gov/usao-sdfl/pr/ceo-mining-capital-coin-indicted-62-million-cryptocurrency-fraud-scheme), [SEC press release 2022-81](https://www.sec.gov/newsroom/press-releases/2022-81), [Bloomberg Law: $46M judgment](https://news.bloomberglaw.com/litigation/crypto-scheme-operators-ordered-to-pay-46-million-in-sec-suit), [BehindMLM: default judgment details](https://behindmlm.com/companies/mining-capital-coin-46-2-mill-def-judgment-granted/), [CNN (May 2022)](https://www.cnn.com/2022/05/08/business/pyramid-scheme-mining-capital-coin/index.html)",
+      "lossUsd": 62000000,
+      "firstSeenYear": 2018,
+      "officialAction": "DOJ indictment unsealed May 6, 2022 (S.D. Fla.); SEC charges + TRO/asset freeze April 2022; Brazil Operation Yang arrests/seizures Sept 2023; SEC $46.2M default judgment Aug 26, 2025",
+      "sources": [
+        "https://www.justice.gov/usao-sdfl/pr/ceo-mining-capital-coin-indicted-62-million-cryptocurrency-fraud-scheme",
+        "https://www.sec.gov/newsroom/press-releases/2022-81",
+        "https://news.bloomberglaw.com/litigation/crypto-scheme-operators-ordered-to-pay-46-million-in-sec-suit",
+        "https://behindmlm.com/companies/mining-capital-coin-46-2-mill-def-judgment-granted/",
+        "https://www.cnn.com/2022/05/08/business/pyramid-scheme-mining-capital-coin/index.html"
+      ],
+      "verdict": "corrected"
+    },
+    {
+      "slug": "anubisdao",
+      "name": "AnubisDAO",
+      "type": "rug-pull",
+      "chains": [
+        "ethereum"
+      ],
+      "status": "dormant",
+      "severity": "high",
+      "summary": "Dog-themed OlympusDAO fork whose Oct 2021 Balancer LBP raise of 13,556 ETH (~$60M) was drained ~20 hours in; funds laundered via Tornado Cash in 2022-23. No arrests or recovery.",
+      "details": "AnubisDAO launched on October 28, 2021 as a dog-themed fork of OlympusDAO, selling its ANKH token for ETH through a Copper-hosted liquidity bootstrapping pool on Balancer. Roughly 20 hours into the raise, on October 29, 2021 (~11:58 UTC), an entity with control of the pool drained 13,556 ETH — about $60 million at the time (Chainalysis's 2021 crime-report coverage cited ~$58 million and ranked it among the year's largest rug pulls).\n\nCore contributor \"Sisyphus\" said the drain was carried out by a rogue team member or via phishing of a team member and offered a 1,000 ETH bounty; the suspected developer, pseudonymous \"Beerus,\" filed a report with Hong Kong police and surrendered a PC, and US law enforcement was notified on October 30, 2021. No charges followed.\n\nThe stolen ETH sat dormant for about eight months, with roughly 1,018 ETH first moved through Tornado Cash in mid-2022. On July 15-16, 2023, the remaining bulk was laundered through Tornado Cash in 100 ETH batches (flagged by PeckShield), then bridged to Polygon and consolidated into exchange deposit addresses. On July 20, 2023, on-chain investigator ZachXBT linked the laundering trail to the pseudonyms \"Beerus\" (bsl.eth) and an associate, \"Ersan.\"\n\nAs of mid-2026 there have been no publicly reported arrests, indictments, or asset recoveries; victims' funds are considered unrecovered.\n\nSources:\n- [Crypto Briefing — $60M Stolen From AnubisDAO in Latest DeFi Attack](https://cryptobriefing.com/60m-stolen-from-anubisdao-crypto-fundraise/)\n- [CryptoSlate — Police forces jump into AnubisDAO saga after $60 million 'rug'](https://cryptoslate.com/police-forces-jump-into-anubisdao-saga-after-60-million-rug/)\n- [Cointelegraph — AnubisDAO's rug-pulled 13.5K ETH washes away on Tornado Cash](https://cointelegraph.com/news/anubis-dao-rug-pull-money-washes-away-on-tornado-cash)\n- [crypto.news — Possible identities of AnubisDAO rug pull suspects revealed](https://crypto.news/possible-identities-of-anubisdao-rug-pull-suspects-revealed/)\n- [CoinDesk — DeFi 'Rug Pull' Scams Pulled In $2.8B This Year: Chainalysis](https://www.coindesk.com/markets/2021/12/17/defi-rug-pull-scams-pulled-in-28b-this-year-chainalysis)",
+      "lossUsd": 60000000,
+      "firstSeenYear": 2021,
+      "officialAction": "Hong Kong police report filed Oct 2021; US law enforcement notified Oct 30, 2021; no arrests, charges, or seizures to date",
+      "sources": [
+        "https://cryptobriefing.com/60m-stolen-from-anubisdao-crypto-fundraise/",
+        "https://cryptoslate.com/police-forces-jump-into-anubisdao-saga-after-60-million-rug/",
+        "https://cointelegraph.com/news/anubis-dao-rug-pull-money-washes-away-on-tornado-cash",
+        "https://crypto.news/possible-identities-of-anubisdao-rug-pull-suspects-revealed/",
+        "https://www.coindesk.com/markets/2021/12/17/defi-rug-pull-scams-pulled-in-28b-this-year-chainalysis"
+      ],
+      "verdict": "confirmed"
+    },
+    {
+      "slug": "angel-drainer",
+      "name": "Angel Drainer (AngelX)",
+      "type": "drainer",
+      "chains": [
+        "ethereum",
+        "ton",
+        "tron",
+        "multi-chain"
+      ],
+      "status": "active",
+      "severity": "high",
+      "summary": "Drainer-as-a-service toolkit active since 2023; drained $25M+ from ~35,000 wallets, shut down July 2024 after de-anonymization, then relaunched as AngelX and absorbed rival Inferno Drainer.",
+      "details": "**Angel Drainer** emerged in 2023 as a \"drainer-as-a-service\" phishing toolkit sold to scammers for a cut of stolen funds (reportedly ~20% commission). Affiliates lure victims to fake dApp sites that trick them into signing malicious token approvals. By February 2024, security firm Blockaid counted **over $25 million drained from nearly 35,000 wallets** across 12 months of operation. On February 12, 2024, the group exploited Etherscan's automatic verification of Safe vault contracts to lend legitimacy to malicious Permit2 signatures, draining **$403,000 from 128 wallets** in one campaign; researchers also linked the group to the December 2023 Ledger Connect Kit supply-chain attack.\n\nOn **July 16, 2024**, hours after investigators at Match Systems announced they had de-anonymized members of the operation, Angel Drainer's Telegram channel declared its services suspended. The retirement lasted weeks: Blockaid detected a test instance on August 29 and the group relaunched as **AngelX** on August 31–September 1, 2024, with a new command-and-control dashboard, seed-phrase-theft capability, stronger cloaking against security vendors, and new support for TON and Tron. More than 300 malicious dApps were deployed within days of launch.\n\nOn **October 19, 2024**, rival Inferno Drainer announced it was handing its codebase and operations to the Angel team (per Scam Sniffer, which tracked 2,845 ETH, roughly $7.5M, moved out of Inferno's fee address); analysts noted prior code overlap between the two and suspected the handover partly masked existing shared control. In **February 2025**, Recorded Future's Insikt Group documented the \"Crazy Evil\" traffer gang still deploying Angel Drainer alongside the StealC and AMOS stealers. No arrests, indictments, or sanctions tied to Angel Drainer's operators have been made public; the latest verified reporting (early 2025) shows the toolkit lineage still in criminal circulation.\n\nSources: [Cointelegraph (Feb 2024)](https://cointelegraph.com/news/angel-drainer-attack-gnosis-safe-vault-contract-etherscan), [Blockaid Threat Report: AngelX (Sep 2024)](https://www.blockaid.io/blog/threat-report-angelx), [Cointelegraph via TradingView (Jul 2024 shutdown)](https://www.tradingview.com/news/cointelegraph:c432c956f094b:0-angel-drainer-reportedly-shuts-down-after-devs-potentially-identified/), [BeInCrypto (Oct 2024 Inferno handover)](https://beincrypto.com/angel-drainer-takes-over-infernos-tools/), [The Hacker News (Feb 2025)](https://thehackernews.com/2025/02/crazy-evil-gang-targets-crypto-with.html)",
+      "lossUsd": 25000000,
+      "firstSeenYear": 2023,
+      "officialAction": "None public (no indictments or sanctions); vendor-documented — Blockaid/Check Point research; Match Systems de-anonymization forced temporary shutdown July 2024",
+      "sources": [
+        "https://cointelegraph.com/news/angel-drainer-attack-gnosis-safe-vault-contract-etherscan",
+        "https://www.blockaid.io/blog/threat-report-angelx",
+        "https://www.tradingview.com/news/cointelegraph:c432c956f094b:0-angel-drainer-reportedly-shuts-down-after-devs-potentially-identified/",
+        "https://beincrypto.com/angel-drainer-takes-over-infernos-tools/",
+        "https://thehackernews.com/2025/02/crazy-evil-gang-targets-crypto-with.html"
+      ],
+      "verdict": "confirmed"
+    },
+    {
+      "slug": "squid-token",
+      "name": "Squid Game token (SQUID) rug pull",
+      "type": "rug-pull",
+      "chains": [
+        "bsc"
+      ],
+      "status": "dormant",
+      "severity": "high",
+      "summary": "Nov 2021 BSC rug pull riding Netflix's Squid Game; anti-sell code trapped buyers, SQUID crashed ~99.99% from ~$2,861; devs drained ~$3.38M (TRM ties the crew to ~$19.3M across three rug pulls); no one charged.",
+      "details": "Launched in October 2021 on BNB Smart Chain (BSC) — the token sale/availability opened October 20 and live trading followed on PancakeSwap — SQUID posed as the token of an upcoming play-to-earn game based on Netflix's *Squid Game*, with no actual affiliation. The project's website falsely claimed partnerships with Netflix, Microsoft and CoinGecko (CoinGecko publicly denied any tie), the whitepaper was riddled with spelling errors, and the site was only weeks old. The price surged tens of thousands of percent (TRM: over 40,000%) to a quoted peak of ~$2,861, while the smart contract's 'anti-dump' mechanism effectively allowed only the creators to sell — ordinary holders could not exit.\n\nOn November 1, 2021 the developers cashed out and drained liquidity; the token collapsed ~99.99% to a fraction of a cent within minutes and the website and social accounts vanished. Contemporaneous reporting put the amount the developers made off with at ~$3.3–3.38M. TRM Labs' January 2023 on-chain analysis separately linked the SQUID crew to two additional rug pulls and estimated at least 35,025 BNB (~$19.3M) obtained across all three schemes combined — a figure for the wider crew, NOT SQUID alone; a journalist investigation (below) put aggregate SQUID victim losses at ~$16M. Proceeds were swapped to BNB and pushed through Tornado Cash (55 deposits on November 1 alone into a single address), then bridged to Ethereum, where at least 2,693 ETH (~$11.1M) reached a VASP linked to the scammers.\n\nBinance opened an investigation in November 2021, publicly called SQUID a scam, said it would provide its findings to law enforcement, and noted the Tornado Cash trail (exploring blacklisting addresses tied to the developers). A journalist investigation (Janhoi McGregor's 'Squid Scam' podcast, reported January 2023) traced records to a technology company registered in Guangdong province, China in April 2021 and a Hong Kong office address, cited ~$16M in aggregate victim losses, and handed its findings to police — but as of July 2026 no arrest, indictment, or regulatory action is on record and the perpetrators remain publicly unidentified. Copycat SQUID tokens continue to appear, including a Base-chain token that dropped ~99% within a day of *Squid Game* Season 2's late-December 2024 release.\n\nSources: [TRM Labs — On the Trail of the Squid Game Scammers](https://www.trmlabs.com/post/on-the-trail-of-the-squid-game-scammers), [CoinDesk — Squid Game Token Crashes](https://www.coindesk.com/markets/2021/11/01/squid-game-token-crashes-developers-say-theyve-left-the-project), [CoinDesk — Binance Is Investigating Squid Game Token](https://www.coindesk.com/business/2021/11/03/binance-is-investigating-squid-game-token-considers-it-a-scam-report), [Finbold — Squid Game crypto token scammer tracked down](https://finbold.com/just-in-squid-game-crypto-token-scammer-tracked-down/), [Wikipedia — 2021 Squid Game cryptocurrency scam](https://en.wikipedia.org/wiki/2021_Squid_Game_cryptocurrency_scam)",
+      "lossUsd": 3380000,
+      "firstSeenYear": 2021,
+      "officialAction": "None on record. Binance opened an internal investigation (Nov 2021), publicly called SQUID a scam, said it would provide findings to law enforcement, and noted the Tornado Cash trail; a journalist investigation's findings were passed to police — but no arrests, charges, or regulatory action as of July 2026; perpetrators remain publicly unidentified.",
+      "sources": [
+        "https://www.trmlabs.com/post/on-the-trail-of-the-squid-game-scammers",
+        "https://www.coindesk.com/markets/2021/11/01/squid-game-token-crashes-developers-say-theyve-left-the-project",
+        "https://www.coindesk.com/business/2021/11/03/binance-is-investigating-squid-game-token-considers-it-a-scam-report",
+        "https://finbold.com/just-in-squid-game-crypto-token-scammer-tracked-down/",
+        "https://en.wikipedia.org/wiki/2021_Squid_Game_cryptocurrency_scam"
+      ],
+      "verdict": "corrected"
+    }
+  ],
+  "articles": [
+    {
+      "slug": "prince-group-feature",
+      "title": "Inside the Prince Group case: forced labor, pig butchering, and a record $15 billion bitcoin seizure",
+      "dek": "US prosecutors say Chen Zhi ran Cambodian forced-labor compounds where trafficked workers were made to run romance-investment cons. Here is how the scheme works — and how to spot it.",
+      "kicker": "Investigation",
+      "category": "investigation",
+      "severity": "critical",
+      "readMinutes": 4,
+      "sourceName": "U.S. Department of Justice",
+      "sourceUrl": "https://www.justice.gov/opa/pr/chairman-prince-group-indicted-operating-cambodian-forced-labor-scam-compounds-engaged",
+      "tags": [
+        "pig-butchering",
+        "Prince Group",
+        "Chen Zhi",
+        "Cambodia",
+        "forced labor",
+        "bitcoin forfeiture",
+        "romance scam",
+        "DOJ"
+      ],
+      "paras": [
+        "On October 14, 2025, the U.S. Department of Justice unsealed an indictment in the Eastern District of New York charging Chen Zhi — the 37-year-old founder and chairman of Cambodia-based Prince Holding Group, who also used the name \"Vincent\" — with wire fraud conspiracy and money laundering conspiracy. If convicted, he faces up to 40 years in prison. Prince Group has denied the allegations.",
+        "The same filing carried a number without precedent. Alongside the indictment, the DOJ lodged a civil forfeiture complaint for roughly 127,271 bitcoin — worth more than $15 billion at the time — which prosecutors describe as the largest forfeiture action in the department's history.",
+        "But the money is the aftershock. The case the DOJ lays out is, first, about people held against their will.",
+        "## The scam-compound economy",
+        "According to the DOJ, Chen Zhi directed a network of forced-labor \"scam compounds\" across Cambodia. Trafficked workers, held under threats and violence, were made to run the frauds — not the architects of the scheme, but its coerced instruments.",
+        "The product they were forced to sell is what investigators call \"pig butchering\": a slow con that blends a fake romance or friendship with a fake investment. TRM Labs reports the group was earning more than $30 million a day from fraud by 2018.",
+        "Proceeds moved through \"money houses\" that collected victim payments in bitcoin and stablecoins — USDT and USDC — then converted them into clean crypto, per Chainalysis and Elliptic. The operation also mined its own bitcoin, including a Laos venture run through Warp Data Technology that funneled coins into wallets prosecutors tie to Chen Zhi.",
+        "Blockchain analysts note that much of the seized bitcoin traces back to a December 2020 movement known as the \"LuBian hack.\" The DOJ treats the coins as Chen Zhi-controlled proceeds regardless.",
+        "## What it costs the victim",
+        "The scale of $15 billion hides the individual wound. The FBI documented a single case in which 259 Americans lost $18 million to the Jin Bei compounds — and officials describe even that as a fraction of the total.",
+        "The playbook is consistent, which is what makes it teachable. A stranger reaches you on a dating app, through a \"wrong number\" text, or on a professional network. The relationship warms over days or weeks. Eventually, gently, an investment opportunity appears — usually crypto, on a platform that looks legitimate and may even let you \"withdraw\" a small early gain to build trust. Then the deposits grow, and the withdrawals stop.",
+        "- An online-only contact you have never met in person steers the conversation toward crypto or trading.\n- You are directed to a specific app, website, or \"account manager\" instead of a mainstream, regulated exchange.\n- A small early withdrawal succeeds, encouraging a far larger deposit.\n- You are told you must pay \"taxes,\" \"fees,\" or \"unlock\" charges before you can cash out.\n- There is manufactured urgency — a closing window, a limited allocation, a can't-miss moment.\n- The person avoids a live video call or an in-person meeting.",
+        "## Where the case stands",
+        "On the same October day, the Treasury's OFAC — coordinating with the UK's Foreign, Commonwealth and Development Office — designated Prince Group a transnational criminal organization and sanctioned 146 associated targets.",
+        "Chen Zhi was not in custody when the indictment was unsealed. In January 2026 he was reported detained in Cambodia and sent to China, described in reporting as an extradition; he has never been in U.S. custody. The seized bitcoin remains with the U.S. government, though its market value has since fallen with the price of bitcoin.",
+        "For readers, the lesson is smaller and more useful than $15 billion. The compounds industrialize a single human vulnerability — the willingness to trust someone who seems to care. Slowing down, and refusing to move money to a person you have never met, is the defense.",
+        "— Sources: [DOJ](https://www.justice.gov/opa/pr/chairman-prince-group-indicted-operating-cambodian-forced-labor-scam-compounds-engaged) · [Chainalysis](https://www.chainalysis.com/blog/southeast-asia-crypto-scam-network-mining-pig-butchering-october-2025/) · [Elliptic](https://www.elliptic.co/blog/prince-group-targeted-with-crypto-sanctions-for-global-pig-butchering-operations) · [TRM Labs](https://www.trmlabs.com/resources/blog/operation-prince-inside-the-global-effort-that-led-to-the-largest-forfeiture-in-us-history)"
+      ]
+    },
+    {
+      "slug": "bybit-hack-story",
+      "title": "How North Korea stole $1.46 billion from Bybit — and why the signature looked normal",
+      "dek": "A compromised Safe{Wallet} developer machine let attackers rewrite a transaction after it left the screen. Bybit's signers approved what they saw, not what they actually signed.",
+      "kicker": "News",
+      "category": "news",
+      "severity": "critical",
+      "readMinutes": 5,
+      "sourceName": "FBI/IC3 Public Service Alert I-022625",
+      "sourceUrl": "https://www.ic3.gov/psa/2025/psa250226",
+      "tags": [
+        "Bybit",
+        "Lazarus Group",
+        "North Korea",
+        "Safe{Wallet}",
+        "multisig",
+        "blind signing",
+        "supply-chain attack"
+      ],
+      "paras": [
+        "On February 21, 2025, the Dubai-based exchange Bybit lost roughly $1.46 billion in Ethereum from a single cold wallet — the largest crypto theft on record. The FBI puts the figure at about $1.5 billion. What made it historic was not the size alone, but how ordinary the theft looked to the people who authorized it.",
+        "The stolen assets — more than 400,000 ETH plus staked-ETH derivatives — sat in a multisignature cold wallet, the kind of setup meant to be the safest place an exchange can keep money. Multiple trusted signers must each approve a transaction before funds can move. On paper, that is a strong defense. The attack was built to defeat it anyway.",
+        "## The supply-chain compromise",
+        "Forensic reports commissioned by Bybit, from the firms Sygnia and Verichains, concluded that the attackers never breached Bybit itself. Instead they compromised a developer machine at Safe{Wallet}, the third-party provider whose interface Bybit's signers relied on, and injected malicious JavaScript into the live app at app.safe.global.",
+        "The tampered interface showed each signer a normal, expected transaction — while secretly altering the destination address and the contract logic behind it. The signers reviewed what looked correct and approved it. What they actually authorized routed the funds to attacker-controlled addresses. Investigators found no compromise of Bybit's own infrastructure.",
+        "This is the failure known as blind signing: approving a transaction you cannot fully verify, trusting the screen to tell the truth. When the screen itself is compromised, every human check downstream is defeated. A cold wallet did not help here, because the signers were confirming a transaction that had already been rewritten upstream.",
+        "## Attribution and the laundering race",
+        "On February 26, 2025, the FBI's IC3 issued public service alert I-022625, attributing the theft to North Korea and tracking the activity as \"TraderTraitor,\" linked to the Lazarus Group. The alert listed 50 Ethereum addresses and urged exchanges, bridges, node operators, and blockchain-analytics firms to block related flows.",
+        "The laundering began almost immediately. According to the FBI, the attackers converted ETH to Bitcoin and dispersed it across thousands of addresses using mixers and cross-chain bridges. Bybit said on February 24 that it had fully replenished its reserves, so customer funds were made whole — but chasing the money was another matter.",
+        "Recovery has been limited. In April 2025, Bybit CEO Ben Zhou reported that about 27.6% of the funds had \"gone dark,\" with the majority still traceable at that point. By September, the exchange's LazarusBounty tracker showed more than $73 million frozen and just under $30 million recovered, with only about $102 million still traceable and more than $1 billion gone dark and unlikely to be recovered.",
+        "There have been pressure points. Per Chainalysis, Greece issued its first-ever crypto freezing order in July 2025, tracing funds with Chainalysis Reactor. On November 4, 2025, the U.S. Treasury's OFAC sanctioned North Korean financial facilitators; Treasury cited more than $3 billion in North Korean crypto theft over three years. The perpetrators remain at large.",
+        "## What it means if you sign transactions",
+        "The Bybit lesson is uncomfortable: the weak point was not a password or a private key, but the trust placed in a signing interface. Whether you manage a multisig treasury or simply approve a transaction in a single wallet, the defenses are the same.",
+        "- Verify the raw transaction data, not just the interface. Confirm the destination address and calldata independently, ideally on a separate device or through a second tool.\n- Treat blind signing as a red flag. If your wallet cannot show you exactly what you are approving, do not approve it.\n- Assume the software you sign through can be tampered with. Cross-check critical transfers against a known-good address list that you control.\n- Watch for supply-chain risk. A breach of a vendor, a library, or a developer's machine can reach you without ever touching your own systems.\n- For large or recurring transfers, use address allowlists and out-of-band confirmation so a single altered screen cannot move funds.",
+        "No signer in the Bybit case did anything visibly wrong. That is the point. The most dangerous transaction is the one that looks exactly like the one you meant to sign.",
+        "— Sources: [FBI/IC3 PSA I-022625](https://www.ic3.gov/psa/2025/psa250226) · [BleepingComputer](https://www.bleepingcomputer.com/news/security/lazarus-hacked-bybit-via-breached-safe-wallet-developer-machine/) · [Chainalysis](https://www.chainalysis.com/blog/greece-first-ever-crypto-seizure-bybit-hack-2025/) · [TRM Labs](https://www.trmlabs.com/resources/blog/us-treasury-sanctions-dprk-bankers-and-front-companies-laundering-proceeds-from-cybercrime-and-it-worker-operations)"
+      ]
+    },
+    {
+      "slug": "ftx-retrospective",
+      "title": "FTX, nearly four years on: the ten-day collapse and the freeze that every failure repeats",
+      "dek": "The exchange froze customer withdrawals on Nov 8, 2022 and filed for Chapter 11 three days later. The same sequence recurs at every insolvent exchange — learn to read it early.",
+      "kicker": "Exchange Watch",
+      "category": "exchange-watch",
+      "severity": "high",
+      "readMinutes": 4,
+      "sourceName": "U.S. Department of Justice, SDNY",
+      "sourceUrl": "https://www.justice.gov/usao-sdny/pr/samuel-bankman-fried-sentenced-25-years-prison",
+      "tags": [
+        "FTX",
+        "SBF",
+        "exchange collapse",
+        "bankruptcy",
+        "withdrawal freeze",
+        "FTT"
+      ],
+      "paras": [
+        "Nearly four years after it imploded, FTX remains the reference case for how a crypto exchange fails. When it filed for bankruptcy in November 2022, roughly $8 billion in customer money was missing. The story still matters because the way it broke — a loss of confidence, a rush for the exits, a sudden freeze — is the way every insolvent exchange breaks.",
+        "## Ten days from report to bankruptcy",
+        "The collapse was fast. A CoinDesk report exposed that FTX's sister trading firm, Alameda Research, held much of its balance sheet in FTX's own FTT token — an asset FTX could issue at will but could not reliably sell into a falling market. A Binance-triggered run followed, and on Nov 8, 2022 FTX froze customer withdrawals. Three days later, on Nov 11, it filed for Chapter 11. The whole sequence ran in about ten days.",
+        "Investigators later established where the money went. Customer deposits had been secretly diverted to Alameda for venture bets, real estate, political donations, and trading losses, according to the Department of Justice.",
+        "Founder Sam Bankman-Fried was convicted on all seven fraud and conspiracy counts in November 2023. On March 28, 2024 he was sentenced to 25 years in prison and hit with an $11 billion forfeiture order, per the DOJ. On June 12, 2026 the U.S. Court of Appeals for the Second Circuit affirmed both the conviction and the sentence, describing the government's trial evidence as, in its words, \"conservatively stated, robust.\"",
+        "His remaining paths are narrow — an en banc rehearing or the Supreme Court. He also filed a pardon petition with the DOJ's Office of the Pardon Attorney on June 8, 2026, though CoinDesk reports the White House has signaled his odds are slim.",
+        "## Where the money stands",
+        "The recovery has been unusually strong for a fraud of this size. The bankruptcy plan, confirmed on Oct 7, 2024 by Judge John Dorsey in Delaware, draws on roughly $14.7 billion to $16.5 billion in recovered assets. Distributions began in early 2025, prioritizing the \"convenience class\" of claims of $50,000 or less — about 98% of creditors by number.",
+        "Payouts have now run through five rounds, including a roughly $900 million fifth distribution set to begin July 31, 2026 via BitGo, Kraken, and Payoneer, pushing cumulative distributions above $10 billion. Because claims are valued at November 2022 crypto prices, the FTX Recovery Trust says most classes recover more than 100% — convenience claims near 120%, and other customer and unsecured classes around 103% to 105%.",
+        "Read that figure carefully. \"Made whole\" here means whole in 2022 dollars, not in coins. Many creditors argue the dollar basis badly undervalues assets that have since appreciated — a bitcoin claim paid at its 2022 price is not the same as getting the bitcoin back. Separately, in May 2026 law firm Fenwick & West agreed to pay $54 million to settle FTX customer fraud claims over its advisory work for the exchange; the firm admitted no wrongdoing.",
+        "## The pattern every failure repeats",
+        "Strip away the specifics and the mechanism is boring and repeatable. An exchange lends out or trades customer funds it claimed to be holding one-for-one. Confidence cracks — often over its reserves or its own token. Withdrawals slow, then \"pause,\" then stop. By the time a freeze is announced, the money is usually already gone.",
+        "The tells are visible before the freeze. Treat any cluster of these as a reason to withdraw first and ask questions later:",
+        "- Withdrawals slow down, get \"paused for maintenance,\" or hit sudden new limits and verification hurdles that did not exist last week.\n- A large share of the exchange's reserves is its own token, which it can issue at will but cannot sell into a falling market — the FTT problem that triggered FTX's run.\n- No credible proof of reserves, or a proof that counts the platform's own illiquid token as if it were cash.\n- The exchange shares ownership with an affiliated trading firm, creating a channel to commingle and lend out customer assets, as FTX did with Alameda.\n- Unusually high or \"guaranteed\" yields on deposits — a sign your funds are being lent or traded rather than simply held.\n- A public solvency dispute, or a rival executive announcing they are dumping the token — the spark that turns quiet doubt into a full-blown run.",
+        "The durable lesson is the oldest one in crypto: not your keys, not your coins. An exchange balance is a claim on a company, not cash in your pocket. Keep only what you are actively trading on any platform, move the rest to a wallet you control, and never assume size equals safety — FTX's collapse is proof that it does not.",
+        "— Sources: [DOJ SDNY](https://www.justice.gov/usao-sdny/pr/samuel-bankman-fried-sentenced-25-years-prison) · [CoinDesk](https://www.coindesk.com/policy/2026/06/12/ftx-s-sam-bankman-fried-loses-appeal-of-criminal-conviction-on-fraud-conspiracy-charges) · [PR Newswire](http://www.prnewswire.com/news-releases/ftx-announces-fifth-distribution-of-approximately-900-million-to-creditors-on-july-31-2026-302828726.html)"
+      ]
+    },
+    {
+      "slug": "fake-ledger-app",
+      "title": "A fake Ledger app sat in Microsoft's own store and drained $768,000",
+      "dek": "It carried a five-star review and a copied description. Victims typed in their 24-word seed phrase, and their wallets emptied in minutes — and the same trick keeps clearing store review.",
+      "kicker": "News",
+      "category": "news",
+      "severity": "critical",
+      "readMinutes": 4,
+      "sourceName": "BleepingComputer",
+      "sourceUrl": "https://www.bleepingcomputer.com/news/security/fake-ledger-live-app-in-microsoft-store-steals-768-000-in-crypto/",
+      "tags": [
+        "impersonation",
+        "Ledger",
+        "seed-phrase",
+        "app-store",
+        "phishing",
+        "wallet-drainer"
+      ],
+      "paras": [
+        "In November 2023, a wallet app called \"Ledger Live Web3\" was available for download from the official Microsoft Store. It was not made by Ledger. According to BleepingComputer, the counterfeit drained roughly $768,000 in Bitcoin, Ethereum and BNB before Microsoft removed it.",
+        "The app impersonated Ledger's genuine hardware-wallet software. It was published under the developer name \"Official Dev,\" carried a single five-star review, and had been visible in the store as early as October 19, 2023. Its description was copied almost word-for-word from the real Apple Store listing.",
+        "The mechanics were simple. The app asked users to enter their 24-word recovery phrase — the master key to a crypto wallet — and once that was submitted, attackers emptied the wallets within minutes.",
+        "On-chain investigator ZachXBT flagged the scam publicly on November 5, 2023. He initially traced about $588,000 in Bitcoin — roughly 16.8 BTC across 38 inbound transactions that began October 24, most of them after November 2 — to the fraudster, with a secondary wallet holding another ~$180,000 in Ethereum and BNB Smart Chain assets. CoinDesk put the total near $770,000. One victim alone lost $26,500.",
+        "Microsoft pulled the listing the same day. The company said it works \"to ensure malicious content is identified and taken down quickly,\" per BleepingComputer. No law-enforcement charges or asset seizures are on record, and the person behind the app was never publicly identified.",
+        "## The store badge is not a safety check",
+        "The lesson is not that Microsoft failed once. It is that mere presence in an official store did the scammer's most important work for them: it borrowed the platform's credibility. A listing looks vetted, so a shopper's guard drops — which is exactly the moment a request for a seed phrase should raise it.",
+        "The same weakness has kept beating review since. In April 2026, a fake \"Ledger Live\" app published under the developer name \"Leva Heal Limited\" reached Apple's App Store and drained roughly $9.5 million from about 50 victims between April 8 and 11, again through seed-phrase phishing, according to BleepingComputer; ZachXBT tracked the theft, and Apple removed the app and terminated the developer's account. That same month, Kaspersky disclosed 26 counterfeit wallet apps on Apple's App Store — impersonating Ledger, MetaMask, Trust Wallet, Coinbase, TokenPocket, imToken and Bitpie — a campaign active since fall 2025 and tied with moderate confidence to a threat actor Kaspersky calls SparkKitty.",
+        "## Verify before you install",
+        "The common thread across all three cases is a single fatal request: the app asks for your recovery phrase. Real wallets never do. Here is how to check a download before it can cost you anything.",
+        "- Get the download link from the vendor's own domain. Type the address yourself (for Ledger, ledger.com) — don't search the store, and don't follow links from emails, ads or DMs.\n- Check the developer name on the listing. \"Official Dev\" and \"Leva Heal Limited\" are not Ledger; a mismatch is disqualifying, not a rounding error.\n- Treat a thin review history or a single glowing rating as a warning, not reassurance. Scam clones are new by definition.\n- No legitimate wallet app ever needs your recovery phrase to \"sync,\" \"validate\" or \"restore.\" A hardware wallet's entire design is that the seed never leaves the device.\n- If any app or site asks you to type your 24 words, stop. Assume that wallet is compromised and move the funds using a device you trust.",
+        "A store review process filters for some kinds of abuse, but it is not a guarantee of authorship — and the 2026 recurrences show the gap is not closing. The only rule you need to survive this class of scam is one no honest app will ever break: your seed phrase stays with you.",
+        "— Sources: [BleepingComputer](https://www.bleepingcomputer.com/news/security/fake-ledger-live-app-in-microsoft-store-steals-768-000-in-crypto/) · [CoinDesk](https://www.coindesk.com/business/2023/11/06/microsoft-listing-fake-ledger-app-leads-to-590k-of-bitcoin-stolen-by-hackers) · [BleepingComputer — Apple App Store](https://www.bleepingcomputer.com/news/security/fake-ledger-live-app-on-apples-app-store-stole-95m-in-crypto/) · [Kaspersky](https://www.kaspersky.com/about/press-releases/kaspersky-finds-26-fake-crypto-wallet-apps-on-apples-app-store-that-can-drain-digital-assets)"
+      ]
+    },
+    {
+      "slug": "inferno-drainer-story",
+      "title": "Inferno Drainer and the rise of rent-a-scam crimeware",
+      "dek": "A phishing kit rented to affiliates for a cut of every theft faked its own retirement in 2023 — then came back bigger. The whole attack is one signature you can learn to withhold.",
+      "kicker": "Threat Intel",
+      "category": "threat-intel",
+      "severity": "high",
+      "readMinutes": 4,
+      "sourceName": "Check Point Research",
+      "sourceUrl": "https://research.checkpoint.com/2025/inferno-drainer-reloaded-deep-dive-into-the-return-of-the-most-sophisticated-crypto-drainer/",
+      "tags": [
+        "drainer-as-a-service",
+        "Inferno Drainer",
+        "wallet drainer",
+        "phishing",
+        "token approval",
+        "signature hygiene"
+      ],
+      "paras": [
+        "Most crypto theft no longer requires the thief to write a line of code. Drainer-as-a-service (DaaS) turns wallet-emptying malware into a rented product: operators build and maintain the kit, affiliates spread it, and the two sides split the proceeds. Inferno Drainer is the clearest case study of how that business runs — and how hard it is to shut down.",
+        "Group-IB, in a January 2024 report, attributed roughly $87 million in theft to Inferno from about 137,000 victims. According to Group-IB, the kit had been active since November 2022 and reached victims through more than 16,000 unique malicious domains that spoofed over 100 crypto brands, including Coinbase, WalletConnect and Seaport's Web3 connection protocols.",
+        "## The affiliate economics",
+        "The \"service\" in drainer-as-a-service is literal. Affiliates rented the phishing infrastructure, drove traffic to the fake sites, and handed the operators a cut of everything stolen — about 20%, per Group-IB, rising to 30% when the operators also hosted the pages for them. The 2025 variants documented by Check Point Research keep a 15–20% operator commission.",
+        "That structure is why drainers scale. The people running the phishing pages never need to understand smart contracts; the people writing the malware never need to touch a victim. Each side specializes, and the rented kit does the theft.",
+        "## A fake retirement, a bigger comeback",
+        "In November 2023, Inferno's operators announced a shutdown on their Telegram channel. It was a diversion. Check Point Research's May 2025 deep dive found the operation had quietly continued and grown more sophisticated, running across more than 30 EVM-compatible networks with single-use smart contracts and on-chain encrypted command-and-control configurations. From March 2025, Check Point says, a \"secure proxy\" layer began hiding the real infrastructure from researchers and law enforcement.",
+        "The numbers grew with it. Check Point put cumulative Inferno losses above $250 million by May 2024, calling it the largest single contributor to crypto-drainer losses. Between roughly September 2024 and March 2025 the firm tracked more than 30,000 new victim wallet addresses and at least $9 million in fresh theft. The single largest hit, on October 13, 2024, drained 107.8 billion PEPE tokens worth over $1.2 million at the time. The 2025 kit also powers Discord-based phishing, including a fake Collab.Land verification bot.",
+        "## Why one signature is the whole attack",
+        "A drainer does not \"hack\" your wallet. It convinces you to sign a transaction that authorizes it to move your assets — a token approval, a permit signature, or a malicious contract call dressed up as \"connect wallet\" or \"verify.\" Once you sign, the transfer is on-chain and irreversible. The spoofed brands — Coinbase, WalletConnect, Seaport, Collab.Land — exist only to make that one click feel routine.",
+        "That is also the good news: the entire attack collapses at the signature. If you can read what you are signing and refuse the requests you cannot explain, the rented kit has nothing to take.",
+        "## Protect yourself",
+        "- Treat every \"connect wallet,\" \"verify,\" or \"claim\" prompt as untrusted until you have confirmed the domain yourself; do not follow links from Discord DMs, X replies, or airdrop ads.\n- Read the signature request. If your wallet shows a token approval, a `Permit`, or `setApprovalForAll` that you did not intend to grant, reject it.\n- Be wary of \"unlimited\" approvals; set spending caps and prefer per-transaction amounts.\n- Keep long-term holdings in a hardware wallet or a separate address you never connect to unfamiliar sites.\n- Periodically review and revoke old token approvals using a reputable allowance-checker.\n- No legitimate verification bot needs a wallet-draining signature; a Collab.Land-style \"verify\" that asks you to sign a transfer is the scam.",
+        "As of July 2026, per Check Point Research and Group-IB, there is no public arrest, indictment or sanction against Inferno's operators. The infrastructure is still live and the model still profitable — which is exactly why the defense that matters most is the one at your own wallet.",
+        "— Sources: [Check Point Research](https://research.checkpoint.com/2025/inferno-drainer-reloaded-deep-dive-into-the-return-of-the-most-sophisticated-crypto-drainer/) · [Group-IB](https://www.group-ib.com/blog/inferno-drainer/) · [The Hacker News](https://thehackernews.com/2024/01/inferno-malware-masqueraded-as-coinbase.html) · [The Record](https://therecord.media/inferno-drainer-cryptocurrency-scam-spoofing-blockchain-projects)"
+      ]
+    },
+    {
+      "slug": "deepfake-giveaways",
+      "title": "Deepfake Musk, real losses: the coin-doubling livestream that keeps coming back",
+      "dek": "Hijacked YouTube channels rebrand as Tesla or SpaceX, loop an AI Musk, and tell you to scan a QR code to double your crypto. One DFRLab-tracked stream took $50,537 before takedown.",
+      "kicker": "News",
+      "category": "news",
+      "severity": "elevated",
+      "readMinutes": 4,
+      "sourceName": "DFRLab",
+      "sourceUrl": "https://dfrlab.org/2024/09/25/musk-deepfake-crypto-scam/",
+      "tags": [
+        "deepfake",
+        "giveaway-scam",
+        "youtube",
+        "elon-musk",
+        "stream-jacking",
+        "qr-code"
+      ],
+      "paras": [
+        "The scam almost never varies. A hijacked YouTube channel, rebranded to look like Tesla, SpaceX, MicroStrategy or Ripple, loops a deepfake video of a famous executive. Scan the QR code, send Bitcoin, Ether, Dogecoin or XRP, and the great man will send back double. Nothing comes back.",
+        "Most often the face belongs to a synthetic Elon Musk, though impersonators have cloned Ripple CEO Brad Garlinghouse, MicroStrategy's Michael Saylor and Binance's Changpeng Zhao. The AI voice reads a script; an on-screen countdown supplies the urgency. It is the oldest con in crypto — the 'send one, get two' loop — wearing a new face.",
+        "The trick predates the deepfakes. Non-AI 'Bitcoin giveaway' livestreams using SpaceX and Musk branding circulated in 2020, and helped prompt Steve Wozniak's lawsuit against YouTube. Popular Science documented a cloned SpaceX account that had been active since May 2022, part of a wave of AI-video versions that proliferated that year.",
+        "## Timed to the launch",
+        "The streams cluster around real events, when genuine SpaceX broadcasts draw millions. During Starship's Flight 3 on March 14, 2024, multiple cloned SpaceX channels — one with roughly 2.3 million subscribers — pushed BTC, ETH and DOGE via QR codes to a fake 'official SpaceX event' site. Around the Flight 4 launch on June 6, 2024, roughly 35 accounts ran fake-Musk streams at once.",
+        "## What it collects",
+        "DFRLab documented one stream on June 18, 2024, running on @ChampsNetworkHD, a hijacked, YouTube-verified channel with about 420,000 subscribers and a peak of some 81,000 concurrent viewers. Before takedown, according to DFRLab, it collected exactly $50,537.19 — $40,289.91 in Bitcoin, $3,825.22 in Ether and $6,422.06 in Dogecoin.",
+        "That is one stream. In January 2024, Bitdefender said it had monitored more than $600,000 in stolen funds across hundreds of hijacked-channel streams impersonating Musk, Ripple, MicroStrategy and Binance. The top three hijacked channels alone, the firm noted, held around 31 million combined subscribers — an audience the fraudsters inherited intact.",
+        "Enforcement has been thin. No criminal indictment is on record and the perpetrators remain at large, so the response has been platform takedowns — YouTube and Google pull the channels and videos, often only after press inquiries — and warnings from the impersonated firms. Ripple's Garlinghouse re-warned XRP holders in July 2025 as the token rallied.",
+        "The one substantive legal action is civil. In Wozniak v. YouTube, California's Sixth Appellate District partially reversed the case's dismissal on March 15, 2024, letting claims proceed past Section 230 on the theory that YouTube's own verification badges on hijacked channels helped the fraud, and remanded it to the trial court.",
+        "## Protect yourself",
+        "- No legitimate person or company doubles crypto you send them. 'Send one, get two' is a theft dressed as a promotion.\n- A verification badge proves nothing — the hijacked channels kept their badges while posing as Tesla and SpaceX.\n- Never scan a QR code from a livestream to send funds; it routes to a fake 'official event' page.\n- Treat a live countdown and manufactured urgency as red flags, not proof.\n- Cross-check any 'giveaway' against the company's official verified accounts before you move a cent.",
+        "The technology improves every cycle — the face steadier, the voice cleaner, the timing tied ever more tightly to real launches. The defense does not change. Nobody doubles your coins.",
+        "— Sources: [DFRLab](https://dfrlab.org/2024/09/25/musk-deepfake-crypto-scam/) · [Bitdefender Labs](https://www.bitdefender.com/en-us/blog/labs/stream-jacking-2-0-deep-fakes-power-account-takeovers-on-youtube-to-maximize-crypto-doubling-scams) · [Popular Science](https://www.popsci.com/technology/crypto-scam-starship-launch-livestream/) · [Cotchett Pitre & McCarthy](https://www.cpmlegal.com/news-Steve-Wozniaks-Bitcoin-Giveaway-Lawsuit-to-go-Forward)"
+      ]
+    },
+    {
+      "slug": "address-poisoning-guide",
+      "title": "Address poisoning: how a lookalike in your history steals your next paste",
+      "dek": "In May 2024, a single copy from a transaction history sent 1,155 WBTC — about $68 million — to a stranger who had seeded a near-identical address. Here's how the trap works, and the rule that defeats it.",
+      "kicker": "Field Guide",
+      "category": "field-guide",
+      "severity": "none",
+      "readMinutes": 3,
+      "sourceName": "Chainalysis",
+      "sourceUrl": "https://www.chainalysis.com/blog/address-poisoning-scam/",
+      "tags": [
+        "address-poisoning",
+        "dust-attack",
+        "WBTC",
+        "Ethereum",
+        "wallet-security",
+        "phishing"
+      ],
+      "paras": [
+        "On May 3, 2024, an Ethereum whale sent 1,155 Wrapped Bitcoin — worth about $68 million at the time — to an address they never intended to use. Security firms Cyvers and CertiK and the on-chain investigator ZachXBT flagged the transfer. The money had gone to an attacker who planted the trap ahead of time and simply waited for a careless paste.",
+        "The technique is called address poisoning, sometimes a \"dust\" attack, and it preys on a habit nearly every crypto user shares: trusting an address because its ends look right, and reusing one that already sits in your own history.",
+        "## How the trap is set",
+        "The attacker pre-generated a wallet address whose first six and last six characters matched an address the victim used frequently. They then seeded the victim's transaction history with a tiny dust transfer from that lookalike, so it would sit in the ledger looking like a familiar counterparty.",
+        "The trap sprang after the victim made a genuine small test transfer to the real address. Minutes later, needing to move the full balance, they copied an address from their own transaction history — and copied the poisoned lookalike instead. About $68 million left the wallet in a single transaction.",
+        "This was not a lone stroke of luck. Per Chainalysis, the theft was one hit in a 66-day campaign running February 28 to May 4, 2024, in which eight seeder wallets poisoned roughly 82,031 addresses and ensnared about 2,774 victim addresses. Because WBTC appreciated afterward, some outlets such as The Block valued this single loss nearer $71 million.",
+        "## Why checking the first and last characters fails",
+        "Wallet interfaces truncate long addresses to something like 0x1234…5678, and users learn to verify only those ends. Address poisoning is engineered against that exact shortcut: the head and tail match while the invisible middle is entirely different. A glance at the first and last characters confirms a forgery.",
+        "The only durable defenses treat both your clipboard and your transaction history as untrusted.",
+        "- Never copy a destination address from your transaction history — history is precisely where the attacker plants the lookalike.\n- Paste only from a source you control: a saved contact or whitelist, a hardware-wallet screen, or an address the recipient confirmed directly.\n- Verify the entire string, not just the first and last few characters, or check it character-by-character against the trusted source.\n- Send a small test amount and have the recipient confirm receipt before you send the balance.\n- Treat unexpected dust — tiny, unsolicited transfers from near-familiar addresses — as a sign you are being targeted, not as a real payment.",
+        "## An unusual ending — and why it is no reassurance",
+        "This case is remembered partly for how it closed. Between roughly May 5 and 9, the victim negotiated directly on-chain, embedding messages in small ETH transfers — including a veiled warning to the thief: \"We both know there's no way to clean this funds. You will be traced.\"",
+        "Starting around May 9 and 10, the attacker returned about 22,960 ETH — roughly $65.7 million, over 96% of the original dollar value — across some 225 transactions. Blockchain-investigation firm Match Systems and the U.K.-based exchange Cryptex each claimed credit for tracing the assets and facilitating the return.",
+        "Do not read that as a happy ending. The perpetrator was never publicly identified, and no arrests, charges, or regulatory action were reported; the recovery came through private negotiation, not any official proceeding. The thief remains at large, and the next victim of a poisoned paste is unlikely to get a refund.",
+        "— Sources: [Chainalysis](https://www.chainalysis.com/blog/address-poisoning-scam/) · [CoinDesk](https://www.coindesk.com/business/2024/05/03/exploiter-steals-68m-worth-of-crypto-through-address-poisoning) · [Cointelegraph](https://cointelegraph.com/news/wbtc-address-poisoner-all-funds-negotiations) · [Unchained](https://unchainedcrypto.com/68-million-stolen-in-dust-attack-returned-to-victim/)"
+      ]
+    },
+    {
+      "slug": "recovery-scam-guide",
+      "title": "The scam that follows the scam: how fake recovery agents hunt crypto victims twice",
+      "dek": "Fraudsters posing as lawyers and 'recovery agents' target people who already lost money to crypto scams, charging upfront fees to return funds that never come back. The FBI's IC3 has warned twice.",
+      "kicker": "Field Guide",
+      "category": "field-guide",
+      "severity": "none",
+      "readMinutes": 4,
+      "sourceName": "FBI IC3 PSA I-081325-PSA",
+      "sourceUrl": "https://www.ic3.gov/PSA/2025/PSA250813",
+      "tags": [
+        "recovery-scam",
+        "FBI",
+        "IC3",
+        "fund-recovery",
+        "upfront-fee",
+        "impersonation",
+        "crypto-fraud",
+        "seniors"
+      ],
+      "paras": [
+        "Losing money to a crypto scam is supposed to be the bottom. For a growing number of victims, it is the opening. A second set of fraudsters is watching the wreckage, and they arrive with a promise the first scam never made: we can get your money back.",
+        "The FBI's Internet Crime Complaint Center (IC3) treats this as a distinct crime — the \"recovery scam\" — and has issued two public warnings in as many years. The pitch is simple and cruel. Someone posing as a lawyer, a \"recovery agent,\" or a government official contacts a person who has already been defrauded and offers to trace and return the stolen crypto, for a fee paid up front. That fee is the entire scheme. The funds are almost never recovered, and the second loss stacks on top of the first.",
+        "## How they find you",
+        "Recovery scammers work from the debris of earlier frauds. According to the FBI, they operate lookalike websites, impersonate real agencies, and cold-contact victims with claims engineered to sound official.",
+        "The bureau's 2025 warning, PSA I-081325-PSA (issued August 13, 2025), documents more elaborate staging: WhatsApp group chats populated by fake \"attorneys\" and \"bank processors,\" and claims that a victim's name appears on a \"government-affiliated list of scam victims.\" Scammers impersonate both US and foreign regulators, and have invented an official-sounding body — the \"International Financial Trading Commission,\" or INTFTC — that does not exist.",
+        "The earlier advisory, PSA I-062424-PSA (June 24, 2024), put a number on the damage: between February 2023 and February 2024, crypto-scam victims who were then exploited by fictitious law firms reported losses of more than $9.9 million, per the FBI.",
+        "## The money always flows one way",
+        "The tell is the payment. The FBI says recovery scammers demand cryptocurrency, prepaid gift cards, or \"bank fees,\" and often tack on \"back taxes.\" They ask for personal and banking information for \"verification,\" then steer victims to fraudulent banking sites.",
+        "The scale is now substantial. In its 2025 Annual Report, the IC3 classifies recovery scams — fraudsters posing as law firms, government officials, or even the IC3 itself — as their own category, generating roughly $1.4 billion in losses across 10,516 complaints. That sits inside a broader $11.36 billion in crypto-related fraud the FBI logged for 2025. Seniors, the bureau says, are disproportionately targeted.",
+        "## Warning signs",
+        "A recovery offer is almost certainly a scam if any of the following are true:",
+        "- Someone contacts you unsolicited claiming they can recover funds you already lost.\n- You are asked to pay anything up front — a fee, \"gas,\" \"back taxes,\" or \"bank charges\" — before any money is returned.\n- Payment is requested in cryptocurrency or prepaid gift cards.\n- The contact claims to work with the FBI, CFPB, IC3, or a foreign regulator, or cites a \"government list of scam victims.\"\n- You are asked for banking details or personal information for \"verification,\" or routed to a website to log in.",
+        "## What real help looks like",
+        "Legitimate authorities do not operate this way. The FBI states plainly that law enforcement never charges a fee to investigate a crime. No legitimate fund-tracing service asks a victim to pay gas fees or taxes up front to release recovered money.",
+        "If you have been defrauded, file a report with the IC3 directly at ic3.gov — the official government complaint site, not a phone number or link handed to you by someone who contacted you first. Do not send more money, and do not share banking credentials with anyone promising a refund.",
+        "To date the strongest official response has been the warning itself, not prosecution: the perpetrators remain at large, and the IC3 advisories are the clearest signal victims are likely to get. The recovery scam survives on one bet — that a person desperate to undo a loss will risk a second. The safest move, every time, is to treat the rescue as the next trap.",
+        "— Sources: [IC3 PSA I-081325-PSA](https://www.ic3.gov/PSA/2025/PSA250813) · [IC3 PSA I-062424-PSA](https://www.ic3.gov/PSA/2024/PSA240624) · [2025 IC3 Annual Report](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf)"
+      ]
+    },
+    {
+      "slug": "zachxbt-genesis-heist",
+      "title": "How on-chain investigators traced a $243M Bitcoin heist within days",
+      "dek": "A fake Google and Gemini support call drained more than 4,100 BTC from one Genesis creditor. Public tracing by ZachXBT and collaborators helped turn it into a federal RICO case.",
+      "kicker": "Community Win",
+      "category": "community-win",
+      "severity": "none",
+      "readMinutes": 4,
+      "sourceName": "U.S. Department of Justice (USAO-DC)",
+      "sourceUrl": "https://www.justice.gov/usao-dc/pr/indictment-charges-two-230-million-cryptocurrency-scam",
+      "tags": [
+        "social engineering",
+        "impersonation",
+        "on-chain tracing",
+        "RICO",
+        "bitcoin",
+        "ZachXBT",
+        "Genesis"
+      ],
+      "paras": [
+        "On August 18, 2024, a Washington, DC resident who was a creditor of the bankrupt lender Genesis lost more than 4,100 Bitcoin in a single afternoon — a haul worth roughly $230 million to $243 million at the time. According to the DOJ, it stands as the largest known single-victim cryptocurrency theft. No servers were breached and no code was exploited. The victim was talked out of the money over the phone.",
+        "The crew posed as support staff. Callers spoofing Google and the Gemini exchange convinced the victim to reset two-factor authentication and move funds to wallets the attackers controlled, according to the DOJ. It is the oldest trick in the fraud playbook — a trusted-brand impersonation — executed against a very large target.",
+        "## The trail was public within days",
+        "What made this case different is what happened next. Independent on-chain investigators, including ZachXBT and the firm zeroShadow, began mapping the stolen coins almost immediately, following them across peel chains, mixers and multiple exchanges. Their work was documented in public, in near real time. Early on, more than $9 million was frozen and about $500,000 was returned to the victim.",
+        "That public evidence trail did not sit idle. In September 2024, the U.S. Attorney's Office for the District of Columbia arrested and charged Malone Lam — a Singaporean national born in 2004 who went by \"Greavys\" — and Jeandiel Serrano, known as \"Box.\" A third principal, Veer Chetal, or \"Wiz,\" also faced charges and cooperated. The DOJ's initial filing valued the theft at about $230 million.",
+        "## From two defendants to a RICO enterprise",
+        "The case kept growing. On May 16, 2025, the DOJ unsealed a superseding indictment that treated the group — which had expanded to roughly 14 members, many of them friends from online gaming — as a single racketeering enterprise that stole more than $263 million between 2023 and early 2025. Prosecutors charged 12 additional people with racketeering conspiracy, wire-fraud conspiracy, money laundering and obstruction.",
+        "The roles read like an organized-crime chart: database hackers, \"callers,\" launderers and in-person burglars. The DOJ tied violent home invasions to the ring, including a July 2024 New Mexico break-in connected to defendant Marlon Ferro, in which crews sought to seize victims' hardware wallets. Investigators said proceeds bought roughly 33 luxury and exotic cars, along with jewelry and nightclub spending, and that bulk cash was mailed hidden inside stuffed toys.",
+        "By mid-2026 the prosecution had produced nine guilty pleas. Kunal Mehta, known as \"Papa\" and the eighth defendant to plead, admitted to RICO conspiracy on November 18, 2025 after laundering at least about $25 million, per the IRS's Criminal Investigation division; the DOJ separately announced a 70-month prison term for a California money launderer in the scheme. Lam, the alleged ringleader, had not entered a plea as of May 2026 and remained in custody, with a status hearing set for June 18, 2026.",
+        "## How to shut this attack down",
+        "- No real exchange, wallet provider or Google will phone you unprompted to \"secure\" your account or walk you through resetting two-factor authentication. Treat any inbound \"support\" call as hostile.\n- Hang up and reconnect through the company's official app or a URL you typed yourself — never a number or link the caller provides.\n- Never move funds, disable a security key or reset 2FA because someone on the phone tells you to; legitimate support never needs that.\n- Keep serious holdings in a hardware wallet, and never type or read your recovery phrase to anyone, ever.\n- Avoid broadcasting the size of your crypto holdings; this ring escalated to in-person burglaries aimed at hardware wallets.",
+        "The lesson from the wreckage is not just how badly a single phone call can go. It is that public, documented on-chain evidence works. Within days, open-source investigators had turned a quiet, catastrophic theft into a visible money trail — and that trail helped federal prosecutors build one of the largest crypto-crime cases on record.",
+        "— Sources: [DOJ / USAO-DC](https://www.justice.gov/usao-dc/pr/indictment-charges-two-230-million-cryptocurrency-scam) · [IRS Criminal Investigation](https://www.irs.gov/compliance/criminal-investigation/cryptocurrency-money-launderer-pleads-guilty-to-rico-conspiracy-in-scheme-that-stole-263-million-in-crypto) · [TRM Labs](https://www.trmlabs.com/resources/blog/doj-uses-organized-crime-statute-in-263-million-cryptocurrency-theft-money-laundering-and-home-invasion-conspiracy) · [CoinDesk](https://www.coindesk.com/business/2024/09/19/police-arrests-two-people-related-to-243m-crypto-heist-targeting-genesis-creditor)"
+      ]
+    },
+    {
+      "slug": "crime-data-2026",
+      "title": "The crypto-fraud numbers keep climbing, and every total is a floor",
+      "dek": "The FBI's IC3 counted $11.3 billion in reported U.S. crypto losses for 2025; Chainalysis puts illicit on-chain value at $154 billion. Here is what those figures mean, and why they run low.",
+      "kicker": "Data",
+      "category": "data",
+      "severity": "none",
+      "readMinutes": 4,
+      "sourceName": "FBI IC3 2025 Internet Crime Report",
+      "sourceUrl": "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf",
+      "tags": [
+        "crypto fraud",
+        "FBI IC3",
+        "Chainalysis",
+        "statistics",
+        "scam centers",
+        "stablecoins"
+      ],
+      "paras": [
+        "Two annual reports set the baseline for how much money crypto crime moves, and both landed higher this year. The FBI's Internet Crime Complaint Center (IC3) tracks what Americans report losing. Chainalysis traces what actually moves across public blockchains. Read together, they describe a problem that is still accelerating, in figures that almost certainly understate it.",
+        "Start with the reported losses. The IC3's 2024 Internet Crime Report, published in April 2025, logged a record $9.3 billion in U.S. cryptocurrency-related losses, up 66% from 2023, across nearly 150,000 complaints that referenced crypto. The IC3's 2025 report, released April 6, 2026, pushed that figure to $11.37 billion, cited in 181,565 complaints, a 21% jump in complaint count and roughly a 22% rise in dollars lost.",
+        "Those crypto losses sit inside a larger fraud picture. The 2025 report tallied about $21 billion in total losses across 1,008,597 complaints, according to the IC3, with cyber-enabled fraud alone accounting for $17.6 billion, about 85% of everything reported.",
+        "## Where the growth is",
+        "The fastest-moving category is investment fraud. Crypto investment schemes accounted for $5.8 billion in 2024 and rose to about $7.2 billion in 2025, a 25% increase, per the IC3. That is the bucket that includes the Southeast Asian 'scam center' operations the FBI's new Scam Center Strike Force was created to target, alongside its earlier Operation Level Up.",
+        "The on-chain view is starker. Chainalysis's 2026 Crypto Crime Report, published January 8, 2026, estimates at least $154 billion in illicit crypto value received in 2025, a 162% jump, driven by a 694% surge in value flowing to sanctioned entities. Stablecoins now make up 84% of illicit transaction volume, up from 63% a year earlier.",
+        "Scams specifically cost victims about $17 billion in 2025 by Chainalysis's estimate, with at least $14 billion of that received on-chain. Two curves stand out: impersonation scams rose more than 1,400% year over year, and the average scam payment climbed to $2,764 from $782, a 253% increase the firm attributes to AI-enabled operations scaling up.",
+        "AI shows up in the reported data too. The IC3 counted roughly 22,000 AI-related complaints in 2025 totaling $893 million. Outright theft also set records: North Korean hackers stole about $2 billion in 2025, per Chainalysis, including the February 2025 Bybit breach of nearly $1.5 billion, which the firm calls the largest heist in crypto history.",
+        "## Who pays, and why the totals run low",
+        "The demographic pattern is consistent. Victims aged 60 and older lost the most, $2.8 billion in 2024, according to the IC3, a pattern investigators tie to investment and confidence fraud that unfolds over weeks or months.",
+        "Every figure here is a floor. IC3 totals only capture losses that victims actually report, and shame, confusion, and unrecovered funds keep many complaints from ever being filed. Chainalysis figures are explicit lower bounds that get revised upward as more criminal addresses are identified: the firm's first estimate for 2024 was $40.9 billion, later revised to $57.2 billion, a roughly 40% upward correction after the fact.",
+        "In other words, the newest number for any given year is rarely the final one. The direction, though, has not reversed. Here is what the pattern means for readers:",
+        "- Treat any 'investment' contact that begins with an unsolicited text, DM, or wrong-number message as a scam-center opener until proven otherwise.\n- Be skeptical of platforms that show growing 'profits' but require new deposits or fees before you can withdraw, a hallmark of investment fraud.\n- Assume AI can fake a familiar voice, face, or credential; verify urgent money requests through a separate, known channel.\n- If you are helping someone 60 or older, ask directly about new online 'advisors' or crypto accounts, since this group absorbs the largest share of losses.\n- Report losses to the FBI's IC3 even if recovery seems unlikely; unreported cases are exactly why the official totals run low.",
+        "The reports disagree on method, reported complaints versus traced blockchain flows, but not on trajectory. By both measures, 2025 was worse than 2024, and both institutions expect their 2025 figures to be revised, like the years before them, upward.",
+        "— Sources: [FBI IC3 2025 Internet Crime Report](https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf) · [Chainalysis 2026 Crypto Crime Report](https://www.chainalysis.com/blog/2026-crypto-crime-report-introduction/) · [Chainalysis 2026 — Scams](https://www.chainalysis.com/blog/crypto-scams-2026/) · [CoinDesk: FBI says Americans lost $9.3B to crypto in 2024](https://www.coindesk.com/markets/2025/04/24/fbi-says-americans-lost-usd9-3b-to-crypto-scams-in-2024)"
+      ]
+    }
+  ],
+  "alerts": [
+    {
+      "severity": "critical",
+      "title": "North Korea-linked hackers steal $577M in two 2026 attacks — 76% of all crypto hack losses through April, TRM Labs reports",
+      "chain": "multi-chain",
+      "body": "TraderTraitor actors took $292M from KelpDAO's rsETH LayerZero bridge on April 18 after poisoning internal RPC nodes so a lone verifier approved a forged cross-chain message, while a separate DPRK group drained $285M from Solana's Drift Protocol on April 1 following months of social engineering against protocol signers, including in-person meetings with employees. TRM Labs puts North Korea's attributed thefts since 2017 above $6 billion.",
+      "sourceUrl": "https://www.trmlabs.com/resources/blog/north-korea-stole-76-of-all-crypto-hack-value-in-2026-with-just-two-attacks"
+    },
+    {
+      "severity": "critical",
+      "title": "US sanctions 29 Cambodia-linked targets and restrains $701.9M in crypto as pig-butchering losses reach est. $7.2B for 2025",
+      "chain": "multi-chain",
+      "body": "Per an April 2026 Chainalysis analysis, OFAC designated Cambodian Senator Kok An and 28 associated people and entities while the DOJ's Scam Center Strike Force charged two managers of Burma's Shunda compound, seized 503 web domains posing as legitimate crypto investment platforms and restrained over $701.9M. Chainalysis calls pig butchering, run largely from industrial-scale compounds in Burma and Cambodia, one of the most financially devastating forms of cybercrime, with the FBI's IC3 reporting estimated losses of $7.2B in 2025.",
+      "sourceUrl": "https://www.chainalysis.com/blog/asian-scam-centers-crypto-fraud-april-2026/"
+    },
+    {
+      "severity": "high",
+      "title": "FBI: scammers impersonate IC3 with deepfake videos of senior officials to sell fake fund recovery to prior fraud victims",
+      "chain": "multi-chain",
+      "body": "A July 20, 2026 FBI PSA documents fraudulent social media profiles posing as FBI agents, AI-generated deepfake videos of senior FBI leaders promoting spoofed IC3 websites, and malicious links pushed via Facebook Messenger and Telegram to revictimize people who already lost funds. The FBI states IC3 never asks for payment to recover lost funds and never refers victims to companies requesting payment for fund recovery.",
+      "sourceUrl": "https://www.ic3.gov/PSA/2026/PSA260720"
+    },
+    {
+      "severity": "high",
+      "title": "Address-poisoning attempts jump 5.5x to 3.4M in January 2026 after Ethereum fee cut; single victims lose $50M and $12.4M",
+      "chain": "Ethereum",
+      "body": "Blockaid has flagged over 65.4M poisoning transactions since January 2025 and reports Ethereum overtook BSC as the most-poisoned chain in January 2026 after the December 3 Fusaka upgrade cut fees roughly 6x, with attempts rising from 628,000 in November 2025 to 3.4M in January. Documented losses include $50M in USDT in December 2025 and 4,556 ETH (~$12.4M) on January 30, 2026, the latter following a two-month dusting campaign.",
+      "sourceUrl": "https://www.blockaid.io/blog/address-poisoning-the-growing-threat-draining-millions-from-crypto-users"
+    },
+    {
+      "severity": "high",
+      "title": "Drainer operators register fake 'revoke' and migration sites within hours of major hacks; five campaigns tracked in April 2026",
+      "chain": "multi-chain",
+      "body": "Blockaid tracked five separate drainer campaigns in April 2026 piggybacking on the Drift, KelpDAO, ZetaChain, Aftermath Finance and Wasabi incidents, using lookalike domains such as revokes-drift[.]trade pushed through X reply threads as fake security guidance. Users trying to revoke approvals or migrate assets on Solana, Ethereum, Base and Sui instead signed wallet-draining transactions, with distinct kits, infrastructure and operators behind each campaign.",
+      "sourceUrl": "https://blockaid.io/blog/how-wallet-drainers-use-fake-revoke-sites-and-twitter-phishing-to-exploit-victims"
+    },
+    {
+      "severity": "elevated",
+      "title": "26 seed-phrase-stealing wallet apps found on Apple App Store impersonating MetaMask, Ledger, Trust Wallet and Coinbase",
+      "chain": "multi-chain",
+      "body": "Kaspersky's April 2026 report details a FakeWallet campaign active since at least fall 2025 that hijacks the recovery-phrase entry screen in trojanized hot-wallet apps and shows phishing prompts to cold-wallet users, sending encrypted mnemonics to command-and-control servers; researchers suspect the same threat actors are linked to the SparkKitty trojan. Apple pulled several apps after disclosure, but Kaspersky identified similar apps from the same actors with malicious features likely awaiting activation.",
+      "sourceUrl": "https://securelist.com/fakewallet-cryptostealer-ios-app-store/119474/"
+    },
+    {
+      "severity": "elevated",
+      "title": "Employment scam reports double as task-based job fraud spreads; victims pay crypto fees to unlock phantom earnings, BBB finds",
+      "chain": "multi-chain",
+      "body": "The BBB's 2026 employment-scam update counts nearly 50,000 reports over 2023-2025 with reports doubling year-over-year in 2025, as task-based schemes — liking videos or rating products on fake platforms — demand deposits, often in cryptocurrency, to release fake commissions. Median task-scam losses reached $2,300 in 2025, and the FTC saw a 400% increase in task scams in 2024.",
+      "sourceUrl": "https://www.bbb.org/all/scamstudies/jobscams/employment-scams-2026-update"
+    }
+  ],
+  "figures": {
+    "figures": [
+      {
+        "label": "FBI IC3 2025 report — total cryptocurrency-related fraud losses (calendar 2025, US-reported)",
+        "value": "$11,366,669,732 (181,565 complaints with cryptocurrency descriptor)",
+        "source": "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf (2025 IC3 Annual Report, descriptor tables pp. 7-8; verified directly from the PDF)"
+      },
+      {
+        "label": "FBI IC3 2025 report — total cybercrime losses, all types",
+        "value": "$20.877 billion from 1,008,597 complaints, a 26% increase in losses over 2024; average loss $20,699",
+        "source": "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf (pp. 4-6; verified directly from the PDF)"
+      },
+      {
+        "label": "FBI IC3 2025 report — cryptocurrency investment fraud losses",
+        "value": "$7.2 billion reported, the highest source of financial losses to Americans in 2025 (all investment fraud: $8,648,617,756)",
+        "source": "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf (p. 11 for the $7.2B crypto investment figure; p. 8 for the overall investment-fraud total)"
+      },
+      {
+        "label": "FBI IC3 2024 report — total cryptocurrency-related fraud losses (calendar 2024, US-reported)",
+        "value": "$9.3 billion from 149,686 complaints, a 66% increase from 2023 (total cybercrime losses $16.6B from 859,532 complaints)",
+        "source": "https://www.trmlabs.com/resources/blog/a-record-breaking-year-for-cybercrime-key-findings-from-the-fbis-2024-ic3-report and https://www.theblock.co/post/351746/fbi-says-americans-over-60-lost-nearly-3-billion-to-crypto-scams-in-2024"
+      },
+      {
+        "label": "Chainalysis 2025 Crypto Crime Report — illicit crypto volume for 2024 (as originally published)",
+        "value": "$40.9 billion received by known illicit addresses, projected to surpass $51 billion as attribution improves",
+        "source": "https://www.chainalysis.com/blog/2025-crypto-crime-report-introduction/"
+      },
+      {
+        "label": "Chainalysis 2026 Crypto Crime Report — illicit crypto volume for 2025",
+        "value": "At least $154 billion received by illicit addresses (lower-bound estimate), a 162% increase year-over-year; the 2024 figure was retroactively revised up to $57.2 billion (from the originally published $40.9 billion)",
+        "source": "https://www.chainalysis.com/blog/2026-crypto-crime-report-introduction/"
+      },
+      {
+        "label": "Chainalysis 2026 Crypto Crime Report — global crypto scam revenue for 2025",
+        "value": "At least $14 billion confirmed on-chain (Chainalysis estimates $17 billion once fully attributed); 2024 scam figure revised to ~$12 billion from the initially reported $9.9 billion",
+        "source": "https://www.chainalysis.com/blog/crypto-scams-2026/"
+      },
+      {
+        "label": "Chainalysis 2026 Crypto Crime Report — average scam payment size",
+        "value": "$2,764 in 2025, up 253% year-over-year from $782 in 2024; AI-linked scam operations averaged $3.2M per operation vs $719K without AI (4.5x more revenue)",
+        "source": "https://www.chainalysis.com/blog/crypto-scams-2026/"
+      },
+      {
+        "label": "Chainalysis 2026 Crypto Crime Report — sanctions-driven surge",
+        "value": "$104 billion received by sanctioned entities in 2025 (a 694% increase), the main driver of the record illicit total; stablecoins made up 84% of illicit transaction volume",
+        "source": "https://www.chainalysis.com/blog/crypto-sanctions-2026/ ($104B and 694% figures) and https://www.chainalysis.com/blog/2026-crypto-crime-report-introduction/ (694% increase and 84% stablecoin share)"
+      }
+    ],
+    "todaysNumber": "$31.1M",
+    "todaysNumberBasis": "Derived from the FBI IC3 2025 Annual Internet Crime Report, which documents $11,366,669,732 in US-reported cryptocurrency-related fraud losses for calendar 2025 (verified directly from the PDF, descriptor tables pp. 7-8), divided by 365 days = $31.14 million lost per day. Note: Chainalysis's global on-chain 2025 scam figure is higher (at least $14B confirmed, $17B estimated), but the FBI IC3 number is the most authoritative documented government figure and is US-reported losses only.",
+    "sources": [
+      "https://www.ic3.gov/AnnualReport/Reports/2025_IC3Report.pdf",
+      "https://www.chainalysis.com/blog/2026-crypto-crime-report-introduction/",
+      "https://www.chainalysis.com/blog/crypto-scams-2026/",
+      "https://www.chainalysis.com/blog/crypto-sanctions-2026/",
+      "https://www.trmlabs.com/resources/blog/a-record-breaking-year-for-cybercrime-key-findings-from-the-fbis-2024-ic3-report"
+    ]
+  }
+}

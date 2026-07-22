@@ -1,3 +1,5 @@
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { CRYPTO_METHODS } from "../src/lib/constants";
@@ -9,9 +11,48 @@ const DEV_PASSWORD = "watchtower";
 const slug = (s: string) =>
   s.toLowerCase().replace(/['"]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "").slice(0, 80);
 
+// ─── Authentic dataset ───
+// Real, documented crypto-scam cases researched from primary sources (DOJ/SEC/OFAC/
+// FBI-IC3/CFTC and reputable security vendors), then adversarially fact-checked.
+// Produced by the `authentic-scam-data` research workflow; see prisma/authentic-data.json.
+type AuthScam = {
+  slug: string; name: string; type: string; chains: string[]; status: string;
+  severity: string; summary: string; details: string; lossUsd: number;
+  firstSeenYear: number; officialAction: string; sources: string[]; verdict: string;
+};
+type AuthArticle = {
+  slug: string; title: string; dek: string; kicker: string; category: string;
+  severity: string; readMinutes: number; sourceName: string; sourceUrl: string;
+  tags: string[]; paras: string[];
+};
+type AuthAlert = { severity: string; title: string; chain: string; body?: string; sourceUrl?: string };
+type AuthFigures = {
+  figures: { label: string; value: string; source: string }[];
+  todaysNumber: string; todaysNumberBasis: string; sources: string[];
+} | null;
+type AuthenticData = { scams: AuthScam[]; articles: AuthArticle[]; alerts: AuthAlert[]; figures: AuthFigures };
+
+const authentic = JSON.parse(
+  readFileSync(join(__dirname, "authentic-data.json"), "utf8"),
+) as AuthenticData;
+
+// Public-record OFAC-sanctioned on-chain addresses, keyed by scam slug. These are
+// published on the U.S. Treasury SDN list for the named, documented sanctioned actor
+// (DPRK / Lazarus Group) — the only case where seeding real addresses is appropriate.
+// Every other entry keeps an empty address list until on-chain evidence is verified.
+const REAL_ADDRESSES: Record<string, string[]> = {
+  // OFAC SDN designation (2022-04-14) of the Lazarus Group ETH address that received
+  // the stolen Ronin Bridge funds. Source: U.S. Treasury / OFAC recent actions.
+  "ronin-bridge": ["0x098B716B8Aaf21512996dC57EB0615e2383E2f96"],
+};
+
+// Per-article editorial dressing (author desk, public-domain cover painting, placement,
+// recency). Content is authentic and verified; only the art direction is assigned here.
+const painting = (file: string, width = 900) =>
+  `https://commons.wikimedia.org/wiki/Special:FilePath/${file}?width=${width}`;
+
 async function main() {
   console.log("Resetting database…");
-  // Order matters for FK-free deleteMany on Postgres (cascades handle children).
   await prisma.$transaction([
     prisma.auditLog.deleteMany(),
     prisma.vote.deleteMany(),
@@ -62,7 +103,7 @@ async function main() {
         passwordHash: hash,
         role,
         title,
-        reputation: Math.floor(Math.random() * 4000),
+        reputation: 0, // earned on-site, not seeded
         bio: title ? `${title} at BTCSCAM.COM.` : undefined,
       },
     });
@@ -77,171 +118,112 @@ async function main() {
   const contributor = await u("hexdiver", "HexDiver", "contributor", "Volunteer Analyst");
 
   console.log("Seeding market ticker + settings…");
+  // Real CoinGecko snapshot (2026-07-22). The ticker self-refreshes from CoinGecko
+  // every 5 minutes at runtime (src/lib/ticker.ts) — these are just first-paint values.
   const prices = [
-    ["BTC", 121437, 2.14], ["ETH", 6204, -0.82], ["SOL", 318.4, 4.06], ["XRP", 3.41, 0.34],
-    ["BNB", 942.1, -1.12], ["DOGE", 0.3021, 1.9], ["ADA", 1.64, -0.44], ["LINK", 41.25, 2.87],
+    ["BTC", 66249, 1.67], ["ETH", 1920.86, 1.26], ["SOL", 77.94, 0.32], ["XRP", 1.14, 2.64],
+    ["BNB", 572.78, 0.41], ["DOGE", 0.073217, 1.76], ["ADA", 0.172733, 1.85], ["LINK", 8.61, 0.9],
   ] as const;
   for (const [symbol, priceUsd, changePct] of prices) {
     await prisma.marketTicker.create({ data: { symbol, priceUsd, changePct } });
   }
+  // todays_number = latest authoritative annual crypto-fraud loss ÷ 365, from the
+  // research desk's verified figures (basis stored in the seed log below).
+  const todaysNumber = authentic.figures?.todaysNumber ?? "$25.5M";
   await prisma.siteSetting.createMany({
     data: [
-      { key: "watchmen", value: "41208" },
+      { key: "watchmen", value: String(await prisma.user.count()) },
       { key: "threatcon", value: "ELEVATED" },
-      { key: "todays_number", value: "$43.2M" },
+      { key: "todays_number", value: todaysNumber },
     ],
   });
 
-  console.log("Seeding alerts…");
-  const alerts = [
-    { severity: "critical", title: "QuantumYield AI confirmed Ponzi — withdrawals frozen, 1,204 reports", chain: "multi-chain" },
-    { severity: "high", title: "Fake 'Ledger Live 3.0' APK circulating via Telegram — verify release hashes", chain: "bitcoin" },
-    { severity: "high", title: "Address-poisoning wave on TRON — always verify full addresses", chain: "tron" },
-    { severity: "elevated", title: "Deepfake 'Saylor' giveaway streams back — 240 channels pulled this weekend", chain: "bitcoin" },
-    { severity: "high", title: "Inferno Drainer v4 kit now rents for $99/week", chain: "evm" },
-  ];
-  for (const a of alerts) await prisma.alert.create({ data: a });
+  console.log(`Seeding alerts… (${authentic.alerts.length})`);
+  for (const a of authentic.alerts) {
+    await prisma.alert.create({
+      data: {
+        severity: a.severity,
+        title: a.title,
+        chain: a.chain,
+        // Keep the source link inside the body so nothing is fabricated and the
+        // provenance travels with the alert.
+        body: a.sourceUrl ? `${a.body ?? ""}${a.body ? "\n\n" : ""}Source: ${a.sourceUrl}`.trim() : a.body,
+      },
+    });
+  }
 
-  console.log("Seeding articles…");
-  // v4 art direction: public-domain paintings (Wikimedia Commons) as editorial imagery.
-  const painting = (file: string, width = 900) =>
-    `https://commons.wikimedia.org/wiki/Special:FilePath/${file}?width=${width}`;
+  console.log(`Seeding articles… (${authentic.articles.length})`);
   const body = (paras: string[]) => paras.join("\n\n");
-  const article = (a: {
-    title: string; dek: string; kicker: string; category: string; severity?: string;
-    author: { id: string }; cover: string; coverUrl?: string; read: number; featured?: boolean; developing?: boolean; paras: string[];
-  }) =>
-    prisma.article.create({
+
+  // slug → art direction. Every authentic article is matched here; a fallback keeps
+  // seeding resilient if the research set changes.
+  const ART: Record<
+    string,
+    { author: { id: string }; cover: string; img: string; featured?: boolean; developing?: boolean; hoursAgo: number }
+  > = {
+    "prince-group-feature": { author: mara, cover: "[ painting: Bosch — The Garden of Earthly Delights ]", img: painting("The_Garden_of_earthly_delights.jpg", 1800), featured: true, hoursAgo: 3 },
+    "bybit-hack-story": { author: lena, cover: "[ painting: Bruegel — The Fall of the Rebel Angels ]", img: painting("Pieter_Bruegel_the_Elder_-_The_Fall_of_the_Rebel_Angels_-_Google_Art_Project.jpg"), hoursAgo: 8 },
+    "fake-ledger-app": { author: dev, cover: "[ painting: Massys — The Moneylender and his Wife ]", img: painting("Quentin_Massys_001.jpg"), hoursAgo: 12 },
+    "inferno-drainer-story": { author: lena, cover: "[ painting: Bruegel — The Triumph of Death ]", img: painting("Pieter_Bruegel_d._Ä._037.jpg"), hoursAgo: 20 },
+    "deepfake-giveaways": { author: dev, cover: "[ painting: van Reymerswaele — Two Tax Collectors ]", img: painting("Marinus_Claesz._van_Reymerswaele_001.jpg"), hoursAgo: 28 },
+    "ftx-retrospective": { author: lena, cover: "[ painting: Holbein — The Ambassadors ]", img: painting("Hans_Holbein_the_Younger_-_The_Ambassadors_-_Google_Art_Project.jpg"), developing: false, hoursAgo: 34 },
+    "zachxbt-genesis-heist": { author: manager, cover: "[ painting: Raphael — The School of Athens ]", img: painting("Sanzio_01.jpg"), hoursAgo: 40 },
+    "address-poisoning-guide": { author: contributor, cover: "[ painting: van Eyck — Arnolfini Portrait ]", img: painting("Van_Eyck_-_Arnolfini_Portrait.jpg"), hoursAgo: 50 },
+    "recovery-scam-guide": { author: mara, cover: "[ painting: Bosch — detail from a moral allegory ]", img: painting("Hieronymus_Bosch_051.jpg", 1400), hoursAgo: 60 },
+    "crime-data-2026": { author: lena, cover: "[ painting: Friedrich — Wanderer above the Sea of Fog ]", img: painting("Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"), hoursAgo: 72 },
+  };
+  const fallbackArt = { author: dev, cover: "[ editorial illustration ]", img: painting("Hieronymus_Bosch_051.jpg", 1400), hoursAgo: 24 };
+  const seedTime = Date.now();
+
+  for (const a of authentic.articles) {
+    const meta = ART[a.slug] ?? fallbackArt;
+    await prisma.article.create({
       data: {
         slug: slug(a.title),
         title: a.title,
         dek: a.dek,
         kicker: a.kicker,
         category: a.category,
-        severity: a.severity ?? "none",
-        coverLabel: a.cover,
-        coverImageUrl: a.coverUrl ?? null,
-        readMinutes: a.read,
-        isFeatured: a.featured ?? false,
-        isDeveloping: a.developing ?? false,
+        severity: a.severity,
+        coverLabel: meta.cover,
+        coverImageUrl: meta.img,
+        sourceName: a.sourceName || null,
+        sourceUrl: a.sourceUrl || null,
+        readMinutes: a.readMinutes,
+        isFeatured: meta.featured ?? false,
+        isDeveloping: meta.developing ?? false,
         status: "published",
-        authorId: a.author.id,
-        viewCount: Math.floor(Math.random() * 40000),
+        authorId: meta.author.id,
+        viewCount: 0, // earned, not seeded
+        publishedAt: new Date(seedTime - meta.hoursAgo * 3600_000),
         body: body(a.paras),
-        tags: ["scam", a.category],
+        tags: a.tags,
       },
     });
+  }
 
-  await article({
-    title: "Inside the $47M 'Pig-Butchering' Ring That Ran on Fake Exchange Apps",
-    dek: "A six-month trail of shell domains, cloned trading dashboards and 3,800 victims — and the four red flags that were visible from day one.",
-    kicker: "Investigation", category: "investigation", severity: "critical",
-    author: mara, cover: "[ photo: seized fake trading dashboard ]",
-    coverUrl: painting("Hieronymus_Bosch_051.jpg", 1800), read: 14, featured: true,
-    paras: [
-      "For six months, the operators of \"NovaTrade Pro\" ran what looked like a boutique derivatives exchange: a polished dashboard, a 24/7 support desk, even a proof-of-reserves page. None of it was real. Our review of 3,800 victim statements, domain records and on-chain flows shows a single syndicate moving at least $47 million through 61 cloned exchange front-ends.",
-      "## The romance funnel",
-      "Victims never found NovaTrade through an ad. They were walked in — patiently — by \"mentors\" met on dating apps and language-exchange groups. The playbook is industrial: three weeks of small talk, a screenshot of a winning trade, then an invitation to \"practice\" with $200.",
-      "> They let me withdraw twice. That's what convinced me. The third deposit was my pension.",
-      "Withdrawals worked until they didn't. Once an account crossed roughly $15,000, the dashboard invented a reason to freeze it: a \"withdrawal insurance fee\", a \"tax clearance\", an \"account upgrade\". Each fee was payable only by fresh deposit.",
-      "### Four red flags visible from day one",
-      "- Domain registered 11 days before the first deposit — always check registration dates.\n- \"Proof of reserves\" page had no verifiable on-chain addresses.\n- Support pushed victims from email to Telegram within one message.\n- Withdrawal fees payable only by new deposit. No legitimate venue does this.",
-      "The database entry for NovaTrade Pro and its 60 sibling domains is live, with wallet clusters and indicator hashes. If a \"mentor\" is coaching you into any platform on that list, stop. Ask the forum first — the community answers in minutes.",
-    ],
-  });
-
-  await article({
-    title: "HexaSwap Withdrawal Complaints Spike 4× in Ten Days",
-    dek: "'Pending review' is the new 'insolvent'. Pattern-matching the last five exchange failures, the clock is likely already running.",
-    kicker: "Exchange Watch", category: "exchange-watch", severity: "high",
-    author: lena, cover: "[ chart: withdrawal complaint volume ]", read: 4, developing: true,
-    paras: [
-      "Complaints about stuck withdrawals at HexaSwap have quadrupled in ten days, according to forum reports and our own tracking.",
-      "The pattern rhymes with five previous exchange failures: first a trickle of 'pending review' notices, then selective processing for vocal users, then silence.",
-      "We are not calling insolvency. We are saying the base rate for this pattern ending well is low. Reduce exposure and export your records now.",
-    ],
-  });
-
-  const others = [
-    {
-      title: "Fake 'Ledger Live' App Slips Past Play Store Review — 12,000 Downloads Before Takedown",
-      dek: "The trojanized wallet asked users to 'restore' their 24 words on first launch. Google pulled it in 72 hours; the seeds were gone in minutes.", kicker: "News", category: "news", severity: "critical",
-      author: dev, cover: "[ photo: phone with fake wallet app ]", coverUrl: painting("Quentin_Massys_001.jpg"), read: 6,
-      paras: [
-        "The listing looked immaculate: the right logo, a plausible changelog, 4.6 stars from farmed reviews. \"Ledger Live 3.0 — Official Update\" sat in search results for three days and was installed more than 12,000 times before Google removed it.",
-        "## Verify signatures, every time",
-        "The app itself did almost nothing — except at first launch, where a pixel-perfect \"restore your wallet\" screen collected 24-word phrases and posted them to a server in real time. Drains began within four minutes of entry, our on-chain review shows.",
-        "### Protect yourself",
-        "- Download wallet apps only from links on the vendor's own domain.\n- Check the developer name and release hash before installing.\n- No app ever needs your full seed to 'sync' or 'verify'.\n- Typed a seed into a screen? Assume it is burned. Move funds now.",
-      ],
-    },
-    {
-      title: "Drainer-as-a-Service Kit 'Inferno v4' Now Rents for $99 a Week",
-      dek: "The kit behind most fake mints this quarter ships with cloned UIs, approval-swap scripts and a revenue dashboard for its 'affiliates'.", kicker: "Threat Intel", category: "threat-intel", severity: "high",
-      author: lena, cover: "[ diagram: drainer kit rental flow ]", coverUrl: painting("Pieter_Bruegel_d._Ä._037.jpg"), read: 8,
-      paras: [
-        "Wallet draining is no longer a skill — it's a subscription. Inferno v4, the kit our tracker links to over 400 live phishing deployments, now advertises weekly rentals with onboarding support and a 20% platform fee on stolen funds.",
-        "## Crime, subscription-priced",
-        "Point-and-click phishing pages, hosted signing prompts, affiliate splits. Signing an opaque approval is the whole attack — revoke unused allowances regularly.",
-      ],
-    },
-    {
-      title: "Deepfake 'Saylor' Giveaway Streams Are Back — 240 Channels Pulled This Weekend",
-      dek: "The 'send 1 BTC, get 2 back' loop never dies; it just changes faces.", kicker: "News", category: "news",
-      author: dev, cover: "[ photo: deepfake stream still ]", coverUrl: painting("Marinus_Claesz._van_Reymerswaele_001.jpg"), read: 4,
-      paras: ["Over a single weekend, 240 livestream channels running deepfaked 'giveaway' loops were reported and pulled.", "No one doubles your Bitcoin. Every 'send X, receive 2X' stream is a theft funnel."],
-    },
-    {
-      title: "Address Poisoning, Explained: Why You Should Never Copy From History",
-      dek: "Attackers seed your history with lookalike addresses that match the first and last four characters.", kicker: "Field Guide", category: "field-guide",
-      author: contributor, cover: "[ diagram: address poisoning attack ]", coverUrl: painting("Van_Eyck_-_Arnolfini_Portrait.jpg"), read: 7,
-      paras: ["Address poisoning plants a lookalike address into your transaction history so a careless copy-paste sends funds to the attacker.", "Verify the full address, use an allow-list, and never paste from history."],
-    },
-    {
-      title: "The 'Recovery Agent' Who Scams You Twice",
-      dek: "After the rug comes the DM: 'We can trace your funds.'", kicker: "Field Guide", category: "field-guide",
-      author: mara, cover: "[ photo: recovery scam dm thread ]", coverUrl: painting("The_Garden_of_earthly_delights.jpg"), read: 6,
-      paras: ["Recovery scams target victims at their most desperate, promising to trace and return stolen funds for an upfront fee.", "Legitimate recovery never asks for gas fees, taxes, or 'unlock' payments up front."],
-    },
-    {
-      title: "Court Freezes $9.8M Tied to 'BitVault Capital' After Community Dossier",
-      dek: "A 214-page evidence pack assembled by forum members became Exhibit A.", kicker: "Community Win", category: "community-win",
-      author: manager, cover: "[ photo: court filing stack ]", coverUrl: painting("Sanzio_01.jpg"), read: 9,
-      paras: ["A freeze order over $9.8M cites wallet clusters first mapped in this community's forum threads.", "Distributed, documented, on-chain evidence works. This is what the Watch is for."],
-    },
-    {
-      title: "Five Wallet-Hygiene Rules the Pros Actually Follow",
-      dek: "No hardware fetishism, no paranoia theater — just the habits that keep coins where they belong.", kicker: "Field Guide", category: "field-guide",
-      author: contributor, cover: "[ photo: hardware wallet on desk ]", coverUrl: painting("Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"), read: 5,
-      paras: ["Segregate funds, revoke allowances, verify addresses, keep a cold vault, and never sign what you can't read.", "These five habits prevent the overwhelming majority of retail losses."],
-    },
-    {
-      title: "Q2 2026 Scam Losses Hit $2.1B — Down 8%, but Drainer Kits Doubled",
-      dek: "Fewer mega-ponzis, far more industrialized wallet-draining.", kicker: "Data", category: "data",
-      author: lena, cover: "[ chart: q2 losses by category ]", coverUrl: painting("Hans_Holbein_the_Younger_-_The_Ambassadors_-_Google_Art_Project.jpg"), read: 10,
-      paras: ["Total reported losses fell 8% quarter-over-quarter to $2.1B, but drainer-kit incidents doubled.", "The damage is shifting from a few enormous ponzis to a long tail of automated theft."],
-    },
-  ];
-  for (const a of others) await article(a);
-
-  console.log("Seeding scam database…");
-  const scams = [
-    { name: "QuantumYield AI", type: "ponzi", chains: ["multi-chain"], severity: "critical", status: "frozen", verified: 3412, summary: "AI-branded yield Ponzi; withdrawals frozen after 1,204 reports.", risk: 24000000 },
-    { name: "Ledger Live 3.0 (fake APK)", type: "impersonation", chains: ["bitcoin"], severity: "high", status: "active", verified: 2760, summary: "Trojanized wallet manager harvesting recovery phrases.", risk: 3000000 },
-    { name: "Inferno Drainer v4", type: "drainer", chains: ["evm"], severity: "high", status: "active", verified: 2114, summary: "Drainer-as-a-service kit rented weekly to affiliates.", risk: 8000000 },
-    { name: "BitVault Capital", type: "ponzi", chains: ["bitcoin"], severity: "high", status: "confirmed", verified: 1893, summary: "Fake fund; $9.8M frozen after community dossier.", risk: 9800000 },
-    { name: "SaylorGiveaway.live", type: "giveaway", chains: ["bitcoin"], severity: "elevated", status: "monitoring", verified: 1677, summary: "Deepfake 'send 1 get 2' giveaway stream network.", risk: 1200000 },
-    { name: "NovaTrade Pro", type: "pig-butchering", chains: ["multi-chain"], severity: "critical", status: "confirmed", verified: 1540, summary: "Cloned exchange front-end syndicate; $47M across 61 domains.", risk: 47000000 },
-    { name: "HexaSwap", type: "other", chains: ["evm"], severity: "high", status: "monitoring", verified: 980, summary: "Withdrawal complaints spiking 4× in ten days.", risk: 5000000 },
-  ];
-  for (const s of scams) {
+  console.log(`Seeding scam database… (${authentic.scams.length})`);
+  for (const s of authentic.scams) {
     await prisma.scamEntry.create({
       data: {
-        slug: slug(s.name), name: s.name, type: s.type, chains: s.chains, severity: s.severity,
-        status: s.status, verifiedCount: s.verified, reportCount: Math.floor(s.verified / 3),
-        summary: s.summary, amountAtRiskUsd: BigInt(s.risk),
-        addresses: ["PLACEHOLDER-observed-address-1", "PLACEHOLDER-observed-address-2"],
-        details: `${s.summary}\n\nThis entry is community-verified. Add evidence via Report a Scam.`,
+        slug: s.slug,
+        name: s.name,
+        type: s.type,
+        chains: s.chains,
+        severity: s.severity,
+        status: s.status,
+        // Community-engagement counts are earned on-site, not fabricated. These entries
+        // are seeded from primary public records; their authority is the official action.
+        verifiedCount: 0,
+        reportCount: 0,
+        summary: s.summary,
+        amountAtRiskUsd: BigInt(Math.round(s.lossUsd)),
+        addresses: REAL_ADDRESSES[s.slug] ?? [],
+        // firstSeen = January of the documented first-seen year.
+        firstSeen: new Date(Date.UTC(s.firstSeenYear, 0, 1)),
+        details: s.officialAction
+          ? `${s.details}\n\n**Official action:** ${s.officialAction}`
+          : s.details,
       },
     });
   }
@@ -267,12 +249,12 @@ async function main() {
     catRecords[c.slug] = r.id;
   }
   const t1 = await prisma.forumThread.create({
-    data: { slug: slug("New drainer signature spotted on Base"), title: "New drainer signature spotted on Base", body: "Saw a new approval prompt pattern draining tokens on Base. Signature below — revoke if you interacted with the airdrop site.", categoryId: catRecords["scam-alerts"], authorId: member1.id, upvotes: 142, score: 142, tags: ["base", "drainer"] },
+    data: { slug: slug("New drainer signature spotted on Base"), title: "New drainer signature spotted on Base", body: "Saw a new approval prompt pattern draining tokens on Base. Signature below — revoke if you interacted with the airdrop site.", categoryId: catRecords["scam-alerts"], authorId: member1.id, upvotes: 0, score: 0, tags: ["base", "drainer"] },
   });
-  await prisma.forumComment.create({ data: { threadId: t1.id, authorId: contributor.id, body: "Confirmed. Clustered with three wallets from the Inferno set. Adding to the dossier.", upvotes: 38, score: 38 } });
-  await prisma.forumComment.create({ data: { threadId: t1.id, authorId: member2.id, body: "Thank you — just revoked. This community is a lifesaver.", upvotes: 21, score: 21 } });
+  await prisma.forumComment.create({ data: { threadId: t1.id, authorId: contributor.id, body: "Confirmed. Clustered with three wallets from a known drainer set. Adding to the dossier.", upvotes: 0, score: 0 } });
+  await prisma.forumComment.create({ data: { threadId: t1.id, authorId: member2.id, body: "Thank you — just revoked. This community is a lifesaver.", upvotes: 0, score: 0 } });
   await prisma.forumThread.create({
-    data: { slug: slug("Lost 4 BTC to a recovery agent - what now"), title: "Lost 4 BTC to a 'recovery agent' — what now?", body: "After the first scam I paid a 'recovery agent' who then vanished. Documenting everything here. What are my realistic options?", categoryId: catRecords["help-i-was-scammed"], authorId: member2.id, upvotes: 96, score: 96, tags: ["recovery", "support"] },
+    data: { slug: slug("Lost 4 BTC to a recovery agent - what now"), title: "Lost 4 BTC to a 'recovery agent' — what now?", body: "After the first scam I paid a 'recovery agent' who then vanished. Documenting everything here. What are my realistic options?", categoryId: catRecords["help-i-was-scammed"], authorId: member2.id, upvotes: 0, score: 0, tags: ["recovery", "support"] },
   });
 
   // Store — v4's nine-product catalog (crypto checkout only; Unsplash imagery per design)
@@ -300,8 +282,7 @@ async function main() {
     });
   }
 
-  // Donations
-  await prisma.donation.create({ data: { donorName: "Anonymous", cryptoMethod: "BTC", cryptoAddress: "PLACEHOLDER-BTC-ADDRESS-REPLACE-ME", amountUsd: 25000, status: "confirmed", isAnonymous: true, message: "Keep exposing them." } });
+  // Donations: none seeded — the ledger starts honest and fills with real pledges.
 
   // Consultation
   const cReq = await prisma.consultationRequest.create({
@@ -310,7 +291,7 @@ async function main() {
   await prisma.consultationMessage.create({ data: { requestId: cReq.id, authorId: manager.id, fromStaff: true, body: "Thanks for reaching out. First: stop all contact with them, screenshot everything, and file at /report. A volunteer will follow up within 24h." } });
 
   // Sting ops, gatherings, art, media — v4 content
-  await prisma.stingOperation.create({ data: { slug: "operation-cold-wallet", title: "Operation Cold Wallet", status: "active", summary: "Coordinated honeypot of 12 fake-recovery agents to map their infrastructure.", body: "Volunteers pose as victims to document scripts and wallet flows. Evidence feeds the Scam Database." } });
+  await prisma.stingOperation.create({ data: { slug: "operation-cold-wallet", title: "Operation Cold Wallet", status: "active", summary: "Standing volunteer program documenting fake-recovery agents — their scripts, fee funnels and wallet flows.", body: "Volunteers engage 'recovery agents' who approach scam victims, and document the scripts, upfront-fee demands and wallet flows they use. The FBI's IC3 has repeatedly warned that fund-recovery fraud re-victimizes people who have already lost money. Documented evidence feeds the Scam Database." } });
 
   const day = 1000 * 60 * 60 * 24;
   const gatherings = [
@@ -336,29 +317,28 @@ async function main() {
     await prisma.scamArt.create({ data: { slug: slug(ap.t), title: ap.t, artist: ap.a, imageLabel: ap.m, imageUrl: ap.img, description: ap.d } });
   }
 
-  // ScamCast — v4 episode list
+  // ScamCast — site-produced show; episode themes track our real coverage
   const casts = [
-    { slug: "ep-012-tracing-inferno-v4", title: "EP 012 — The analyst who traced Inferno v4", duration: "48 MIN", description: "with Lena Vogt", daysAgo: 3 },
-    { slug: "ep-011-reformed-recovery-agent", title: "EP 011 — Confessions of a reformed 'recovery agent'", duration: "61 MIN", description: "guest anonymized", daysAgo: 10 },
-    { slug: "ep-010-forum-dossier-froze-9-8m", title: "EP 010 — How a forum dossier froze $9.8M", duration: "44 MIN", description: "with ModSentinel", daysAgo: 17 },
+    { slug: "ep-012-anatomy-of-the-bybit-heist", title: "EP 012 — Anatomy of the Bybit heist", duration: "48 MIN", description: "with Lena Vogt", daysAgo: 3 },
+    { slug: "ep-011-the-recovery-scam-funnel", title: "EP 011 — The recovery-scam funnel, mapped", duration: "61 MIN", description: "with Mara Okafor", daysAgo: 10 },
+    { slug: "ep-010-reading-the-ofac-list", title: "EP 010 — Reading the OFAC list like a watchman", duration: "44 MIN", description: "with HexDiver", daysAgo: 17 },
     { slug: "ep-009-pig-butchering-industry", title: "EP 009 — Pig-butchering: the industry behind the DM", duration: "57 MIN", description: "with Mara Okafor", daysAgo: 24 },
   ];
   for (const c of casts) {
     await prisma.mediaItem.create({ data: { slug: c.slug, title: c.title, kind: "podcast", duration: c.duration, description: c.description, publishedAt: new Date(Date.now() - day * c.daysAgo) } });
   }
 
-  // Subscribers
-  await prisma.subscriber.createMany({ data: [{ email: "reader1@example.com" }, { email: "reader2@example.com", list: "alerts" }] });
-
   console.log("Seeding news sources…");
   for (const s of DEFAULT_NEWS_SOURCES) {
     await prisma.newsSource.create({ data: { name: s.name, feedUrl: s.feedUrl, homepage: s.homepage } });
   }
-  // Note: articles ship with hatched placeholders (matching the design). Admins/copywriters
-  // add a real cover image per article via the editor's "Cover image URL" field, and the
-  // News Aggregator carries each source item's real image into the draft it creates.
+  // The News Aggregator (staff area) pulls real headlines from these RSS sources and
+  // creates attributed drafts for a human to rewrite before publishing.
 
   console.log("\n✔ Seed complete.");
+  console.log("─────────────────────────────────────────────");
+  if (authentic.figures) console.log("todays_number basis: " + authentic.figures.todaysNumberBasis);
+  console.log(`Seeded ${authentic.scams.length} scam entries, ${authentic.articles.length} articles, ${authentic.alerts.length} alerts.`);
   console.log("─────────────────────────────────────────────");
   console.log("Dev accounts (password for all: " + DEV_PASSWORD + ")");
   console.log("  admin@btcscam.com        → Administrator");

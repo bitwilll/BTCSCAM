@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { prisma } from "@/lib/db";
+import { getTickerPrices } from "@/lib/ticker";
 
 type Price = { symbol: string; priceUsd: number; changePct: number };
 type AlertItem = { title: string };
@@ -51,15 +52,16 @@ function TickerContent({ prices, alerts }: { prices: Price[]; alerts: AlertItem[
 
 export async function Ticker() {
   const [prices, alerts] = await Promise.all([
-    prisma.marketTicker.findMany({ orderBy: { symbol: "asc" } }).catch(() => []),
+    getTickerPrices(prisma).catch(() => []),
     prisma.alert
       .findMany({ where: { isActive: true }, orderBy: { createdAt: "desc" }, take: 6 })
       .catch(() => []),
   ]);
 
+  // Last-resort fallback (empty DB + API unreachable): real BTC snapshot from 2026-07-22.
   const priceData: Price[] = prices.length
     ? prices.map((p) => ({ symbol: p.symbol, priceUsd: p.priceUsd, changePct: p.changePct }))
-    : [{ symbol: "BTC", priceUsd: 121437, changePct: 2.14 }];
+    : [{ symbol: "BTC", priceUsd: 66249, changePct: 1.67 }];
   const alertData: AlertItem[] = alerts.map((a) => ({ title: a.title }));
 
   return (
