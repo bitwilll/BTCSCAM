@@ -41,7 +41,7 @@ export default async function StorePage({
         <div className="mx-auto flex max-w-[1360px] flex-wrap items-end justify-between gap-6 px-6 py-10">
           <div className="min-w-0">
             <div className="font-bold text-[16px] uppercase tracking-[.05em] text-ink">
-              Scam swag — reader-funded since 2026
+              Scam swag — reader-funded since 2023
             </div>
             <h1
               className="mt-2 font-display text-ink"

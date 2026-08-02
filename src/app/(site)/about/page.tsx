@@ -13,7 +13,7 @@ export const metadata: Metadata = {
 };
 
 const NUMBERS: [string, string][] = [
-  ["FOUNDED", "2026"],
+  ["FOUNDED", "2023"],
   ["PAID LISTINGS", "0"],
   ["FLAGGED AT RISK", "$43.2M"],
   ["PROFIT KEPT", "$0"],

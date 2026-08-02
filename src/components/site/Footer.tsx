@@ -32,7 +32,7 @@ export async function Footer() {
       <div className="border-t border-dark-line">
         <div className="mx-auto max-w-[1360px] px-6 py-[18px] flex justify-between gap-3 flex-wrap text-[14px] text-meta">
           <span>
-            © {new Date().getFullYear()} BTCSCAM.COM — {SITE.tagline}
+            © 2023–{new Date().getFullYear()} BTCSCAM.COM — {SITE.tagline}
           </span>
           <span>{SITE.disclaimer}</span>
         </div>

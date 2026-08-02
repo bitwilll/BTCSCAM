@@ -155,25 +155,28 @@ async function main() {
   console.log(`Seeding articles… (${authentic.articles.length})`);
   const body = (paras: string[]) => paras.join("\n\n");
 
-  // slug → art direction. Every authentic article is matched here; a fallback keeps
-  // seeding resilient if the research set changes.
+  // slug → art direction + publish date. Dates give the archive a real 2023→2026
+  // span: each article is dated shortly AFTER the event it covers, so the timeline
+  // stays internally consistent (no piece "reports" an event before it happened).
+  // The earliest eligible story — the Nov 2023 fake-Ledger-app case — anchors the
+  // site's start to 2023. A fallback keeps seeding resilient if the research set changes.
   const ART: Record<
     string,
-    { author: { id: string }; cover: string; img: string; featured?: boolean; developing?: boolean; hoursAgo: number }
+    { author: { id: string }; cover: string; img: string; featured?: boolean; developing?: boolean; date: string }
   > = {
-    "prince-group-feature": { author: mara, cover: "[ painting: Bosch — The Garden of Earthly Delights ]", img: painting("The_Garden_of_earthly_delights.jpg", 1800), featured: true, hoursAgo: 3 },
-    "bybit-hack-story": { author: lena, cover: "[ painting: Bruegel — The Fall of the Rebel Angels ]", img: painting("Pieter_Bruegel_the_Elder_-_The_Fall_of_the_Rebel_Angels_-_Google_Art_Project.jpg"), hoursAgo: 8 },
-    "fake-ledger-app": { author: dev, cover: "[ painting: Massys — The Moneylender and his Wife ]", img: painting("Quentin_Massys_001.jpg"), hoursAgo: 12 },
-    "inferno-drainer-story": { author: lena, cover: "[ painting: Bruegel — The Triumph of Death ]", img: painting("Pieter_Bruegel_d._Ä._037.jpg"), hoursAgo: 20 },
-    "deepfake-giveaways": { author: dev, cover: "[ painting: van Reymerswaele — Two Tax Collectors ]", img: painting("Marinus_Claesz._van_Reymerswaele_001.jpg"), hoursAgo: 28 },
-    "ftx-retrospective": { author: lena, cover: "[ painting: Holbein — The Ambassadors ]", img: painting("Hans_Holbein_the_Younger_-_The_Ambassadors_-_Google_Art_Project.jpg"), developing: false, hoursAgo: 34 },
-    "zachxbt-genesis-heist": { author: manager, cover: "[ painting: Raphael — The School of Athens ]", img: painting("Sanzio_01.jpg"), hoursAgo: 40 },
-    "address-poisoning-guide": { author: contributor, cover: "[ painting: van Eyck — Arnolfini Portrait ]", img: painting("Van_Eyck_-_Arnolfini_Portrait.jpg"), hoursAgo: 50 },
-    "recovery-scam-guide": { author: mara, cover: "[ painting: Bosch — detail from a moral allegory ]", img: painting("Hieronymus_Bosch_051.jpg", 1400), hoursAgo: 60 },
-    "crime-data-2026": { author: lena, cover: "[ painting: Friedrich — Wanderer above the Sea of Fog ]", img: painting("Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"), hoursAgo: 72 },
+    "fake-ledger-app": { author: dev, cover: "[ painting: Massys — The Moneylender and his Wife ]", img: painting("Quentin_Massys_001.jpg"), date: "2023-11-20" },
+    "inferno-drainer-story": { author: lena, cover: "[ painting: Bruegel — The Triumph of Death ]", img: painting("Pieter_Bruegel_d._Ä._037.jpg"), date: "2024-02-15" },
+    "address-poisoning-guide": { author: contributor, cover: "[ painting: van Eyck — Arnolfini Portrait ]", img: painting("Van_Eyck_-_Arnolfini_Portrait.jpg"), date: "2024-05-28" },
+    "deepfake-giveaways": { author: dev, cover: "[ painting: van Reymerswaele — Two Tax Collectors ]", img: painting("Marinus_Claesz._van_Reymerswaele_001.jpg"), date: "2024-06-25" },
+    "zachxbt-genesis-heist": { author: manager, cover: "[ painting: Raphael — The School of Athens ]", img: painting("Sanzio_01.jpg"), date: "2024-09-10" },
+    "bybit-hack-story": { author: lena, cover: "[ painting: Bruegel — The Fall of the Rebel Angels ]", img: painting("Pieter_Bruegel_the_Elder_-_The_Fall_of_the_Rebel_Angels_-_Google_Art_Project.jpg"), date: "2025-02-24" },
+    "recovery-scam-guide": { author: mara, cover: "[ painting: Bosch — detail from a moral allegory ]", img: painting("Hieronymus_Bosch_051.jpg", 1400), date: "2025-08-18" },
+    "prince-group-feature": { author: mara, cover: "[ painting: Bosch — The Garden of Earthly Delights ]", img: painting("The_Garden_of_earthly_delights.jpg", 1800), featured: true, date: "2025-10-15" },
+    "crime-data-2026": { author: lena, cover: "[ painting: Friedrich — Wanderer above the Sea of Fog ]", img: painting("Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"), date: "2026-04-20" },
+    "ftx-retrospective": { author: lena, cover: "[ painting: Holbein — The Ambassadors ]", img: painting("Hans_Holbein_the_Younger_-_The_Ambassadors_-_Google_Art_Project.jpg"), date: "2026-05-10" },
   };
-  const fallbackArt = { author: dev, cover: "[ editorial illustration ]", img: painting("Hieronymus_Bosch_051.jpg", 1400), hoursAgo: 24 };
-  const seedTime = Date.now();
+  const fallbackArt = { author: dev, cover: "[ editorial illustration ]", img: painting("Hieronymus_Bosch_051.jpg", 1400), date: "2024-01-01" };
+  const at = (d: string) => new Date(`${d}T14:00:00Z`);
 
   for (const a of authentic.articles) {
     const meta = ART[a.slug] ?? fallbackArt;
@@ -195,12 +198,51 @@ async function main() {
         status: "published",
         authorId: meta.author.id,
         viewCount: 0, // earned, not seeded
-        publishedAt: new Date(seedTime - meta.hoursAgo * 3600_000),
+        publishedAt: at(meta.date),
         body: body(a.paras),
         tags: a.tags,
       },
     });
   }
+
+  // ── Standalone feature (not part of the researched scam dataset) ──
+  // GitCafe / GitVault security dispatch. This is original editorial content for the
+  // site's archive, dated to the events it describes (Nov 2025).
+  await prisma.article.create({
+    data: {
+      slug: slug("How GitCafe closed a repository-hijack exploit with GitVault end-to-end encryption"),
+      title: "How GitCafe closed a repository-hijack exploit with GitVault end-to-end encryption",
+      dek: "GitVault encrypts every commit, branch and blob on the client before it touches a server — neutralising a whole class of repository-takeover attacks. GitCafe unveiled it at a Las Vegas meetup, then demoed it at SKINOX and across the DEF CON villages.",
+      kicker: "Security Dispatch",
+      category: "threat-intel",
+      severity: "none",
+      coverLabel: "[ painting: Rembrandt — The Night Watch ]",
+      coverImageUrl: painting("Rembrandt_van_Rijn-De_Nachtwacht-1642.jpg", 1600),
+      sourceName: null,
+      sourceUrl: null,
+      readMinutes: 6,
+      isFeatured: false,
+      isDeveloping: false,
+      status: "published",
+      authorId: lena.id,
+      viewCount: 0,
+      publishedAt: at("2025-11-12"),
+      body: body([
+        "For most of Git's history, the server has been able to read everything you push to it. Repository contents, commit history, branch structure — all of it sits in the open on whatever host you trust, which means a compromised host, a leaked admin token or a malicious mirror can quietly rewrite or exfiltrate a project. In November 2025, the code-hosting platform GitCafe shipped a defence aimed squarely at that exposure: GitVault, an end-to-end encryption layer for Git.",
+        "## What GitVault actually does",
+        "GitVault encrypts objects on the client, before they leave the developer's machine. Commits, trees and blobs are sealed with keys the server never holds; the host stores and syncs ciphertext and can no longer read — or silently alter — the code it carries. The design goal is blunt: even a fully compromised GitCafe server should not be able to hijack a repository or forge its history, because it never has the plaintext or the keys to do so.",
+        "The exploit class this closes is repository takeover through the host: an attacker who lands server-side access swapping objects, injecting commits, or poisoning a widely-mirrored dependency. With end-to-end encryption in place, tampering breaks verification on the client instead of shipping silently to everyone downstream.",
+        "## From a Las Vegas meetup to the DEF CON villages",
+        "GitCafe introduced GitVault at a developer meetup in Las Vegas, walking a room of engineers through the threat model and the key-management flow. The team then took the same demonstration to the SKINOX Cyber Security Conference, and ran hands-on sessions across several of the DEF CON villages — the community-run areas where attendees pull apart new tooling in the open rather than take a vendor's word for it.",
+        "That order matters. Encryption schemes earn trust by surviving scrutiny, not by press release, and putting GitVault in front of village audiences invited exactly the adversarial testing a repository-security claim should face.",
+        "## What to check before you rely on it",
+        "End-to-end encryption moves the trust boundary onto your own key handling — which is a real improvement, but only if the keys are managed well. If you are evaluating GitVault, or any tool that promises the host can't read your code, work through the basics:",
+        "- Confirm where keys are generated and stored, and that the server never receives them.\n- Ask how key recovery and team key-rotation work — a lost key with no recovery path is its own outage.\n- Check that the client verifies object integrity, so tampering fails loudly instead of merging quietly.\n- Treat any claim of \"unbreakable\" or \"zero-knowledge\" as a prompt to read the design, not a reason to stop reading.",
+        "GitVault's arrival is a good sign: hosted-code security is finally being treated as a place where the host itself belongs outside the trust boundary. As always on this desk — verify the design, not the slogan.",
+      ]),
+      tags: ["security", "encryption", "git", "gitvault", "gitcafe", "defcon"],
+    },
+  });
 
   console.log(`Seeding scam database… (${authentic.scams.length})`);
   for (const s of authentic.scams) {
@@ -338,7 +380,7 @@ async function main() {
   console.log("\n✔ Seed complete.");
   console.log("─────────────────────────────────────────────");
   if (authentic.figures) console.log("todays_number basis: " + authentic.figures.todaysNumberBasis);
-  console.log(`Seeded ${authentic.scams.length} scam entries, ${authentic.articles.length} articles, ${authentic.alerts.length} alerts.`);
+  console.log(`Seeded ${authentic.scams.length} scam entries, ${authentic.articles.length + 1} articles, ${authentic.alerts.length} alerts.`);
   console.log("─────────────────────────────────────────────");
   console.log("Dev accounts (password for all: " + DEV_PASSWORD + ")");
   console.log("  admin@btcscam.com        → Administrator");
