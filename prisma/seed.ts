@@ -321,7 +321,7 @@ async function main() {
     { name: "NOT YOUR KEYS Tee", description: "Heavyweight cotton. The full sentence on the back: not your coins.", priceUsd: 3200, category: "apparel", badge: "BESTSELLER", label: "[ product: black tee, orange block print ]" },
     { name: "VERIFY EVERYTHING Hoodie", description: "The moderator uniform. Embroidered wordmark, kangaroo pocket for your hardware wallet.", priceUsd: 6800, category: "apparel", label: "[ product: dark hoodie ]" },
     { name: "SEED PHRASE Steel Plate", description: "410 stainless, letter punches included. Your 24 words, fireproof. Not a toy.", priceUsd: 4500, category: "gear", label: "[ product: steel backup plate + punch set ]" },
-    { name: "GitCafe 2025 Coffee Mug", description: "Faceted charcoal ceramic with a walnut D-handle and the pixel GitCafe mark. A 2025 limited run — hand-autographed by Jay T.", priceUsd: 4200, category: "desk", badge: "AUTOGRAPHED", label: "[ product: GitCafe mug, autographed by Jay T. ]" },
+    { name: "GitCafe 2025 Coffee Mug", description: "Faceted charcoal ceramic with a walnut D-handle and the pixel GitCafe mark. A 2025 limited run — hand-autographed by Jay T.", priceUsd: 4200, category: "desk", badge: "AUTOGRAPHED", img: "/store/gitcafe-2025-coffee-mug.jpg", label: "[ product: GitCafe mug, autographed by Jay T. ]" },
     { name: "RED FLAGS Field Notebook", description: "48 pages. Checklist per page: domain age, custody, yield math, exit path.", priceUsd: 1400, category: "desk", label: "[ product: field notebook ]" },
     { name: "WATCHMAN Cap", description: "Unstructured, orange stitch. For duty hours, which are all hours.", priceUsd: 2800, category: "apparel", label: "[ product: black cap, orange stitch ]" },
     { name: "THREAT BOARD Poster", description: "A2 risograph print of the ten scam archetypes. Frame not included; vigilance is.", priceUsd: 1800, category: "desk", label: "[ product: threat-board poster ]" },
@@ -330,7 +330,8 @@ async function main() {
     { name: "BTC SCAM Gift Card", description: "Crypto-only store credit, emailed as a redeem code. The safest gift in crypto.", priceUsd: 2500, category: "gift", label: "[ product: gift card ]" },
   ] as const;
   for (const p of products) {
-    await prisma.product.create({ data: { slug: slug(p.name), name: p.name, description: p.description, priceUsd: p.priceUsd, category: p.category, badge: "badge" in p ? (p as { badge?: string }).badge : undefined, imageUrl: `/store/${slug(p.name)}.svg`, imageLabels: [p.label] } });
+    const imageUrl = "img" in p ? (p as { img?: string }).img! : `/store/${slug(p.name)}.svg`;
+    await prisma.product.create({ data: { slug: slug(p.name), name: p.name, description: p.description, priceUsd: p.priceUsd, category: p.category, badge: "badge" in p ? (p as { badge?: string }).badge : undefined, imageUrl, imageLabels: [p.label] } });
   }
 
   // Crypto wallets (PLACEHOLDER addresses — replace before going live)
