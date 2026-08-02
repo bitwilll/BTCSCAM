@@ -24,6 +24,9 @@ type AuthArticle = {
   slug: string; title: string; dek: string; kicker: string; category: string;
   severity: string; readMinutes: number; sourceName: string; sourceUrl: string;
   tags: string[]; paras: string[];
+  // Optional per-article art direction (used by the bulk archive set; the curated
+  // articles instead resolve these from the ART map below).
+  date?: string; author?: string; cover?: string; coverLabel?: string;
 };
 type AuthAlert = { severity: string; title: string; chain: string; body?: string; sourceUrl?: string };
 type AuthFigures = {
@@ -193,8 +196,19 @@ async function main() {
   const fallbackArt = { author: dev, cover: "[ editorial illustration ]", img: painting("Hieronymus_Bosch_051.jpg", 1400), date: "2024-01-01" };
   const at = (d: string) => new Date(`${d}T14:00:00Z`);
 
+  // Author lookup by key, for articles that carry their own author assignment.
+  const userByKey: Record<string, { id: string }> = {
+    dev, lena, mara, manager, contributor, hexdiver: contributor, jmanager: manager, mokafor: mara,
+  };
+
   for (const a of authentic.articles) {
-    const meta = ART[a.slug] ?? fallbackArt;
+    const meta = ART[a.slug];
+    // Prefer the article's own art direction (bulk archive set); else the curated
+    // ART map; else a safe fallback.
+    const author = (a.author && userByKey[a.author]) || meta?.author || fallbackArt.author;
+    const coverImageUrl = a.cover ?? meta?.img ?? fallbackArt.img;
+    const coverLabel = a.coverLabel ?? meta?.cover ?? fallbackArt.cover;
+    const date = a.date ?? meta?.date ?? fallbackArt.date;
     await prisma.article.create({
       data: {
         slug: slug(a.title),
@@ -203,17 +217,17 @@ async function main() {
         kicker: a.kicker,
         category: a.category,
         severity: a.severity,
-        coverLabel: meta.cover,
-        coverImageUrl: meta.img,
+        coverLabel,
+        coverImageUrl,
         sourceName: a.sourceName || null,
         sourceUrl: a.sourceUrl || null,
         readMinutes: a.readMinutes,
-        isFeatured: meta.featured ?? false,
-        isDeveloping: meta.developing ?? false,
+        isFeatured: meta?.featured ?? false,
+        isDeveloping: meta?.developing ?? false,
         status: "published",
-        authorId: meta.author.id,
+        authorId: author.id,
         viewCount: 0, // earned, not seeded
-        publishedAt: at(meta.date),
+        publishedAt: at(date),
         body: body(a.paras),
         tags: a.tags,
       },
