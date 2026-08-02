@@ -234,7 +234,10 @@ export default async function ArticlePage({ params }: { params: Params }) {
             />
             {(article.coverImageUrl || article.sourceName) && (
               <div className="mt-2 text-[14px] text-meta">
-                {article.coverImageUrl && "Painting: Renaissance archive"}
+                {article.coverImageUrl &&
+                  ((article.coverLabel || "").toLowerCase().includes("painting")
+                    ? "Painting: Renaissance archive"
+                    : (article.coverLabel || "").replace(/^\[\s*|\s*\]$/g, "").trim() || "Cover")}
                 {article.coverImageUrl && article.sourceName && " · "}
                 {article.sourceName && (
                   <>

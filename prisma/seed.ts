@@ -174,6 +174,14 @@ async function main() {
     "prince-group-feature": { author: mara, cover: "[ painting: Bosch — The Garden of Earthly Delights ]", img: painting("The_Garden_of_earthly_delights.jpg", 1800), featured: true, date: "2025-10-15" },
     "crime-data-2026": { author: lena, cover: "[ painting: Friedrich — Wanderer above the Sea of Fog ]", img: painting("Caspar_David_Friedrich_-_Wanderer_above_the_sea_of_fog.jpg"), date: "2026-04-20" },
     "ftx-retrospective": { author: lena, cover: "[ painting: Holbein — The Ambassadors ]", img: painting("Hans_Holbein_the_Younger_-_The_Ambassadors_-_Google_Art_Project.jpg"), date: "2026-05-10" },
+    // Older stories (2023) that extend the archive back toward the site's 2023 origin.
+    "euler-finance-2023": { author: dev, cover: "[ painting: Monet — Impression, Sunrise ]", img: painting("Claude_Monet,_Impression,_soleil_levant.jpg"), date: "2023-03-25" },
+    "atomic-wallet-2023": { author: lena, cover: "[ painting: Bruegel — The Triumph of Death ]", img: painting("Pieter_Bruegel_d._Ä._037.jpg"), date: "2023-06-15" },
+    "ledger-connect-kit-2023": { author: contributor, cover: "[ painting: Holbein — The Ambassadors ]", img: painting("Hans_Holbein_the_Younger_-_The_Ambassadors_-_Google_Art_Project.jpg"), date: "2023-12-16" },
+    // Recent stories (2026).
+    "interpol-first-light-2026": { author: mara, cover: "[ painting: Bruegel — The Tower of Babel ]", img: painting("Pieter_Bruegel_the_Elder_-_The_Tower_of_Babel_(Vienna)_-_Google_Art_Project.jpg"), date: "2026-05-15" },
+    "bitcoin-atm-scams-2026": { author: dev, cover: "[ painting: Rembrandt — The Night Watch ]", img: painting("Rembrandt_van_Rijn-De_Nachtwacht-1642.jpg"), date: "2026-07-18" },
+    "coldcard-rng-exploit": { author: lena, cover: "[ painting: Caravaggio — The Cardsharps ]", img: painting("Caravaggio_(Michelangelo_Merisi)_-_The_Cardsharps_-_Google_Art_Project.jpg"), date: "2026-07-31" },
   };
   const fallbackArt = { author: dev, cover: "[ editorial illustration ]", img: painting("Hieronymus_Bosch_051.jpg", 1400), date: "2024-01-01" };
   const at = (d: string) => new Date(`${d}T14:00:00Z`);
@@ -216,8 +224,8 @@ async function main() {
       kicker: "Security Dispatch",
       category: "threat-intel",
       severity: "none",
-      coverLabel: "[ painting: Rembrandt — The Night Watch ]",
-      coverImageUrl: painting("Rembrandt_van_Rijn-De_Nachtwacht-1642.jpg", 1600),
+      coverLabel: "gitcafe™ — official brand mark",
+      coverImageUrl: "/gitcafe-cover.svg",
       sourceName: null,
       sourceUrl: null,
       readMinutes: 6,
@@ -299,21 +307,22 @@ async function main() {
     data: { slug: slug("Lost 4 BTC to a recovery agent - what now"), title: "Lost 4 BTC to a 'recovery agent' — what now?", body: "After the first scam I paid a 'recovery agent' who then vanished. Documenting everything here. What are my realistic options?", categoryId: catRecords["help-i-was-scammed"], authorId: member2.id, upvotes: 0, score: 0, tags: ["recovery", "support"] },
   });
 
-  // Store — v4's nine-product catalog (crypto checkout only; Unsplash imagery per design)
-  const unsplash = (id: string) => `https://images.unsplash.com/${id}?w=800&q=75`;
+  // Store — nine-product catalog (crypto checkout only). Each product ships with a
+  // branded studio product image generated as an inline SVG (public/store/<slug>.svg),
+  // so every card clearly depicts its item and always renders.
   const products = [
-    { name: "NOT YOUR KEYS Tee", description: "Heavyweight cotton. The full sentence on the back: not your coins.", priceUsd: 3200, category: "apparel", badge: "BESTSELLER", img: unsplash("photo-1576566588028-4147f3842f27"), label: "[ photo: black tee, orange block print ]" },
-    { name: "VERIFY EVERYTHING Hoodie", description: "The moderator uniform. Embroidered wordmark, kangaroo pocket for your hardware wallet.", priceUsd: 6800, category: "apparel", img: unsplash("photo-1556821840-3a63f95609a7"), label: "[ photo: hoodie flat lay ]" },
-    { name: "SEED PHRASE Steel Plate", description: "410 stainless, letter punches included. Your 24 words, fireproof. Not a toy.", priceUsd: 4500, category: "gear", img: unsplash("photo-1544816155-12df9643f363"), label: "[ photo: steel backup plate + punch set ]" },
-    { name: "SCAM ALERT Klaxon Mug", description: "Enamel, 350ml. The ticker's red badge, on your desk before coffee.", priceUsd: 2200, category: "desk", img: unsplash("photo-1517256064527-09c73fc73e38"), label: "[ photo: red enamel mug ]" },
-    { name: "RED FLAGS Field Notebook", description: "48 pages. Checklist per page: domain age, custody, yield math, exit path.", priceUsd: 1400, category: "desk", img: unsplash("photo-1544716278-ca5e3f4abd8c"), label: "[ photo: pocket notebook ]" },
-    { name: "WATCHMAN Cap", description: "Unstructured, orange stitch. For duty hours, which are all hours.", priceUsd: 2800, category: "apparel", img: unsplash("photo-1588850561407-ed78c282e89b"), label: "[ photo: black cap, orange stitch ]" },
-    { name: "THREAT BOARD Poster", description: "A2 risograph print of the ten scam archetypes. Frame not included; vigilance is.", priceUsd: 1800, category: "desk", img: unsplash("photo-1513519245088-0e12902e5a38"), label: "[ photo: risograph poster ]" },
-    { name: "COLD STORAGE Sticker Pack", description: "12 vinyl stickers. Laptop-grade adhesive, scam-grade skepticism.", priceUsd: 900, category: "gear", img: unsplash("photo-1572375992501-4b0892d50c69"), label: "[ photo: sticker sheet ]" },
-    { name: "BTC SCAM Gift Card", description: "Crypto-only store credit, emailed as a redeem code. The safest gift in crypto.", priceUsd: 2500, category: "gift", img: unsplash("photo-1613243555988-441166d4d6fd"), label: "[ photo: orange gift card ]" },
+    { name: "NOT YOUR KEYS Tee", description: "Heavyweight cotton. The full sentence on the back: not your coins.", priceUsd: 3200, category: "apparel", badge: "BESTSELLER", label: "[ product: black tee, orange block print ]" },
+    { name: "VERIFY EVERYTHING Hoodie", description: "The moderator uniform. Embroidered wordmark, kangaroo pocket for your hardware wallet.", priceUsd: 6800, category: "apparel", label: "[ product: dark hoodie ]" },
+    { name: "SEED PHRASE Steel Plate", description: "410 stainless, letter punches included. Your 24 words, fireproof. Not a toy.", priceUsd: 4500, category: "gear", label: "[ product: steel backup plate + punch set ]" },
+    { name: "SCAM ALERT Klaxon Mug", description: "Enamel, 350ml. The ticker's red badge, on your desk before coffee.", priceUsd: 2200, category: "desk", label: "[ product: red enamel mug ]" },
+    { name: "RED FLAGS Field Notebook", description: "48 pages. Checklist per page: domain age, custody, yield math, exit path.", priceUsd: 1400, category: "desk", label: "[ product: field notebook ]" },
+    { name: "WATCHMAN Cap", description: "Unstructured, orange stitch. For duty hours, which are all hours.", priceUsd: 2800, category: "apparel", label: "[ product: black cap, orange stitch ]" },
+    { name: "THREAT BOARD Poster", description: "A2 risograph print of the ten scam archetypes. Frame not included; vigilance is.", priceUsd: 1800, category: "desk", label: "[ product: threat-board poster ]" },
+    { name: "COLD STORAGE Sticker Pack", description: "12 vinyl stickers. Laptop-grade adhesive, scam-grade skepticism.", priceUsd: 900, category: "gear", label: "[ product: sticker pack ]" },
+    { name: "BTC SCAM Gift Card", description: "Crypto-only store credit, emailed as a redeem code. The safest gift in crypto.", priceUsd: 2500, category: "gift", label: "[ product: gift card ]" },
   ] as const;
   for (const p of products) {
-    await prisma.product.create({ data: { slug: slug(p.name), name: p.name, description: p.description, priceUsd: p.priceUsd, category: p.category, badge: "badge" in p ? (p as { badge?: string }).badge : undefined, imageUrl: p.img, imageLabels: [p.label] } });
+    await prisma.product.create({ data: { slug: slug(p.name), name: p.name, description: p.description, priceUsd: p.priceUsd, category: p.category, badge: "badge" in p ? (p as { badge?: string }).badge : undefined, imageUrl: `/store/${slug(p.name)}.svg`, imageLabels: [p.label] } });
   }
 
   // Crypto wallets (PLACEHOLDER addresses — replace before going live)
