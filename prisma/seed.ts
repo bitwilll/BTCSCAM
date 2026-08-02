@@ -188,7 +188,7 @@ async function main() {
     // Recent stories (2026).
     "interpol-first-light-2026": { author: mara, cover: "[ painting: Bruegel — The Tower of Babel ]", img: painting("Pieter_Bruegel_the_Elder_-_The_Tower_of_Babel_(Vienna)_-_Google_Art_Project.jpg"), date: "2026-05-15" },
     "bitcoin-atm-scams-2026": { author: dev, cover: "[ painting: Rembrandt — The Night Watch ]", img: painting("Rembrandt_van_Rijn-De_Nachtwacht-1642.jpg"), date: "2026-07-18" },
-    "coldcard-rng-exploit": { author: lena, cover: "[ painting: Caravaggio — The Cardsharps ]", img: painting("Caravaggio_(Michelangelo_Merisi)_-_The_Cardsharps_-_Google_Art_Project.jpg"), date: "2026-07-31" },
+    "coldcard-rng-exploit": { author: lena, cover: "Threat intelligence briefing", img: "/covers/coldcard-exposed.svg", date: "2026-07-31" },
   };
   const fallbackArt = { author: dev, cover: "[ editorial illustration ]", img: painting("Hieronymus_Bosch_051.jpg", 1400), date: "2024-01-01" };
   const at = (d: string) => new Date(`${d}T14:00:00Z`);
@@ -326,6 +326,7 @@ async function main() {
     { name: "WATCHMAN Cap", description: "Unstructured, orange stitch. For duty hours, which are all hours.", priceUsd: 2800, category: "apparel", label: "[ product: black cap, orange stitch ]" },
     { name: "THREAT BOARD Poster", description: "A2 risograph print of the ten scam archetypes. Frame not included; vigilance is.", priceUsd: 1800, category: "desk", label: "[ product: threat-board poster ]" },
     { name: "COLD STORAGE Sticker Pack", description: "12 vinyl stickers. Laptop-grade adhesive, scam-grade skepticism.", priceUsd: 900, category: "gear", label: "[ product: sticker pack ]" },
+    { name: "Covert Seed Storage Book", description: "A hardcover decoy book with a precision-milled cavity for your steel seed plate or hardware wallet — hides your backup in plain sight on any shelf. By Keepcrypt.com.", priceUsd: 3400, category: "gear", badge: "KEEPCRYPT", label: "[ product: covert seed-storage book by Keepcrypt.com ]" },
     { name: "BTC SCAM Gift Card", description: "Crypto-only store credit, emailed as a redeem code. The safest gift in crypto.", priceUsd: 2500, category: "gift", label: "[ product: gift card ]" },
   ] as const;
   for (const p of products) {

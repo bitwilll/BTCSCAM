@@ -12,7 +12,7 @@ export async function Footer() {
           <Wordmark size="md" withCom />
           <div className="text-[16px] text-meta mt-1.5">{SITE.mission}</div>
           <div className="text-[13px] text-meta mt-3 max-w-[48ch] leading-relaxed">
-            Migrated from stacknest.com · rebranded as BTCSCAM — one portal for all
+            Migrated from bitcon.news · rebranded as BTCSCAM — one portal for all
             Blockchain Vigilantes.
           </div>
         </div>
