@@ -4,15 +4,23 @@ import { Kicker, SeverityTag, StatBlock } from "@/components/ui";
 import { ArticleRow, TopStoryItem } from "@/components/content/cards";
 import { NewsletterSignup } from "@/components/content/NewsletterSignup";
 import { WalletCheckBar } from "./_components/WalletCheckBar";
+import { NewsCarousel, type HeroSlide } from "@/components/site/NewsCarousel";
 import { byline, compactUsd, timeAgo } from "@/lib/format";
 
 export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
-  const [lead, latest, mostRead, homeAlerts, dbAgg, dbCount] = await Promise.all([
+  const [lead, recentForHero, latest, mostRead, homeAlerts, dbAgg, dbCount] = await Promise.all([
     prisma.article.findFirst({
       where: { status: "published", isFeatured: true },
       orderBy: { publishedAt: "desc" },
+      include: { author: true },
+    }),
+    // Newest published stories with a cover image — these auto-rotate in the hero.
+    prisma.article.findMany({
+      where: { status: "published", isFeatured: false, coverImageUrl: { not: null } },
+      orderBy: { publishedAt: "desc" },
+      take: 6,
       include: { author: true },
     }),
     prisma.article.findMany({
@@ -37,56 +45,31 @@ export default async function HomePage() {
 
   const lossTotal = compactUsd(Number(dbAgg._sum.amountAtRiskUsd ?? 0));
 
+  // Hero carousel: the featured investigation first, then the newest cover-image
+  // stories (the Coldcard hack and other breaking items), de-duplicated to 6.
+  const heroSeen = new Set<string>();
+  const heroSlides: HeroSlide[] = [lead, ...recentForHero]
+    .filter((a): a is NonNullable<typeof a> => Boolean(a))
+    .filter((a) => (heroSeen.has(a.slug) ? false : (heroSeen.add(a.slug), true)))
+    .slice(0, 6)
+    .map((a) => ({
+      slug: a.slug,
+      title: a.title,
+      dek: a.dek,
+      kicker: a.kicker || "Report",
+      severity: a.severity,
+      image: a.coverImageUrl,
+      byline: `By ${a.author?.displayName ?? "The Watchdesk"} · ${a.readMinutes} min read`,
+      credit:
+        a.coverImageUrl && (a.coverLabel || "").toLowerCase().includes("painting")
+          ? "Painting: Renaissance archive"
+          : null,
+    }));
+
   return (
     <div className="max-w-[1140px] mx-auto px-6 fade-up">
-      {/* ── Full-bleed lead: painting + gradient, bottom-aligned (v4) ── */}
-      {lead && (
-        <Link
-          href={`/article/${lead.slug}`}
-          className="relative block w-screen hover:no-underline"
-          style={{
-            marginLeft: "calc(50% - 50vw)",
-            minHeight: "calc(100vh - 220px)",
-            display: "flex",
-            alignItems: "flex-end",
-            justifyContent: "center",
-            backgroundColor: "#101010",
-            backgroundImage: `linear-gradient(to top, rgba(10,10,8,.88) 0%, rgba(10,10,8,.45) 45%, rgba(10,10,8,.15) 100%)${
-              lead.coverImageUrl ? `, url(${lead.coverImageUrl})` : ""
-            }`,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-          }}
-        >
-          <div className="w-full max-w-[1140px] px-6">
-            <div className="py-10" style={{ paddingInline: "clamp(24px,4vw,48px)" }}>
-              <div className="kicker text-brand">{lead.kicker || "Investigation"}</div>
-              <span
-                className="block mt-3.5 font-display text-paper max-w-[22ch]"
-                style={{ fontSize: "clamp(32px,4.5vw,54px)", lineHeight: 1.1, textWrap: "balance" }}
-              >
-                {lead.title}
-              </span>
-              {lead.dek && (
-                <p
-                  className="mt-4 text-[18px] leading-[1.6] max-w-[52ch]"
-                  style={{ color: "rgba(252,251,249,.85)", textWrap: "pretty" }}
-                >
-                  {lead.dek}
-                </p>
-              )}
-              <div
-                className="mt-4 text-[14px] tracking-[.05em] uppercase"
-                style={{ color: "rgba(252,251,249,.65)" }}
-              >
-                By <span className="text-paper font-bold">{lead.author?.displayName ?? "The Watchdesk"}</span> ·{" "}
-                {lead.readMinutes} min read
-                {lead.coverImageUrl ? " · Painting: Renaissance archive" : ""}
-              </div>
-            </div>
-          </div>
-        </Link>
-      )}
+      {/* ── Full-bleed hero: auto-rotating latest-headlines carousel (6s) ── */}
+      {heroSlides.length > 0 && <NewsCarousel slides={heroSlides} />}
 
       {/* ── DANGEROUS RIGHT NOW + wallet check (v4) ── */}
       <div className="mt-[52px] border-t border-b border-ink">
