@@ -72,7 +72,7 @@ export function NewsCarousel({ slides }: { slides: HeroSlide[] }) {
             opacity: idx === active ? 1 : 0,
             pointerEvents: idx === active ? "auto" : "none",
             backgroundColor: "#101010",
-            backgroundImage: `linear-gradient(to top, rgba(10,10,8,.9) 0%, rgba(10,10,8,.5) 45%, rgba(10,10,8,.18) 100%)${
+            backgroundImage: `linear-gradient(to top, rgba(10,10,8,.86) 0%, rgba(10,10,8,.4) 44%, rgba(10,10,8,.06) 100%)${
               s.image ? `, url(${s.image})` : ""
             }`,
             backgroundSize: "cover",
@@ -94,14 +94,23 @@ export function NewsCarousel({ slides }: { slides: HeroSlide[] }) {
               </div>
               <span
                 className="block mt-3.5 font-display text-paper max-w-[22ch]"
-                style={{ fontSize: "clamp(32px,4.5vw,54px)", lineHeight: 1.1, textWrap: "balance" }}
+                style={{
+                  fontSize: "clamp(32px,4.5vw,54px)",
+                  lineHeight: 1.1,
+                  textWrap: "balance",
+                  textShadow: "0 2px 20px rgba(0,0,0,.6)",
+                }}
               >
                 {s.title}
               </span>
               {s.dek && (
                 <p
                   className="mt-4 text-[18px] leading-[1.6] max-w-[52ch]"
-                  style={{ color: "rgba(252,251,249,.85)", textWrap: "pretty" }}
+                  style={{
+                    color: "rgba(252,251,249,.9)",
+                    textWrap: "pretty",
+                    textShadow: "0 1px 12px rgba(0,0,0,.55)",
+                  }}
                 >
                   {s.dek}
                 </p>

@@ -48,8 +48,15 @@ const REAL_ADDRESSES: Record<string, string[]> = {
 
 // Per-article editorial dressing (author desk, public-domain cover painting, placement,
 // recency). Content is authentic and verified; only the art direction is assigned here.
-const painting = (file: string, width = 900) =>
-  `https://commons.wikimedia.org/wiki/Special:FilePath/${file}?width=${width}`;
+// Cover art is self-hosted under /public/covers (public-domain paintings downloaded from
+// Wikimedia Commons) so images always load from our own CDN — no hotlink rate limits or
+// blocked-out backgrounds. `painting()` maps the original Commons filename to that path.
+const painting = (file: string, _width = 900) =>
+  `/covers/${file
+    .replace(/\.[^.]+$/, "")
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-|-$/g, "")}.jpg`;
 
 async function main() {
   console.log("Resetting database…");
