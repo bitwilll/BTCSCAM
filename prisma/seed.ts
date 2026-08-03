@@ -96,6 +96,12 @@ async function main() {
   ]);
 
   const hash = await bcrypt.hash(DEV_PASSWORD, 10);
+  // The admin account can carry its own password via the ADMIN_PASSWORD env var
+  // (kept OUT of the repo — set it in the runtime env / Vercel project settings).
+  // Falls back to the shared dev password when unset.
+  const adminHash = process.env.ADMIN_PASSWORD
+    ? await bcrypt.hash(process.env.ADMIN_PASSWORD, 10)
+    : hash;
 
   console.log("Seeding users…");
   const u = async (
@@ -104,13 +110,14 @@ async function main() {
     role: string,
     title?: string,
     email?: string,
+    pwHash: string = hash,
   ) =>
     prisma.user.create({
       data: {
         username,
         displayName,
         email: email ?? `${username}@btcscam.com`,
-        passwordHash: hash,
+        passwordHash: pwHash,
         role,
         title,
         reputation: 0, // earned on-site, not seeded
@@ -118,7 +125,7 @@ async function main() {
       },
     });
 
-  const admin = await u("admin", "Site Admin", "admin", "Administrator", "admin@btcscam.com");
+  const admin = await u("admin", "Site Admin", "admin", "Administrator", "admin@btcscam.com", adminHash);
   const mara = await u("mokafor", "Mara Okafor", "editor", "Chief Investigations Editor");
   const dev = await u("dpatel", "Dev Patel", "copywriter", "Staff Reporter");
   const lena = await u("lvogt", "Lena Vogt", "copywriter", "Threat Intel Correspondent");
@@ -414,7 +421,10 @@ async function main() {
   if (authentic.figures) console.log("todays_number basis: " + authentic.figures.todaysNumberBasis);
   console.log(`Seeded ${authentic.scams.length} scam entries, ${authentic.articles.length + 1} articles, ${authentic.alerts.length} alerts.`);
   console.log("─────────────────────────────────────────────");
-  console.log("Dev accounts (password for all: " + DEV_PASSWORD + ")");
+  console.log(
+    "Dev accounts (password: " + DEV_PASSWORD + ")" +
+      (process.env.ADMIN_PASSWORD ? " — admin uses ADMIN_PASSWORD from env" : ""),
+  );
   console.log("  admin@btcscam.com        → Administrator");
   console.log("  mokafor@btcscam.com      → Editor (Chief Investigations)");
   console.log("  jmanager@btcscam.com     → Manager");
