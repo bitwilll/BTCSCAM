@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Fraunces, Geist, IBM_Plex_Mono } from "next/font/google";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 
 // v4 faces: Fraunces 600 (headlines/titles ONLY) · Geist (all UI/body) ·
@@ -51,7 +52,10 @@ export default function RootLayout({
       lang="en"
       className={`${fraunces.variable} ${geist.variable} ${plexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-paper text-ink">{children}</body>
+      <body className="min-h-full flex flex-col bg-paper text-ink">
+        {children}
+        <SpeedInsights />
+      </body>
     </html>
   );
 }
